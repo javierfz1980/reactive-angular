@@ -53,7 +53,7 @@ GET http://localhost:3001/courses
 ##### Parameters
 |   name   | value  | notes |
 | -------- | ------ | ----- |
-|          |        |       |
+| query   |  String | value to do a lookup on `title` and `short_description` |
 
 ##### Retorna
 >```JSON
@@ -176,7 +176,7 @@ GET http://localhost:3001/teachers
 ##### Parameters
 |   name   | value  | notes |
 | -------- | ------ | ----- |
-|          |        |       |
+| query   |  String | value to do a lookup on `first_name` and `last_name` |
 
 ##### Retorna
 >```JSON
@@ -276,7 +276,7 @@ PATCH http://localhost:3001/teachers/
 >```
 
 ***
-## Endpoints - Estudiantes
+## Endpoints - Alumnos
 ***
 
 ```
@@ -287,7 +287,7 @@ GET http://localhost:3001/students
 ##### Parameters
 |   name   | value  | notes |
 | -------- | ------ | ----- |
-|          |        |       |
+| query   |  String | value to do a lookup on `first_name` and `last_name` |
 
 ##### Retorna
 >```JSON

@@ -10,8 +10,21 @@ function getDataFromRequest(req, param, data) {
   return req.params && req.params[param] && getDataById(data, req.params[param]);
 }
 
-exports.getAll = function(req, res, data) {
-  res.status(200).json(data);
+exports.getAll = function(req, res, data, filter) {
+  var result = data;
+  if (filter && req.query[filter.param]) {
+    result = _.filter(result, (input) => {
+      console.log(filter.lookups);
+      return _.some(filter.lookups, lookup => {
+        console.log(lookup);
+        console.log(input[lookup]);
+        console.log(req.query[filter.param]);
+        console.log(input[lookup].includes(req.query[filter.param]));
+        return input[lookup].toLowerCase().includes(req.query[filter.param].toLowerCase());
+      });
+    });
+  }
+  res.status(200).json(result);
 };
 
 exports.getById = function(req, res, param, data) {

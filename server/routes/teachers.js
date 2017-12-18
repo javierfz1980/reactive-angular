@@ -52,7 +52,7 @@ const utils = require('./utils');
 //   }
 // });
 
-router.get('/', (req, res) => utils.getAll(req, res, teachersData));
+router.get('/', (req, res) => utils.getAll(req, res, teachersData, { param: 'query', lookups: ['first_name', 'last_name']}));
 router.get('/:teacherId', (req, res) => utils.getById(req, res, 'teacherId', teachersData));
 router.post('/', (req, res) => utils.create(req, res, teachersData, Teacher, ['first_name', 'last_name', 'email']));
 router.delete('/:teacherId', (req, res) => utils.delete(req, res, 'teacherId', teachersData));

@@ -42,11 +42,6 @@ module.exports = function(app) {
     ws.send(JSON.stringify(createAlerts(5)));
 
     timer = setInterval(() => ws.send(JSON.stringify(createAlerts(_.random(0,3)))), 10000);
-    // timer = setInterval(() => ws.send('a'), 1000);
-    // timer = setInterval(() => {
-    //   console.log('interval');
-    //   ws.send('a');
-    // }, 10000);
   });
 
   server.listen(3002, function listening() {

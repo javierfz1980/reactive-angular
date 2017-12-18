@@ -65,7 +65,7 @@ El detalle del profesor debe presentar toda la informacion del mismo asi tambien
 **Extra Points - Solo para rol de ADMINISTRADOR**: Eliminar o editar el profesor. *Tener en cuenta la division de entidades entre profesor y perfil*.
 
 ### HEADER
-En el header debe darse la posibilidad al usuario de realizar acciones relacionadas a su cuenta y con alertas recibidas
+En el header debe darse la posibilidad al usuario de realizar acciones relacionadas a su cuenta, con alertas recibidas y un search
 
 #### HEADER: USUARIO
 Debe presentarse un icono clickeable que despliege 2 opciones:
@@ -74,6 +74,11 @@ Debe presentarse un icono clickeable que despliege 2 opciones:
 
 #### HEADER: ALERTAS
 El usuario luego de loguearse debe empezar a recibir alertas. Dichas alertas seran mostradas en un dropdown donde se muestra el titulo unicamente. Todas las alertas que se reciban deben ir apilandose en ese dropdown. El icono de alertas debe tener un contador de alertas NO LEIDAS. Las alertas leidas / no leidas deben tener alguna variacion visual. Las alertas NO LEIDAS son las que nunca se clickearon. Al clickear se abre el detalle del alerta en un modal y se marca como leida
+
+#### HEADER: Search
+El header debe tener un input de search donde el usuario pueda hacer input de un string y el sistema debe buscar matchings contra Alumnos, Profesores y Cursos. El resultado puede mostrarse de cualquiera de las siguientes dos maneras
+- Lista de autocomplete con organizacion de -hasta- los tres grupos
+- Pagina nueva a la que se navega cuando se hace click en buscar o 'enter'. La pagina tiene que estar organizada para mostrar los resultados de los tres grupos. Esta pagina tiene que poder ser bookmarkeable.
 
 # Requerimientos técnicos
 - Utilizar Angular CLI (app name = `gl-angular-training` / prefix `gl`)
