@@ -5,6 +5,7 @@ import {TeachersComponent} from "./teachers/teachers.component";
 import {StudentsComponent} from "./students/students.component";
 import {CommonModule} from "@angular/common";
 import {ClarityModule} from "clarity-angular";
+import {PipesModule} from "../common/pipes/pipes.module";
 
 const contents = [
   DashboardComponent,
@@ -19,7 +20,8 @@ const contents = [
   ],
   imports: [
     CommonModule,
-    ClarityModule
+    ClarityModule,
+    PipesModule
   ],
   exports: [
     ...contents

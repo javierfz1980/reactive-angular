@@ -11,6 +11,7 @@ import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {ContentModule} from "./content/content.module";
 import {ClarityModule} from "clarity-angular";
 import {GuardModule} from "./common/guards/guard.module";
+import {PipesModule} from "./common/pipes/pipes.module";
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import {GuardModule} from "./common/guards/guard.module";
     ContentModule,
     BrowserModule,
     AppRoutingModule,
+    PipesModule,
     ServicesModule.forRoot(),
     GuardModule.forRoot(),
   ],

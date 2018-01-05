@@ -1,0 +1,15 @@
+.nav-list {
+  padding-left: 0px!important;
+}
+
+.nav-list .nav-link {
+  padding: 8px;
+}
+
+.nav-list .nav-link:hover {
+  background: lightgrey;
+}
+
+.nav-link.active {
+  background: #fafafa!important;
+}
