@@ -1,5 +1,10 @@
-<header class="header-6">
+<clr-header>
   <div class="branding">
     <span class="title">{{ headerTitle }}</span>
   </div>
-</header>
+  <div class="header-actions">
+    <a class="nav-link nav-icon" (click)="logout()">
+      <clr-icon shape="logout" size="24"></clr-icon>
+    </a>
+  </div>
+</clr-header>

@@ -9,4 +9,10 @@ export class HeaderComponent {
 
   readonly headerTitle: string = "Reactive Angular - GL";
 
+  constructor() {}
+
+  logout() {
+    // TODO
+  }
+
 }
