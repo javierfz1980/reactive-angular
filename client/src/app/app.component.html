@@ -1,0 +1,28 @@
+<div class="main-container" *ngIf="logedIn; else login">
+
+  <!-- app alert level -->
+  <gl-alerts></gl-alerts>
+
+  <!-- app header - branding -->
+  <gl-header></gl-header>
+
+  <!-- app contents -->
+  <div class="content-container">
+
+    <!-- app main content -->
+    <div class="content-area">
+      <router-outlet></router-outlet>
+    </div>
+
+    <!-- app side nav -->
+    <nav class="sidenav">
+      <gl-side-nav></gl-side-nav>
+    </nav>
+
+  </div>
+</div>
+
+<!-- Login component -->
+<ng-template #login>
+  <gl-login></gl-login>
+</ng-template>
