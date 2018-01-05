@@ -1,4 +1,4 @@
-<div class="main-container" *ngIf="logedIn; else login">
+<clr-main-container *ngIf="isLogedIn; else login">
 
   <!-- app alert level -->
   <gl-alerts></gl-alerts>
@@ -15,14 +15,14 @@
     </div>
 
     <!-- app side nav -->
-    <nav class="sidenav">
+    <nav class="sidenav" [clr-nav-level]="1">
       <gl-side-nav></gl-side-nav>
     </nav>
 
   </div>
-</div>
+</clr-main-container>
 
 <!-- Login component -->
 <ng-template #login>
-  <gl-login></gl-login>
+  <router-outlet></router-outlet>
 </ng-template>
