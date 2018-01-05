@@ -9,10 +9,10 @@ import {AppRoutingModule} from './app-routing.module';
 import {DashboardComponent} from './content/dashboard/dashboard.component';
 import {ServicesModule} from "./common/services/services.module";
 import {HttpClient} from "@angular/common/http";
+import {ContentModule} from "./content/content.module";
 
 @NgModule({
   declarations: [
-    DashboardComponent,
     LoginComponent,
     SideNavComponent,
     AlertsComponent,
@@ -20,6 +20,7 @@ import {HttpClient} from "@angular/common/http";
     AppComponent
   ],
   imports: [
+    ContentModule,
     BrowserModule,
     AppRoutingModule,
     ServicesModule.forRoot()
