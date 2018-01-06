@@ -13,11 +13,15 @@ import {AuthService} from "../common/services/auth.service";
 export class LoginComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
-  wrongCredenttials: boolean = false;
+  wrongCredentials: boolean = false;
   private loginSubscription: Subscription;
 
   constructor(private authService: AuthService,
-              private router: Router) {}
+              private router: Router) {
+
+    if (this.authService.isAuthorized())
+        this.router.navigate([routePaths.dashboard.route]);
+  }
 
   ngOnInit() {
     this.form = new FormGroup({

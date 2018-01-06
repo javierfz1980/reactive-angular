@@ -9,6 +9,15 @@
       <clr-dg-column>Email</clr-dg-column>
 
       <clr-dg-row *clrDgItems="let student of studentsList">
+
+        <clr-dg-action-overflow>
+          <button class="action-item" (click)="onDetails(student)">View Details</button>
+          <ng-container *ngIf="isAdministrator | async">
+            <button class="action-item" (click)="onEdit(student)">Edit</button>
+            <button class="action-item" (click)="onDelete(student)">Delete</button>
+          </ng-container>
+        </clr-dg-action-overflow>
+
         <clr-dg-cell>{{student.first_name}} {{student.last_name}}</clr-dg-cell>
         <clr-dg-cell>{{student.email}}</clr-dg-cell>
       </clr-dg-row>

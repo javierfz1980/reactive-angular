@@ -16,7 +16,7 @@
           {{ "login.remember" | translate }}
         </label>
       </div>
-      <div class="error active" *ngIf="wrongCredenttials">
+      <div class="error active" *ngIf="wrongCredentials">
         Invalid user name or password
       </div>
       <button type="submit" class="btn btn-primary" [disabled]="!form.valid">{{ "login.login" | translate }}</button>
