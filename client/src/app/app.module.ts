@@ -15,6 +15,7 @@ import {PipesModule} from "./common/pipes/pipes.module";
 import {ReactiveFormsModule} from "@angular/forms";
 import {CommonModule} from "@angular/common";
 import {AppI18nModule} from "./app-i18n.module";
+import {InterceptorsModule} from "./common/interceptors/interceptors.module";
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import {AppI18nModule} from "./app-i18n.module";
     AppI18nModule.forRoot(),
     GuardModule.forRoot(),
     ServicesModule.forRoot(),
+    InterceptorsModule.forRoot(),
   ],
   providers: [
     HttpClient
