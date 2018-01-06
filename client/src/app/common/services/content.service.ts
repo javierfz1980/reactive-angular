@@ -8,13 +8,12 @@ import {Course} from "../models/course";
 export class ContentService {
 
   private readonly basePath: string = globalProperties.basePath;
-  private readonly coursesPath: string = globalProperties.coursesPath;
 
   constructor(private httpClient: HttpClient) {}
 
   getContent<T>(url: string): Observable<T> {
     console.log("fetching content");
-    return this.httpClient.get<T>(url);
+    return this.httpClient.get<T>(this.basePath + url);
   }
 
 }

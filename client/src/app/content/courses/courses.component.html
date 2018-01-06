@@ -1,1 +1,21 @@
-Courses
+<h1>{{ title }}</h1>
+<hr>
+
+<!-- content cards -->
+<div *ngIf="courses | async as coursesList; else loading">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="card-columns">
+        <gl-course-card *ngFor="let course of coursesList" [course]="course"></gl-course-card>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- content loader -->
+<ng-template #loading>
+  <gl-content-loader></gl-content-loader>
+</ng-template>
+
+
+

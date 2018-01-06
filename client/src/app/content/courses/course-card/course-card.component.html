@@ -1,0 +1,13 @@
+<div class="card">
+  <div class="card-header">
+    {{ course.title | capitalize }}
+  </div>
+  <div class="card-block">
+    <div class="card-text">
+      {{ course.detail | capitalize }}
+    </div>
+  </div>
+  <div class="card-footer">
+    <button class="btn btn-sm btn-link" (click)="goToSinglePost()">view</button>
+  </div>
+</div>
