@@ -1,1 +1,33 @@
-teachers
+<h1>{{ title }}</h1>
+<hr>
+
+<!-- content cards -->
+<div *ngIf="teachers | async as teachersList; else loading">
+  <div class="container-fluid">
+    <clr-datagrid class="_content-datagrid" [clDgRowSelection]="true">
+      <clr-dg-column>Name</clr-dg-column>
+      <clr-dg-column>Email</clr-dg-column>
+
+      <clr-dg-row *clrDgItems="let teacher of teachersList">
+        <clr-dg-action-overflow>
+          <button class="action-item" (click)="onDetails(teacher)">View Details</button>
+          <ng-container *ngIf="isAdministrator | async">
+            <button class="action-item" (click)="onEdit(teacher)">Edit</button>
+            <button class="action-item" (click)="onDelete(teacher)">Delete</button>
+          </ng-container>
+        </clr-dg-action-overflow>
+        <clr-dg-cell>{{teacher.first_name}} {{teacher.last_name}}</clr-dg-cell>
+        <clr-dg-cell>{{teacher.email}}</clr-dg-cell>
+      </clr-dg-row>
+
+      <clr-dg-footer>{{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
+        of {{pagination.totalItems}} teachers
+        <clr-dg-pagination #pagination [clrDgPageSize]="15"></clr-dg-pagination></clr-dg-footer>
+    </clr-datagrid>
+  </div>
+</div>
+
+<!-- content loader -->
+<ng-template #loading>
+  <gl-content-loader></gl-content-loader>
+</ng-template>

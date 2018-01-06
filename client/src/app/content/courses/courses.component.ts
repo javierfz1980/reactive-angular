@@ -12,8 +12,7 @@ import {globalProperties} from "../../../environments/properties";
 export class CoursesComponent implements OnInit {
 
   courses: Observable<Course[]>;
-
-  private readonly title = "All Courses";
+  title = "All Courses";
 
   constructor(private contentService: ContentService) {}
 

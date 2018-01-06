@@ -62,7 +62,7 @@ export class AuthService {
   getAccount(): Observable<Account> {
     return this.httpClient.get<Account>(this.basePath + this.accountPath)
       .do((account: Account) => {
-        this.account = account
+        this.account = account;
       })
   }
 
