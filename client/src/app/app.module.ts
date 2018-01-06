@@ -14,6 +14,7 @@ import {GuardModule} from "./common/guards/guard.module";
 import {PipesModule} from "./common/pipes/pipes.module";
 import {ReactiveFormsModule} from "@angular/forms";
 import {CommonModule} from "@angular/common";
+import {AppI18nModule} from "./app-i18n.module";
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import {CommonModule} from "@angular/common";
     BrowserModule,
     AppRoutingModule,
     PipesModule,
+    AppI18nModule.forRoot(),
     GuardModule.forRoot(),
     ServicesModule.forRoot(),
   ],

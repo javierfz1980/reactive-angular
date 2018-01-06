@@ -1,0 +1,9 @@
+{
+  "login": {
+    "greeting": "Welcome to",
+    "companyProductName": "GL Reactive Challenge",
+    "hint": "Enter your credentials to sign",
+    "remember": "Remember me",
+    "login": "Login"
+  }
+}

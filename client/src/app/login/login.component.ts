@@ -13,6 +13,7 @@ import {AuthService} from "../common/services/auth.service";
 export class LoginComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
+  wrongCredenttials: boolean = false;
   private loginSubscription: Subscription;
 
   constructor(private authService: AuthService,

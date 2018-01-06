@@ -1,9 +1,9 @@
 <div class="login-wrapper">
   <form class="login" [formGroup]="form" (ngSubmit)="onSubmit()">
     <label class="title">
-      <h3 class="welcome">greeting</h3>
-      product
-      <h5 class="hint">hint</h5>
+      <h3 class="welcome">{{ "login.greeting" | translate }}</h3>
+      {{ "login.companyProductName" | translate }}
+      <h5 class="hint">{{ "login.hint" | translate }}</h5>
     </label>
     <div class="login-group">
       <input formControlName="username"
@@ -13,13 +13,13 @@
       <div class="checkbox">
         <input type="checkbox" id="rememberme">
         <label for="rememberme">
-          remember
+          {{ "login.remember" | translate }}
         </label>
       </div>
-      <div class="error active">
+      <div class="error active" *ngIf="wrongCredenttials">
         Invalid user name or password
       </div>
-      <button type="submit" class="btn btn-primary" [disabled]="!form.valid">login</button>
+      <button type="submit" class="btn btn-primary" [disabled]="!form.valid">{{ "login.login" | translate }}</button>
     </div>
   </form>
 </div>
