@@ -1,4 +1,7 @@
 import {Component} from "@angular/core";
+import {AuthService} from "../common/services/auth.service";
+import {Router} from "@angular/router";
+import {routePaths} from "../app-routing.module";
 
 @Component({
   selector: "gl-header",
@@ -9,10 +12,12 @@ export class HeaderComponent {
 
   readonly headerTitle: string = "Reactive Angular - GL";
 
-  constructor() {}
+  constructor(private authService: AuthService,
+              private router: Router) {}
 
   logout() {
-    // TODO
+    this.authService.logout();
+    this.router.navigate([routePaths.login.route]);
   }
 
 }

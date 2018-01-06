@@ -12,24 +12,28 @@ import {ContentModule} from "./content/content.module";
 import {ClarityModule} from "clarity-angular";
 import {GuardModule} from "./common/guards/guard.module";
 import {PipesModule} from "./common/pipes/pipes.module";
+import {ReactiveFormsModule} from "@angular/forms";
+import {CommonModule} from "@angular/common";
 
 @NgModule({
   declarations: [
-    LoginComponent,
     SideNavComponent,
     AlertsComponent,
     HeaderComponent,
-    AppComponent
+    AppComponent,
+    LoginComponent,
   ],
   imports: [
+    CommonModule,
     HttpClientModule,
+    ReactiveFormsModule,
     ClarityModule,
     ContentModule,
     BrowserModule,
     AppRoutingModule,
     PipesModule,
-    ServicesModule.forRoot(),
     GuardModule.forRoot(),
+    ServicesModule.forRoot(),
   ],
   providers: [
     HttpClient

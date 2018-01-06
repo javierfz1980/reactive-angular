@@ -1,5 +1,7 @@
 import {Component, OnInit} from "@angular/core";
 import {AuthService} from "./common/services/auth.service";
+import {Observable} from "rxjs/Observable";
+import {LoginState} from "./common/models/login-state";
 
 @Component({
   selector: 'gl-root',
@@ -8,12 +10,12 @@ import {AuthService} from "./common/services/auth.service";
 })
 export class AppComponent implements OnInit {
 
-  title: string = 'gl';
-  isLogedIn: boolean;
+  isAuthorized: Observable<boolean>;
 
   constructor(private authService: AuthService) {}
 
   ngOnInit() {
-    this.isLogedIn = this.authService.isLogedIn();
+    this.isAuthorized = this.authService
+      .getAuthState()
   }
 }

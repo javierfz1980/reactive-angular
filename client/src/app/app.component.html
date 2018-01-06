@@ -1,4 +1,4 @@
-<clr-main-container *ngIf="isLogedIn; else login">
+<clr-main-container *ngIf="isAuthorized | async; else login">
 
   <!-- app alert level -->
   <gl-alerts></gl-alerts>
