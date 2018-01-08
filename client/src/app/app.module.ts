@@ -10,6 +10,9 @@ import {ContentModule} from "./content/content.module";
 import {AppI18nModule} from "./app-i18n.module";
 import {AppCommonsModule} from "./commons/app-commons.module";
 import {BrowserModule} from "@angular/platform-browser";
+import { GuardModule } from 'app/commons/guards/guard.module';
+import { InterceptorsModule } from 'app/commons/interceptors/interceptors.module';
+import { ServicesModule } from 'app/commons/services/services.module';
 
 @NgModule({
   declarations: [
@@ -24,6 +27,9 @@ import {BrowserModule} from "@angular/platform-browser";
     AppCommonsModule,
     AppRoutingModule,
     ContentModule,
+    GuardModule.forRoot(),
+    ServicesModule.forRoot(),
+    InterceptorsModule.forRoot(),
     AppI18nModule.forRoot()
   ],
   providers: [

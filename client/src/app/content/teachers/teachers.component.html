@@ -11,7 +11,7 @@
       <clr-dg-row *clrDgItems="let teacher of teachersList">
         <clr-dg-action-overflow>
           <button class="action-item" (click)="onDetails(teacher)">View Details</button>
-          <ng-container *ngIf="isAdministrator | async">
+          <ng-container *ngIf="isAdministrator">
             <button class="action-item" (click)="onEdit(teacher)">Edit</button>
             <button class="action-item" (click)="onDelete(teacher)">Delete</button>
           </ng-container>

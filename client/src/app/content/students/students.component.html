@@ -12,7 +12,7 @@
 
         <clr-dg-action-overflow>
           <button class="action-item" (click)="onDetails(student)">View Details</button>
-          <ng-container *ngIf="isAdministrator | async">
+          <ng-container *ngIf="isAdministrator">
             <button class="action-item" (click)="onEdit(student)">Edit</button>
             <button class="action-item" (click)="onDelete(student)">Delete</button>
           </ng-container>

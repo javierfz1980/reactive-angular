@@ -7,6 +7,7 @@ import {Observable} from "rxjs/Observable";
 import {Token} from "../models/token";
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/switchMap';
 import {Account} from "../models/account";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
@@ -19,20 +20,31 @@ export class AuthService {
   private readonly accountPath: string = globalProperties.accountPath;
   private readonly administratorKey: string = globalProperties.administratorKey;
 
-  private authEmitter = new BehaviorSubject(false);
   private account: Account;
+  authEmitter = new BehaviorSubject(false);
 
   constructor(private localStorageService: LocalStorageService,
-              private httpClient: HttpClient) {}
+              private httpClient: HttpClient) { 
+    this.authEmitter.next(this.isAuthorized()); 
+  }
 
   private setToken(token: string) {
     this.localStorageService.setItem(this.tokenKey, JSON.stringify({ token: token}));
-    this.authEmitter.next(true);
   }
 
   private deleteToken() {
     this.localStorageService.removeItem(this.tokenKey);
-    this.authEmitter.next(false);
+  }
+
+  private fetchAccount(): Observable<Account>  {
+    return this.httpClient
+      .get<Account>(this.basePath + this.accountPath)
+      .do((account: Account) => this.account = account)
+      .do((account: Account) => console.log("account: ", account));
+  }
+
+  getAccount(): Account {
+    return this.account;
   }
 
   getToken(): string {
@@ -40,38 +52,35 @@ export class AuthService {
     return (res) ? JSON.parse(res).token : null;
   }
 
-  isAuthorized(subscribe?: boolean): Observable<boolean> | boolean {
-    const res: boolean = this.getToken() !== null;
-    this.authEmitter.next(res);
-    return subscribe ? this.authEmitter.asObservable() : res;
+  isAuthorized(): boolean {
+    return this.getToken() !== null;
   }
 
-  isAdministrator(): Observable<boolean> {
-    if (this.account) {
-      return Observable.of(this.isAuthorized() && this.account.role === this.administratorKey);
-    } else {
-      return this.getAccount()
-        .map((account: Account) => this.isAuthorized() && account.role === this.administratorKey)
-    }
+  isAdministrator(): boolean {
+    return (this.isAuthorized() && this.account && this.account.role === this.administratorKey);
   }
 
-  getAccount(): Observable<Account> {
-    return this.httpClient.get<Account>(this.basePath + this.accountPath)
-      .do((account: Account) => {
-        this.account = account;
-      })
+  loginByToken(): Observable<boolean> {
+    return this.fetchAccount()
+      .map((account: Account) => account ? true : false)
+      .catch((error: any) => Observable.throw(error));
   }
 
   login(data: LoginCredentials): Observable<Token> {
-    return this.httpClient.post(this.basePath + this.loginPath, data)
+    return this.httpClient
+      .post<Token>(this.basePath + this.loginPath, data)
       .do((response: Token) => this.setToken(response.token))
+      .switchMap((response: Token) => this.fetchAccount())
+      .do((account: Account) => {
+        this.authEmitter.next(this.isAuthorized());
+      })
       .catch((error: any) => Observable.throw(error));
   }
 
   logout() {
     this.deleteToken();
     this.account = null;
-    this.authEmitter.next(false);
+    this.authEmitter.next(this.isAuthorized());
   }
 
 }

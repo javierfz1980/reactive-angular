@@ -23,10 +23,7 @@ const contents = [
 @NgModule({
   declarations: [],
   imports: [
-    ...contents,
-    GuardModule.forRoot(),
-    ServicesModule.forRoot(),
-    InterceptorsModule.forRoot(),
+    ...contents
   ],
   exports: [
     ...contents

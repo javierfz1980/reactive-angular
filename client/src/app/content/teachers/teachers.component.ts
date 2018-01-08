@@ -1,8 +1,7 @@
-import {Component} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {AuthService} from "../../commons/services/auth.service";
 import {Teacher} from "../../commons/models/teacher";
 import {globalProperties} from "../../../environments/properties";
-import {Student} from "../../commons/models/student";
 import {Observable} from "rxjs/Observable";
 import {ContentService} from "../../commons/services/content.service";
 
@@ -10,23 +9,21 @@ import {ContentService} from "../../commons/services/content.service";
   selector: "gl-profesores",
   templateUrl: "./teachers.component.html"
 })
-export class TeachersComponent {
+export class TeachersComponent implements OnInit  {
 
-  teachers: Observable<Teacher[]>;
   title: string = "All Teachers";
-  isAdministrator: Observable<boolean>;
+  teachers: Observable<Teacher[]>;
+  isAdministrator: boolean;
 
   constructor(private authService: AuthService,
               private contentService: ContentService) {}
 
   ngOnInit() {
-
     this.teachers = this.contentService
       .getContent<Teacher[]>(globalProperties.teachersPath)
       .catch(error => Observable.throw(error));
 
     this.isAdministrator = this.authService.isAdministrator();
-
   }
 
   onDetails(entity: Teacher) {

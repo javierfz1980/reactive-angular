@@ -11,21 +11,19 @@ import {AuthService} from "../../commons/services/auth.service";
 })
 export class StudentsComponent implements OnInit {
 
-  students: Observable<Student[]>;
   title: string = "All Students";
-  isAdministrator: Observable<boolean>;
+  students: Observable<Student[]>;
+  isAdministrator: boolean;
 
   constructor(private contentService: ContentService,
               private authService: AuthService) {}
 
   ngOnInit() {
-
     this.students = this.contentService
       .getContent<Student[]>(globalProperties.studentsPath)
       .catch(error => Observable.throw(error));
 
     this.isAdministrator = this.authService.isAdministrator();
-    console.log("students here");
   }
 
   onDetails(entity: Student) {

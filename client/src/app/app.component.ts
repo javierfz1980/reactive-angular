@@ -11,7 +11,7 @@ import {globalProperties} from "../environments/properties";
 })
 export class AppComponent implements OnInit {
 
-  isAuthorized: Observable<boolean> | boolean;
+  isAuthorized: Observable<boolean>;
 
   constructor(private authService: AuthService,
               private translateService: TranslateService) {
@@ -22,6 +22,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.isAuthorized = this.authService
-      .isAuthorized(true)
+      .authEmitter
+      .asObservable();
   }
 }

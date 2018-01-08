@@ -12,12 +12,10 @@ export class AuthGuard implements CanActivate, CanLoad {
     private router: Router,) {}
 
   canActivate(): Observable<boolean> | boolean {
-    console.log("can activate: ", this.isAuthorized());
     return this.isAuthorized();
   }
 
   canLoad(): Observable<boolean> | boolean {
-    console.log("can load: ", this.isAuthorized());
     return this.isAuthorized();
   }
 
@@ -27,7 +25,7 @@ export class AuthGuard implements CanActivate, CanLoad {
    */
   private isAuthorized(): Observable<boolean> | boolean {
     if (this.authService.isAuthorized()) {
-      return true;
+      return (this.authService.getAccount()) ? true : this.authService.loginByToken();
     } else {
       this.router.navigate([routePaths.login.route]);
       return false;
