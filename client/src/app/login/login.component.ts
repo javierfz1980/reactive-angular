@@ -2,9 +2,9 @@ import {Component, OnDestroy, OnInit} from "@angular/core";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {routePaths} from "../app-routing.module";
-import {Token} from "../common/models/token";
+import {Token} from "../commons/models/token";
 import {Subscription} from "rxjs/Subscription";
-import {AuthService} from "../common/services/auth.service";
+import {AuthService} from "../commons/services/auth.service";
 
 @Component({
   selector: "gl-login",

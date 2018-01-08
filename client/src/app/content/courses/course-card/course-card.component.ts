@@ -1,5 +1,5 @@
 import {Component, Input} from "@angular/core";
-import {Course} from "../../../common/models/course";
+import {Course} from "../../../commons/models/course";
 import {Router} from "@angular/router";
 
 @Component({

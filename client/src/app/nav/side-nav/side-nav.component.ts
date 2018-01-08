@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {routePaths} from "../../app-routing.module";
-import {RouteElement} from "../../common/models/route-element";
+import {RouteElement} from "../../commons/models/route-element";
 
 @Component({
   selector: "gl-side-nav",

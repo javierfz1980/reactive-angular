@@ -1,5 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {AuthService} from "./common/services/auth.service";
+import {AuthService} from "./commons/services/auth.service";
 import {Observable} from "rxjs/Observable";
 import {TranslateService} from "ng2-translate";
 import {globalProperties} from "../environments/properties";
@@ -11,7 +11,7 @@ import {globalProperties} from "../environments/properties";
 })
 export class AppComponent implements OnInit {
 
-  isAuthorized: Observable<boolean>;
+  isAuthorized: Observable<boolean> | boolean;
 
   constructor(private authService: AuthService,
               private translateService: TranslateService) {
@@ -22,6 +22,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.isAuthorized = this.authService
-      .isAuthorized$()
+      .isAuthorized(true)
   }
 }

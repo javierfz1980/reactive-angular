@@ -1,10 +1,10 @@
 import {Component} from "@angular/core";
-import {AuthService} from "../../common/services/auth.service";
-import {Teacher} from "../../common/models/teacher";
+import {AuthService} from "../../commons/services/auth.service";
+import {Teacher} from "../../commons/models/teacher";
 import {globalProperties} from "../../../environments/properties";
-import {Student} from "../../common/models/student";
+import {Student} from "../../commons/models/student";
 import {Observable} from "rxjs/Observable";
-import {ContentService} from "../../common/services/content.service";
+import {ContentService} from "../../commons/services/content.service";
 
 @Component({
   selector: "gl-profesores",

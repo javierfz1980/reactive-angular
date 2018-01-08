@@ -40,14 +40,10 @@ export class AuthService {
     return (res) ? JSON.parse(res).token : null;
   }
 
-  isAuthorized(): boolean {
+  isAuthorized(subscribe?: boolean): Observable<boolean> | boolean {
     const res: boolean = this.getToken() !== null;
     this.authEmitter.next(res);
-    return res;
-  }
-
-  isAuthorized$(): Observable<boolean> {
-    return this.authEmitter.asObservable();
+    return subscribe ? this.authEmitter.asObservable() : res;
   }
 
   isAdministrator(): Observable<boolean> {
