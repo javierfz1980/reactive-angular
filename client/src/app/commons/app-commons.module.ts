@@ -5,11 +5,16 @@ import {InterceptorsModule} from "./interceptors/interceptors.module";
 import {PipesModule} from "./pipes/pipes.module";
 import {ReactiveFormsModule} from "@angular/forms";
 import {ClarityModule} from "clarity-angular";
-import {ContentModule} from "../content/content.module";
-import {BrowserModule} from "@angular/platform-browser";
 import {HttpClientModule} from "@angular/common/http";
 import {CommonModule} from "@angular/common";
 
+const contents = [
+  CommonModule,
+  HttpClientModule,
+  ReactiveFormsModule,
+  ClarityModule,
+  PipesModule
+];
 
 /**
  * This module will include the common functionalities to be used all across the app in order to
@@ -18,25 +23,13 @@ import {CommonModule} from "@angular/common";
 @NgModule({
   declarations: [],
   imports: [
-    CommonModule,
-    HttpClientModule,
-    ReactiveFormsModule,
-    ClarityModule,
-    ContentModule,
-    BrowserModule,
-    PipesModule,
+    ...contents,
     GuardModule.forRoot(),
     ServicesModule.forRoot(),
     InterceptorsModule.forRoot(),
   ],
   exports: [
-    PipesModule,
-    CommonModule,
-    HttpClientModule,
-    ReactiveFormsModule,
-    ClarityModule,
-    ContentModule,
-    BrowserModule,
+    ...contents
   ]
 })
-export class CommonsModule {}
+export class AppCommonsModule {}

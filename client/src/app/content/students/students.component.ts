@@ -25,6 +25,7 @@ export class StudentsComponent implements OnInit {
       .catch(error => Observable.throw(error));
 
     this.isAdministrator = this.authService.isAdministrator();
+    console.log("students here");
   }
 
   onDetails(entity: Student) {

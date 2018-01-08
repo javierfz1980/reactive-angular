@@ -11,18 +11,20 @@ export class AuthGuard implements CanActivate, CanLoad {
     private authService: AuthService,
     private router: Router,) {}
 
-  /**
-   * Validates if user is Authorized. If not it redirects to login page.
-    * @returns {boolean}
-   */
   canActivate(): Observable<boolean> | boolean {
+    console.log("can activate: ", this.isAuthorized());
     return this.isAuthorized();
   }
 
   canLoad(): Observable<boolean> | boolean {
-   return this.isAuthorized();
+    console.log("can load: ", this.isAuthorized());
+    return this.isAuthorized();
   }
 
+  /**
+   * Validates if user is Authorized. If not it redirects to login page.
+   * @returns {boolean}
+   */
   private isAuthorized(): Observable<boolean> | boolean {
     if (this.authService.isAuthorized()) {
       return true;

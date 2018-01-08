@@ -1,19 +1,16 @@
+import {ContentLoaderComponent} from "./content-loader/content-loader.component";
 import {NgModule} from "@angular/core";
-import {DashboardComponent} from "./dashboard/dashboard.component";
 
 const contents = [
-  DashboardComponent,
+  ContentLoaderComponent
 ];
 
 @NgModule({
   declarations: [
     ...contents
   ],
-  imports: [],
   exports: [
     ...contents
   ]
 })
-export class ContentModule {
-
-}
+export class ContentCommonsModule {}
