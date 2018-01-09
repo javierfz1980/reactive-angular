@@ -5,6 +5,7 @@ import {ClarityModule} from "clarity-angular";
 import {HttpClientModule} from "@angular/common/http";
 import {CommonModule} from "@angular/common";
 import {RouterModule} from "@angular/router";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 const contents = [
   CommonModule,

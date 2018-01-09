@@ -13,7 +13,12 @@ export class ContentService {
 
   getContent<T>(url: string): Observable<T> {
     console.log("fetching content");
-    return this.httpClient.get<T>(this.basePath + url);
+    return this.httpClient.get<T>(`${this.basePath}${url}`);
+  }
+
+  deleteContent<T>(url: string, id: string): Observable<T> {
+    console.log("deleting content: ", url);
+    return this.httpClient.delete<T>(`${this.basePath}${url}/${id}`);
   }
 
 }

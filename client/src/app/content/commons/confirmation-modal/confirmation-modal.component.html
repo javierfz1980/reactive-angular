@@ -1,0 +1,13 @@
+<clr-modal #modal>
+  <h3 class="modal-title">{{(data) ? data.title : ""}}</h3>
+  <div class="modal-body">
+    <p>{{(data) ? data.text : ""}}</p>
+  </div>
+  <div class="modal-footer" *ngIf="data">
+    <button type="button" class="btn btn-outline" (click)="close()">Cancel</button>
+    <button type="button"
+            (click)="onOkClicked()"
+            [class]="(data && data.type === 'delete') ?
+                'btn ok-btn btn-warning' : 'btn ok-btn btn-primary'">Ok</button>
+  </div>
+</clr-modal>

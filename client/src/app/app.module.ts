@@ -5,6 +5,7 @@ import {HttpClient} from "@angular/common/http";
 import {CommonsModule} from "./commons/commons.module";
 import {BrowserModule} from "@angular/platform-browser";
 import {CoreModule} from "./core/core.module";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
@@ -12,6 +13,7 @@ import {CoreModule} from "./core/core.module";
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     CommonsModule,
     CoreModule,
     AppRoutingModule,

@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {LocalStorageService} from "./local-storage.service";
-import {LoginCredentials} from "../../../models/login-credentials";
+import {LoginCredentials} from "../../../models/api/login-credentials";
 import {HttpClient} from "@angular/common/http";
 import {globalProperties} from "../../../../environments/properties";
 import {Observable} from "rxjs/Observable";
