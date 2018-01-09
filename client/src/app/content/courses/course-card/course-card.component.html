@@ -1,13 +1,22 @@
 <div class="card">
-  <div class="card-header">
+  <div class="card-header" [ngClass]="{'content-disabled': !course.active}">
     {{ course.title | capitalize }}
   </div>
   <div class="card-block">
-    <div class="card-text">
+    <div class="card-text" [ngClass]="{'content-disabled': !course.active}">
       {{ course.detail | truncate : 300 | capitalize }}
     </div>
   </div>
   <div class="card-footer">
     <button class="btn btn-sm btn-link" (click)="goToSinglePost()">view</button>
+    <div class="admin-actions" *ngIf="isAdministrator">
+      <div class="toggle-switch">
+        <input type="checkbox" id="toggle_3" [checked]="course.active">
+        <label for="toggle_3"></label>
+      </div>
+      <button class="btn btn-sm btn-link" (click)="delete(course)">
+        <clr-icon shape="trash"></clr-icon>
+      </button>
+    </div>
   </div>
 </div>

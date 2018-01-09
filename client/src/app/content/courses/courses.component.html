@@ -1,15 +1,26 @@
-<h1>{{ title }}</h1>
+<h1>
+  {{ title }}
+  <div class="content-busy" *ngIf="busy"><span class="spinner spinner-sm"></span></div>
+</h1>
 <hr>
+
+<!-- content alert -->
+<gl-content-alert *ngIf="alert" [content]="alert"></gl-content-alert>
 
 <!-- content cards -->
 <div *ngIf="courses | async as coursesList; else loading">
   <div class="container-fluid">
     <div class="row">
       <div class="card-columns">
-        <gl-course-card *ngFor="let course of coursesList" [course]="course"></gl-course-card>
+        <gl-course-card *ngFor="let course of coursesList"
+                        [course]="course"
+                        [isAdministrator]="isAdministrator"
+                        (onDelete)="deleteCourse($event)">
+        </gl-course-card>
       </div>
     </div>
   </div>
+  <gl-confirmation-modal #confirmModal [modalData]="modalData"></gl-confirmation-modal>
 </div>
 
 <!-- content loader -->
