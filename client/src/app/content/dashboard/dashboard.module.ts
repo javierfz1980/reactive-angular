@@ -1,11 +1,11 @@
 import {NgModule} from "@angular/core";
-import {TeachersComponent} from "./teachers.component";
 import {ContentCommonsModule} from "../commons/content-commons-module";
 import {CommonsModule} from "../../commons/commons.module";
-import {TeachersRoutingModule} from "./teachers-routing.module";
+import {DashboardComponent} from "./dashboard.component";
+import {DashboardRoutingModule} from "./dashboard-routing.module";
 
 const contents = [
-  TeachersComponent
+  DashboardComponent
 ];
 
 @NgModule({
@@ -15,10 +15,10 @@ const contents = [
   imports: [
     CommonsModule,
     ContentCommonsModule,
-    TeachersRoutingModule
+    DashboardRoutingModule
   ],
   exports: [
     ...contents
   ]
 })
-export class TeachersModule {}
+export class DashboardModule {}

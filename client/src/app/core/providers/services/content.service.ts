@@ -1,8 +1,8 @@
 import {Injectable} from "@angular/core";
-import {globalProperties} from "../../../environments/properties";
+import {globalProperties} from "../../../../environments/properties";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs/Observable";
-import {Course} from "../models/course";
+import {Course} from "../../../models/course";
 
 @Injectable()
 export class ContentService {

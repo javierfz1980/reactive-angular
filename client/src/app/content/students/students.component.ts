@@ -1,9 +1,9 @@
 import {Component, OnInit} from "@angular/core";
 import {Observable} from "rxjs/Observable";
-import {Student} from "../../commons/models/student";
-import {ContentService} from "../../commons/services/content.service";
+import {Student} from "../../models/student";
+import {ContentService} from "../../core/providers/services/content.service";
 import {globalProperties} from "../../../environments/properties";
-import {AuthService} from "../../commons/services/auth.service";
+import {AuthService} from "../../core/providers/services/auth.service";
 
 @Component({
   selector: "gl-alumnos",

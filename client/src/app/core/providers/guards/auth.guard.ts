@@ -1,6 +1,6 @@
 import {CanActivate, CanLoad, Router} from "@angular/router";
 import {AuthService} from "../services/auth.service";
-import {routePaths} from "../../app-routing.module";
+import {appRoutePaths} from "../../../app-routing.module";
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs/Observable";
 
@@ -27,7 +27,7 @@ export class AuthGuard implements CanActivate, CanLoad {
     if (this.authService.isAuthorized()) {
       return (this.authService.getAccount()) ? true : this.authService.loginByToken();
     } else {
-      this.router.navigate([routePaths.login.route]);
+      this.router.navigate([appRoutePaths.login.path]);
       return false;
     }
   }

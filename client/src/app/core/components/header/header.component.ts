@@ -1,7 +1,7 @@
 import {Component} from "@angular/core";
-import {AuthService} from "../commons/services/auth.service";
+import {AuthService} from "../../providers/services/auth.service";
 import {Router} from "@angular/router";
-import {routePaths} from "../app-routing.module";
+import {appRoutePaths} from "../../../app-routing.module";
 
 @Component({
   selector: "gl-header",
@@ -17,7 +17,7 @@ export class HeaderComponent {
 
   logout() {
     this.authService.logout();
-    this.router.navigate([routePaths.login.route]);
+    this.router.navigate([appRoutePaths.login.path]);
   }
 
 }

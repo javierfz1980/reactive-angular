@@ -1,9 +1,9 @@
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from "@angular/common/http";
-import {Course} from "../models/course";
+import {Course} from "../../../models/course";
 import {Observable} from "rxjs/Observable";
 import {AuthService} from "../services/auth.service";
 import {Injectable, Injector} from "@angular/core";
-import {globalProperties} from "../../../environments/properties";
+import {globalProperties} from "../../../../environments/properties";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {

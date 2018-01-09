@@ -1,10 +1,10 @@
 import {Component, OnDestroy, OnInit} from "@angular/core";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
-import {routePaths} from "../app-routing.module";
-import {Token} from "../commons/models/token";
+import {Token} from "../../../models/token";
 import {Subscription} from "rxjs/Subscription";
-import {AuthService} from "../commons/services/auth.service";
+import {AuthService} from "../../providers/services/auth.service";
+import {appRoutePaths} from "../../../app-routing.module";
 
 @Component({
   selector: "gl-login",
@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit, OnDestroy {
               private router: Router) {
 
     if (this.authService.isAuthorized())
-        this.router.navigate([routePaths.dashboard.route]);
+        this.router.navigate([appRoutePaths.dashboard.path]);
   }
 
   ngOnInit() {
@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.loginSubscription = this.authService
       .login(this.form.value)
       .subscribe((response: Token) => {
-        this.router.navigate([routePaths.dashboard.route])
+        this.router.navigate([appRoutePaths.dashboard.path])
       });
   }
 

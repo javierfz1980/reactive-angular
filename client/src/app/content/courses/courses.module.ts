@@ -2,7 +2,7 @@ import {NgModule} from "@angular/core";
 import {CoursesComponent} from "./courses.component";
 import {CourseCardComponent} from "./course-card/course-card.component";
 import {ContentCommonsModule} from "../commons/content-commons-module";
-import {AppCommonsModule} from "../../commons/app-commons.module";
+import {CommonsModule} from "../../commons/commons.module";
 import {CoursesRoutingModule} from "./courses-routing.module";
 
 const contents = [
@@ -15,7 +15,7 @@ const contents = [
     ...contents
   ],
   imports: [
-    AppCommonsModule,
+    CommonsModule,
     ContentCommonsModule,
     CoursesRoutingModule
   ],

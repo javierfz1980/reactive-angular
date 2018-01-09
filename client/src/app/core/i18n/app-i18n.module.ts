@@ -1,6 +1,6 @@
 import {NgModule} from "@angular/core";
 import {TranslateLoader, TranslateModule, TranslateStaticLoader} from "ng2-translate";
-import {globalProperties} from "../environments/properties";
+import {globalProperties} from "../../../environments/properties";
 import {Http} from "@angular/http";
 
 // AoT requires an exported function for factories

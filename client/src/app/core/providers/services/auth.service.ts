@@ -1,14 +1,14 @@
 import {Injectable} from "@angular/core";
 import {LocalStorageService} from "./local-storage.service";
-import {LoginCredentials} from "../models/login-credentials";
+import {LoginCredentials} from "../../../models/login-credentials";
 import {HttpClient} from "@angular/common/http";
-import {globalProperties} from "../../../environments/properties";
+import {globalProperties} from "../../../../environments/properties";
 import {Observable} from "rxjs/Observable";
-import {Token} from "../models/token";
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/switchMap';
-import {Account} from "../models/account";
+import {Token} from "../../../models/token";
+import "rxjs/add/operator/catch";
+import "rxjs/add/operator/do";
+import "rxjs/add/operator/switchMap";
+import {Account} from "../../../models/account";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 @Injectable()
@@ -24,8 +24,8 @@ export class AuthService {
   authEmitter = new BehaviorSubject(false);
 
   constructor(private localStorageService: LocalStorageService,
-              private httpClient: HttpClient) { 
-    this.authEmitter.next(this.isAuthorized()); 
+              private httpClient: HttpClient) {
+    this.authEmitter.next(this.isAuthorized());
   }
 
   private setToken(token: string) {

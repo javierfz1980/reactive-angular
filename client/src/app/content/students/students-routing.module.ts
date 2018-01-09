@@ -1,5 +1,5 @@
 import {NgModule} from "@angular/core";
-import {AuthGuard} from "../../commons/guards/auth.guard";
+import {AuthGuard} from "../../core/providers/guards/auth.guard";
 import {StudentsComponent} from "./students.component";
 import {RouterModule, Routes} from "@angular/router";
 

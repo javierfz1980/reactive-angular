@@ -1,5 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {AuthService} from "./commons/services/auth.service";
+import {AuthService} from "./core/providers/services/auth.service";
 import {Observable} from "rxjs/Observable";
 import {TranslateService} from "ng2-translate";
 import {globalProperties} from "../environments/properties";

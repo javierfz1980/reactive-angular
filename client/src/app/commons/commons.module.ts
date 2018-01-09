@@ -1,17 +1,16 @@
 import {NgModule} from "@angular/core";
-import {GuardModule} from "./guards/guard.module";
-import {ServicesModule} from "./services/services.module";
-import {InterceptorsModule} from "./interceptors/interceptors.module";
 import {PipesModule} from "./pipes/pipes.module";
 import {ReactiveFormsModule} from "@angular/forms";
 import {ClarityModule} from "clarity-angular";
 import {HttpClientModule} from "@angular/common/http";
 import {CommonModule} from "@angular/common";
+import {RouterModule} from "@angular/router";
 
 const contents = [
   CommonModule,
   HttpClientModule,
   ReactiveFormsModule,
+  RouterModule,
   ClarityModule,
   PipesModule
 ];
@@ -29,4 +28,4 @@ const contents = [
     ...contents
   ]
 })
-export class AppCommonsModule {}
+export class CommonsModule {}

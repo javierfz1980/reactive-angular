@@ -1,8 +1,8 @@
 import {NgModule} from "@angular/core";
 import {StudentsComponent} from "./students.component";
 import {ContentCommonsModule} from "../commons/content-commons-module";
-import {AppCommonsModule} from "../../commons/app-commons.module";
-import {StudentsRoutingModule} from "./studentsRouting.module";
+import {CommonsModule} from "../../commons/commons.module";
+import {StudentsRoutingModule} from "./students-routing.module";
 
 const contents = [
   StudentsComponent
@@ -13,7 +13,7 @@ const contents = [
     ...contents
   ],
   imports: [
-    AppCommonsModule,
+    CommonsModule,
     ContentCommonsModule,
     StudentsRoutingModule
   ],

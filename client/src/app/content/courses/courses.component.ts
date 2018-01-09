@@ -1,8 +1,8 @@
 import {Component, OnInit} from "@angular/core";
 import {Observable} from "rxjs/Observable";
-import 'rxjs/add/operator/filter';
-import {Course} from "../../commons/models/course";
-import {ContentService} from "../../commons/services/content.service";
+import "rxjs/add/operator/filter";
+import {Course} from "../../models/course";
+import {ContentService} from "../../core/providers/services/content.service";
 import {globalProperties} from "../../../environments/properties";
 
 @Component({
