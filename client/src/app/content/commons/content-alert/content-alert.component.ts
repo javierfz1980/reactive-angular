@@ -4,6 +4,7 @@ export type ContentAlertType = "info" | "warning" | "success" | "danger";
 export interface ContentAlert {
   type: ContentAlertType,
   message: string;
+  time?: number;
 }
 
 @Component({
@@ -19,6 +20,11 @@ export class ContentAlertComponent {
   set content(content: ContentAlert) {
     this.contentAlert = content;
     this.closed = false;
+    if (content.time) {
+      setTimeout(() => {
+        this.onClose();
+      }, content.time);
+    }
   }
 
   onClose() {
