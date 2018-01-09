@@ -56,7 +56,7 @@ export class StudentsComponent implements OnInit, OnDestroy {
     this.modalData = {
       type: "delete",
       title: "Delete",
-      text: "Are you sure you want to delete the element ?",
+      text: "Are you sure you want to delete the Student ?",
       action: this.delete(student)
     };
     this.confirmModal.open();
