@@ -30,11 +30,11 @@ export class StudentsComponent implements OnInit {
               private authService: AuthService) {}
 
   ngOnInit() {
-    this.fetchStudents();
+    this.fetchContent();
     this.isAdministrator = this.authService.isAdministrator();
   }
 
-  fetchStudents() {
+  fetchContent() {
     this.students = this.contentService
       .getContent<Student[]>(this.studentsPath)
       .catch(error => Observable.throw(error));
@@ -63,7 +63,7 @@ export class StudentsComponent implements OnInit {
       this.contentService.deleteContent<MessageResponse>(this.studentsPath, student.id)
         .map((response: MessageResponse) => {
           this.status = response;
-          this.fetchStudents();
+          this.fetchContent();
         })
         .catch(error => {
           this.status = {message: error};

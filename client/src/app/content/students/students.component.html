@@ -1,7 +1,7 @@
 <h1>{{ title }}</h1>
 <hr>
 
-<!-- content cards -->
+<!-- content -->
 <div *ngIf="status">{{status.message}}</div>
 <div *ngIf="students | async as studentsList; else loading">
   <div class="container-fluid">

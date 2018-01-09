@@ -9,6 +9,7 @@ import {
   ConfirmationModalComponent
 } from "../commons/confirmation-modal/confirmation-modal.component";
 import {Student} from "../../models/student";
+import {MessageResponse} from "../../models/api/message-response";
 
 @Component({
   selector: "gl-profesores",
@@ -21,22 +22,23 @@ export class TeachersComponent implements OnInit  {
   title: string = "All Teachers";
   teachers: Observable<Teacher[]>;
   isAdministrator: boolean;
-  deleteModalData: ConfirmationData = {
-    type: "delete",
-    title: "Delete",
-    text: "Are you sure you want to delete the element ?",
-    action: null
-  };
+  modalData: ConfirmationData;
+  status: MessageResponse;
+
+  private teachersPath: string = globalProperties.teachersPath;
 
   constructor(private authService: AuthService,
               private contentService: ContentService) {}
 
   ngOnInit() {
-    this.teachers = this.contentService
-      .getContent<Teacher[]>(globalProperties.teachersPath)
-      .catch(error => Observable.throw(error));
-
+    this.fetchContent();
     this.isAdministrator = this.authService.isAdministrator();
+  }
+
+  fetchContent() {
+    this.teachers = this.contentService
+      .getContent<Teacher[]>(this.teachersPath)
+      .catch(error => Observable.throw(error));
   }
 
   onDetails(entity: Teacher) {
@@ -48,13 +50,27 @@ export class TeachersComponent implements OnInit  {
   }
 
   onDelete(teacher: Teacher) {
-    this.deleteModalData.action = this.delete(teacher);
+    this.modalData = {
+      type: "delete",
+      title: "Delete",
+      text: "Are you sure you want to delete the element ?",
+      action: this.delete(teacher)
+    };
     this.confirmModal.open();
   }
 
   private delete(teacher: Teacher) {
     return () => {
-      console.log("delete: ", teacher);
+      this.contentService.deleteContent<MessageResponse>(this.teachersPath, teacher.id)
+        .map((response: MessageResponse) => {
+          this.status = response;
+          this.fetchContent();
+        })
+        .catch(error => {
+          this.status = {message: error};
+          return Observable.throw(error);
+        })
+        .subscribe();
     }
   }
 }

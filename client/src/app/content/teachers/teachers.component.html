@@ -1,7 +1,8 @@
 <h1>{{ title }}</h1>
 <hr>
 
-<!-- content cards -->
+<!-- content -->
+<div *ngIf="status">{{status.message}}</div>
 <div *ngIf="teachers | async as teachersList; else loading">
   <div class="container-fluid">
     <clr-datagrid class="_content-datagrid" [clDgRowSelection]="true">
@@ -24,7 +25,7 @@
         of {{pagination.totalItems}} teachers
         <clr-dg-pagination #pagination [clrDgPageSize]="15"></clr-dg-pagination></clr-dg-footer>
     </clr-datagrid>
-    <gl-confirmation-modal #confirmModal [modalData]="deleteModalData"></gl-confirmation-modal>
+    <gl-confirmation-modal #confirmModal [modalData]="modalData"></gl-confirmation-modal>
   </div>
 </div>
 
