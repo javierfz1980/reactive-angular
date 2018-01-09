@@ -1,4 +1,7 @@
-<h1>{{ title }}</h1>
+<h1>
+  {{ title }}
+  <div class="content-busy" *ngIf="busy"><span class="spinner spinner-sm"></span></div>
+</h1>
 <hr>
 
 <!-- content alert -->

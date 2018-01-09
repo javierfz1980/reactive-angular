@@ -24,3 +24,9 @@
 ._content-message {
   color: #ff0000;
 }
+
+.content-busy {
+  float: left;
+  padding-right: 10px;
+}
+

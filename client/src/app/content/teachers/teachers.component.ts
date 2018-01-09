@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from "@angular/core";
+import {Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {AuthService} from "../../core/providers/services/auth.service";
 import {Teacher} from "../../models/teacher";
 import {globalProperties} from "../../../environments/properties";
@@ -11,12 +11,13 @@ import {
 import {Student} from "../../models/student";
 import {MessageResponse} from "../../models/api/message-response";
 import {ContentAlert} from "../commons/content-alert/content-alert.component";
+import {Subscription} from "rxjs/Subscription";
 
 @Component({
   selector: "gl-profesores",
   templateUrl: "./teachers.component.html"
 })
-export class TeachersComponent implements OnInit  {
+export class TeachersComponent implements OnInit, OnDestroy  {
 
   @ViewChild("confirmModal") confirmModal: ConfirmationModalComponent;
 
@@ -25,8 +26,10 @@ export class TeachersComponent implements OnInit  {
   isAdministrator: boolean;
   modalData: ConfirmationData;
   alert: ContentAlert;
+  busy: boolean = false;
 
   private teachersPath: string = globalProperties.teachersPath;
+  private subscription: Subscription;
 
   constructor(private authService: AuthService,
               private contentService: ContentService) {}
@@ -62,16 +65,23 @@ export class TeachersComponent implements OnInit  {
 
   private delete(teacher: Teacher) {
     return () => {
-      this.contentService.deleteContent<MessageResponse>(this.teachersPath, teacher.id)
+      this.busy = true;
+      this.subscription = this.contentService.deleteContent<MessageResponse>(this.teachersPath, teacher.id)
         .map((response: MessageResponse) => {
           this.alert = {type: "success", message: response.message};
+          this.busy = false;
           this.fetchContent();
         })
         .catch(error => {
+          this.busy = false;
           this.alert = {type: "danger", message: error};
           return Observable.throw(error);
         })
         .subscribe();
     }
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) this.subscription.unsubscribe();
   }
 }
