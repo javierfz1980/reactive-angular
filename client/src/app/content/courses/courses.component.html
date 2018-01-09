@@ -15,7 +15,8 @@
         <gl-course-card *ngFor="let course of coursesList"
                         [course]="course"
                         [isAdministrator]="isAdministrator"
-                        (onDelete)="deleteCourse($event)">
+                        (onDelete)="delete($event)"
+                        (onToggle)="toggleStatus($event)">
         </gl-course-card>
       </div>
     </div>

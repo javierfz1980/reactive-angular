@@ -1,6 +1,5 @@
 import {Component, EventEmitter, Input, Output} from "@angular/core";
 import {Course} from "../../../models/course";
-import {Router} from "@angular/router";
 
 @Component({
   selector: "gl-course-card",
@@ -18,11 +17,11 @@ export class CourseCardComponent {
   @Output('onDelete')
   deleteEvent: EventEmitter<Course> = new EventEmitter<Course>();
 
-  /**
-   * Navigates to a single Course
-   */
-  goToSingleCourse() {
-    //this.router.navigate(["/" + routePaths.post + "/" + this.post.id]);
+  @Output('onToggle')
+  toggleEvent: EventEmitter<Course> = new EventEmitter<Course>();
+
+  toggle(course: Course) {
+    this.toggleEvent.emit(course);
   }
 
   delete(course: Course) {

@@ -21,4 +21,9 @@ export class ContentService {
     return this.httpClient.delete<T>(`${this.basePath}${url}/${id}`);
   }
 
+  patchContent<T>(url: string, id: string, data: {[key: string]: any}): Observable<T> {
+    console.log("deleting content: ", url);
+    return this.httpClient.patch<T>(`${this.basePath}${url}/${id}`, data);
+  }
+
 }

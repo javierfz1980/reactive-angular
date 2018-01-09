@@ -12,6 +12,7 @@ import {
 import {MessageResponse} from "../../models/api/message-response";
 import {Subscription} from "rxjs/Subscription";
 import {ContentAlert} from "../commons/content-alert/content-alert.component";
+import {Observer} from "rxjs/Observer";
 
 @Component({
   selector: "gl-cursos",
@@ -26,9 +27,9 @@ export class CoursesComponent implements OnInit, OnDestroy {
   isAdministrator: boolean;
   modalData: ConfirmationData;
   alert: ContentAlert;
-  subscription: Subscription;
   busy: boolean = false;
 
+  private subscriptions: Subscription[] = [];
   private coursesPath: string = globalProperties.coursesPath;
 
   constructor(private contentService: ContentService,
@@ -37,44 +38,113 @@ export class CoursesComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.fetchContent();
     this.isAdministrator = this.authService.isAdministrator();
-
   }
 
-  fetchContent() {
+  private fetchContent() {
     this.courses = this.contentService
       .getContent<Course[]>(this.coursesPath)
       .catch(error => Observable.throw(error));
   }
 
-  deleteCourse(course: Course) {
+  /*private getActionFromServiceCall(serviceCall: Observable<string>) {
+    return () => {
+      this.busy = true;
+      this.subscriptions.push(
+        serviceCall
+          .subscribe(
+            (message: string) => {
+              this.busy = false;
+              this.alert = {type: "success", message: message, time: 3000};
+              this.fetchContent();
+            },
+            (error: any) => {
+              this.busy = false;
+              this.alert = {type: "danger", message: error.message, time: 3000};
+            })
+      )}
+  }*/
+
+  /*deleteCourse(course: Course) {
+    const serviceCall: Observable<string> = this.contentService
+      .deleteContent<MessageResponse>(this.coursesPath, course.id)
+      .map((response: MessageResponse) => response.message);
+
     this.modalData = {
       type: "delete",
       title: "Delete",
-      text: "Are you sure you want to delete the element ?",
-      action: this.delete(course)
+      text: "Are you sure you want to delete the Course ?",
+      action: this.getActionFromServiceCall(serviceCall)
+    };
+    this.confirmModal.open();
+  }*/
+
+  delete(course: Course) {
+    this.modalData = {
+      type: "delete",
+      title: "Delete",
+      text: "Are you sure you want to delete the Course ?",
+      action: () => {
+        this.busy = true;
+        this.subscriptions.push(
+          this.contentService
+            .deleteContent<MessageResponse>(this.coursesPath, course.id)
+            .subscribe(
+              (response: MessageResponse) => {
+                this.busy = false;
+                this.alert = {type: "success", message: response.message, time: 3000};
+                this.fetchContent();
+              },
+              (error: any) => {
+                this.busy = false;
+                this.alert = {type: "danger", message: error.message, time: 3000};
+              })
+        )}
     };
     this.confirmModal.open();
   }
 
-  private delete(course: Course) {
-    return () => {
-      this.busy = true;
-      this.subscription = this.contentService.deleteContent<MessageResponse>(this.coursesPath, course.id)
-        .map((response: MessageResponse) => {
-          this.alert = {type: "success", message: response.message, time: 3000};
-          this.busy = false;
-          this.fetchContent();
-        })
-        .catch(error => {
-          this.busy = false;
-          this.alert = {type: "danger", message: error};
-          return Observable.throw(error);
-        })
-        .subscribe();
-    }
+  /*toggleCourseStatus(course: Course) {
+    const serviceCall: Observable<string> = this.contentService
+      .patchContent<Course>(this.coursesPath, course.id, {active: !course.active})
+      .map((response: Course) => "Course status changed");
+
+    this.modalData = {
+      type: "confirm",
+      title: "Change",
+      text: "Are you sure you want to change the Course status ?",
+      action: this.getActionFromServiceCall(serviceCall)
+    };
+
+    this.confirmModal.open();
+  }*/
+
+  toggleStatus(course: Course) {
+    this.modalData = {
+      type: "confirm",
+      title: "Change",
+      text: "Are you sure you want to change the Course status ?",
+      action: () => {
+        this.busy = true;
+        this.subscriptions.push(
+          this.contentService
+            .patchContent<Course>(this.coursesPath, course.id, {active: !course.active})
+            .subscribe(
+              (response: Course) => {
+                this.busy = false;
+                this.alert = {type: "success", message: "Course status changed", time: 3000};
+                this.fetchContent();
+              },
+              (error: any) => {
+                this.busy = false;
+                this.alert = {type: "danger", message: error.message, time: 3000};
+              })
+        )}
+    };
+    this.confirmModal.open();
   }
 
   ngOnDestroy() {
-    if (this.subscription) this.subscription.unsubscribe();
+    if (this.subscriptions.length > 0)
+      this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 }

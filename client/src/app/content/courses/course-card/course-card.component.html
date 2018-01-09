@@ -11,8 +11,8 @@
     <button class="btn btn-sm btn-link" (click)="goToSinglePost()">view</button>
     <div class="admin-actions" *ngIf="isAdministrator">
       <div class="toggle-switch">
-        <input type="checkbox" id="toggle_3" [checked]="course.active">
-        <label for="toggle_3"></label>
+        <input type="checkbox" [id]="course.id" [checked]="course.active" (change)="toggle(course)">
+        <label [for]="course.id"></label>
       </div>
       <button class="btn btn-sm btn-link" (click)="delete(course)">
         <clr-icon shape="trash"></clr-icon>
