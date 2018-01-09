@@ -1,0 +1,9 @@
+<clr-alert [clrAlertType]="contentAlert.type"
+           [(clrAlertClosed)]="closed"
+           (clrAlertClosedChange)="onClose()">
+  <div class="alert-item">
+        <span class="alert-text">
+            {{ contentAlert.message }}
+        </span>
+  </div>
+</clr-alert>

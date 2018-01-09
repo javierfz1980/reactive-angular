@@ -10,6 +10,7 @@ import {
 } from "../commons/confirmation-modal/confirmation-modal.component";
 import {Student} from "../../models/student";
 import {MessageResponse} from "../../models/api/message-response";
+import {ContentAlert} from "../commons/content-alert/content-alert.component";
 
 @Component({
   selector: "gl-profesores",
@@ -23,7 +24,7 @@ export class TeachersComponent implements OnInit  {
   teachers: Observable<Teacher[]>;
   isAdministrator: boolean;
   modalData: ConfirmationData;
-  status: MessageResponse;
+  alert: ContentAlert;
 
   private teachersPath: string = globalProperties.teachersPath;
 
@@ -63,11 +64,11 @@ export class TeachersComponent implements OnInit  {
     return () => {
       this.contentService.deleteContent<MessageResponse>(this.teachersPath, teacher.id)
         .map((response: MessageResponse) => {
-          this.status = response;
+          this.alert = {type: "success", message: response.message};
           this.fetchContent();
         })
         .catch(error => {
-          this.status = {message: error};
+          this.alert = {type: "danger", message: error};
           return Observable.throw(error);
         })
         .subscribe();

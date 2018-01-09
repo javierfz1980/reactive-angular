@@ -20,3 +20,7 @@
 ._content-datagrid .pagination {
   margin-top: 0px!important;
 }
+
+._content-message {
+  color: #ff0000;
+}

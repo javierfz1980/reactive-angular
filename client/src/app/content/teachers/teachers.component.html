@@ -1,8 +1,10 @@
 <h1>{{ title }}</h1>
 <hr>
 
+<!-- content alert -->
+<gl-content-alert *ngIf="alert" [content]="alert"></gl-content-alert>
+
 <!-- content -->
-<div *ngIf="status">{{status.message}}</div>
 <div *ngIf="teachers | async as teachersList; else loading">
   <div class="container-fluid">
     <clr-datagrid class="_content-datagrid" [clDgRowSelection]="true">
