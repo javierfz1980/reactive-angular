@@ -11,6 +11,7 @@ import {
 import {MessageResponse} from "../../models/api/message-response";
 import {ContentAlert} from "../commons/content-alert/content-alert.component";
 import {Subscription} from "rxjs/Subscription";
+import {Observer} from "rxjs/Observer";
 
 @Component({
   selector: "gl-alumnos",
@@ -38,46 +39,42 @@ export class StudentsComponent implements OnInit, OnDestroy {
     this.isAdministrator = this.authService.isAdministrator();
   }
 
-  fetchContent() {
+  private fetchContent() {
     this.students = this.contentService
       .getContent<Student[]>(this.studentsPath)
       .catch(error => Observable.throw(error));
   }
 
-  onDetails(entity: Student) {
+  details(entity: Student) {
     console.log("view details of: ", entity);
   }
 
-  onEdit(entity: Student) {
+  edit(entity: Student) {
     console.log("edit details of: ", entity);
   }
 
-  onDelete(student: Student) {
+  delete(student: Student) {
     this.modalData = {
       type: "delete",
       title: "Delete",
       text: "Are you sure you want to delete the Student ?",
-      action: this.delete(student)
+      action: () => {
+        this.busy = true;
+        this.subscription = this.contentService
+          .deleteContent<MessageResponse>(this.studentsPath, student.id)
+          .subscribe(
+            (response: MessageResponse) => {
+              this.busy = false;
+              this.alert = {type: "success", message: response.message, time: 3000};
+              this.fetchContent();
+            },
+            (error: any) => {
+              this.busy = false;
+              this.alert = {type: "danger", message: error.message, time: 3000};
+            });
+      }
     };
     this.confirmModal.open();
-  }
-
-  private delete(student: Student) {
-    return () => {
-      this.busy = true;
-      this.subscription = this.contentService.deleteContent<MessageResponse>(this.studentsPath, student.id)
-        .map((response: MessageResponse) => {
-          this.alert = {type: "success", message: response.message};
-          this.busy = false;
-          this.fetchContent();
-        })
-        .catch(error => {
-          this.busy = false;
-          this.alert = {type: "danger", message: error};
-          return Observable.throw(error);
-        })
-        .subscribe();
-    }
   }
 
   ngOnDestroy() {

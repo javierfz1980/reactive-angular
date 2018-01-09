@@ -12,6 +12,7 @@ import {Student} from "../../models/student";
 import {MessageResponse} from "../../models/api/message-response";
 import {ContentAlert} from "../commons/content-alert/content-alert.component";
 import {Subscription} from "rxjs/Subscription";
+import {Observer} from "rxjs/Observer";
 
 @Component({
   selector: "gl-profesores",
@@ -45,40 +46,36 @@ export class TeachersComponent implements OnInit, OnDestroy  {
       .catch(error => Observable.throw(error));
   }
 
-  onDetails(entity: Teacher) {
+  details(entity: Teacher) {
     console.log("view details of: ", entity);
   }
 
-  onEdit(entity: Teacher) {
+  edit(entity: Teacher) {
     console.log("edit details of: ", entity);
   }
 
-  onDelete(teacher: Teacher) {
+  delete(teacher: Teacher) {
     this.modalData = {
       type: "delete",
       title: "Delete",
       text: "Are you sure you want to delete the Teacher ?",
-      action: this.delete(teacher)
+      action: () => {
+        this.busy = true;
+        this.subscription = this.contentService
+          .deleteContent<MessageResponse>(this.teachersPath, teacher.id)
+          .subscribe(
+            (response: MessageResponse) => {
+              this.busy = false;
+              this.alert = {type: "success", message: response.message, time: 3000};
+              this.fetchContent();
+            },
+            (error: any) => {
+              this.busy = false;
+              this.alert = {type: "danger", message: error.message, time: 3000};
+            });
+      }
     };
     this.confirmModal.open();
-  }
-
-  private delete(teacher: Teacher) {
-    return () => {
-      this.busy = true;
-      this.subscription = this.contentService.deleteContent<MessageResponse>(this.teachersPath, teacher.id)
-        .map((response: MessageResponse) => {
-          this.alert = {type: "success", message: response.message};
-          this.busy = false;
-          this.fetchContent();
-        })
-        .catch(error => {
-          this.busy = false;
-          this.alert = {type: "danger", message: error};
-          return Observable.throw(error);
-        })
-        .subscribe();
-    }
   }
 
   ngOnDestroy() {

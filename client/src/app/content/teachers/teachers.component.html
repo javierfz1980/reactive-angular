@@ -16,10 +16,10 @@
 
       <clr-dg-row *clrDgItems="let teacher of teachersList">
         <clr-dg-action-overflow>
-          <button class="action-item" (click)="onDetails(teacher)">View Details</button>
+          <button class="action-item" (click)="details(teacher)">View Details</button>
           <ng-container *ngIf="isAdministrator">
-            <button class="action-item" (click)="onEdit(teacher)">Edit</button>
-            <button class="action-item" (click)="onDelete(teacher)">Delete</button>
+            <button class="action-item" (click)="edit(teacher)">Edit</button>
+            <button class="action-item" (click)="delete(teacher)">Delete</button>
           </ng-container>
         </clr-dg-action-overflow>
         <clr-dg-cell>{{teacher.first_name}} {{teacher.last_name}}</clr-dg-cell>
