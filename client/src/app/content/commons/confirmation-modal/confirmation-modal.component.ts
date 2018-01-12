@@ -9,6 +9,7 @@ export interface ConfirmationData {
   text: string;
   action: () => void;
   type: ConfirmationType;
+  isBusy?: boolean;
 }
 
 @Component({
@@ -18,7 +19,7 @@ export interface ConfirmationData {
 export class ConfirmationModalComponent {
 
   @ViewChild("modal") modal: ConfirmationModalComponent;
-  @Output('onConfirm') onConfirm: EventEmitter<Student | Teacher | Course>;
+  //@Output('onConfirm') onConfirm: EventEmitter<Student | Teacher | Course>;
 
   data: ConfirmationData;
 
@@ -37,7 +38,7 @@ export class ConfirmationModalComponent {
 
   onOkClicked() {
     if (this.data.action) this.data.action();
-    this.modal.close();
+    //this.modal.close();
   }
 
 }

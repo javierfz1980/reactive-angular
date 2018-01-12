@@ -27,7 +27,6 @@ export class CoursesComponent implements OnInit, OnDestroy {
   isAdministrator: boolean;
   modalData: ConfirmationData;
   alert: ContentAlert;
-  busy: boolean = false;
 
   private subscriptions: Subscription[] = [];
   private coursesPath: string = globalProperties.coursesPath;
@@ -46,56 +45,25 @@ export class CoursesComponent implements OnInit, OnDestroy {
       .catch(error => Observable.throw(error));
   }
 
-  /*private getActionFromServiceCall(serviceCall: Observable<string>) {
-    return () => {
-      this.busy = true;
-      this.subscriptions.push(
-        serviceCall
-          .subscribe(
-            (message: string) => {
-              this.busy = false;
-              this.alert = {type: "success", message: message, time: 3000};
-              this.fetchContent();
-            },
-            (error: any) => {
-              this.busy = false;
-              this.alert = {type: "danger", message: error.message, time: 3000};
-            })
-      )}
-  }*/
-
-  /*deleteCourse(course: Course) {
-    const serviceCall: Observable<string> = this.contentService
-      .deleteContent<MessageResponse>(this.coursesPath, course.id)
-      .map((response: MessageResponse) => response.message);
-
-    this.modalData = {
-      type: "delete",
-      title: "Delete",
-      text: "Are you sure you want to delete the Course ?",
-      action: this.getActionFromServiceCall(serviceCall)
-    };
-    this.confirmModal.open();
-  }*/
-
   delete(course: Course) {
     this.modalData = {
       type: "delete",
       title: "Delete",
       text: "Are you sure you want to delete the Course ?",
       action: () => {
-        this.busy = true;
+        this.modalData.isBusy = true;
         this.subscriptions.push(
           this.contentService
             .deleteContent<MessageResponse>(this.coursesPath, course.id)
             .subscribe(
               (response: MessageResponse) => {
-                this.busy = false;
+                this.modalData.isBusy = false;
                 this.alert = {type: "success", message: response.message, time: 3000};
                 this.fetchContent();
               },
               (error: any) => {
-                this.busy = false;
+                this.modalData.isBusy = false;
+                this.confirmModal.close();
                 this.alert = {type: "danger", message: error.message, time: 3000};
               })
         )}
@@ -103,39 +71,24 @@ export class CoursesComponent implements OnInit, OnDestroy {
     this.confirmModal.open();
   }
 
-  /*toggleCourseStatus(course: Course) {
-    const serviceCall: Observable<string> = this.contentService
-      .patchContent<Course>(this.coursesPath, course.id, {active: !course.active})
-      .map((response: Course) => "Course status changed");
-
-    this.modalData = {
-      type: "confirm",
-      title: "Change",
-      text: "Are you sure you want to change the Course status ?",
-      action: this.getActionFromServiceCall(serviceCall)
-    };
-
-    this.confirmModal.open();
-  }*/
-
   toggleStatus(course: Course) {
     this.modalData = {
       type: "confirm",
       title: "Change",
       text: "Are you sure you want to change the Course status ?",
       action: () => {
-        this.busy = true;
+        this.modalData.isBusy = true;
         this.subscriptions.push(
           this.contentService
             .patchContent<Course>(this.coursesPath, course.id, {active: !course.active})
             .subscribe(
               (response: Course) => {
-                this.busy = false;
+                this.modalData.isBusy = false;
                 this.alert = {type: "success", message: "Course status changed", time: 3000};
                 this.fetchContent();
               },
               (error: any) => {
-                this.busy = false;
+                this.modalData.isBusy = false;
                 this.alert = {type: "danger", message: error.message, time: 3000};
               })
         )}

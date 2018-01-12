@@ -26,7 +26,6 @@ export class StudentsComponent implements OnInit, OnDestroy {
   isAdministrator: boolean;
   modalData: ConfirmationData;
   alert: ContentAlert;
-  busy: boolean = false;
 
   private studentsPath: string = globalProperties.studentsPath;
   private subscription: Subscription;
@@ -59,17 +58,18 @@ export class StudentsComponent implements OnInit, OnDestroy {
       title: "Delete",
       text: "Are you sure you want to delete the Student ?",
       action: () => {
-        this.busy = true;
+        this.modalData.isBusy = true;
         this.subscription = this.contentService
           .deleteContent<MessageResponse>(this.studentsPath, student.id)
           .subscribe(
             (response: MessageResponse) => {
-              this.busy = false;
               this.alert = {type: "success", message: response.message, time: 3000};
+              this.modalData.isBusy = false;
               this.fetchContent();
             },
             (error: any) => {
-              this.busy = false;
+              this.modalData.isBusy = false;
+              this.confirmModal.close();
               this.alert = {type: "danger", message: error.message, time: 3000};
             });
       }

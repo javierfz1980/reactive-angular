@@ -1,13 +1,19 @@
 <clr-modal #modal>
-  <h3 class="modal-title">{{(data) ? data.title : ""}}</h3>
+  <h3 class="modal-title">
+    {{(data) ? data.title : ""}}
+    <span *ngIf="data && data.isBusy" class="spinner spinner-sm"></span>
+  </h3>
   <div class="modal-body">
     <p>{{(data) ? data.text : ""}}</p>
   </div>
   <div class="modal-footer" *ngIf="data">
-    <button type="button" class="btn btn-outline" (click)="close()">Cancel</button>
+    <button type="button" class="btn btn-outline"
+            [disabled]="data.isBusy"
+            (click)="close()">Cancel</button>
     <button type="button"
             (click)="onOkClicked()"
+            [disabled]="data.isBusy"
             [class]="(data && data.type === 'delete') ?
-                'btn ok-btn btn-warning' : 'btn ok-btn btn-primary'">Ok</button>
+                'btn ok-btn btn-warning' : 'btn ok-btn btn-primary'" >Ok</button>
   </div>
 </clr-modal>
