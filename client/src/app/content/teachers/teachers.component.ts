@@ -1,18 +1,14 @@
 import {Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {AuthService} from "../../core/providers/services/auth.service";
 import {Teacher} from "../../models/teacher";
-import {globalProperties} from "../../../environments/properties";
 import {Observable} from "rxjs/Observable";
-import {ContentService} from "../../core/providers/services/content.service";
 import {
   ConfirmationData,
   ConfirmationModalComponent
 } from "../commons/confirmation-modal/confirmation-modal.component";
-import {Student} from "../../models/student";
-import {MessageResponse} from "../../models/api/message-response";
 import {ContentAlert} from "../commons/content-alert/content-alert.component";
 import {Subscription} from "rxjs/Subscription";
-import {Observer} from "rxjs/Observer";
+import {TeachersService} from "../../core/providers/services/content/teachers.service";
 
 @Component({
   selector: "gl-profesores",
@@ -28,11 +24,10 @@ export class TeachersComponent implements OnInit, OnDestroy  {
   modalData: ConfirmationData;
   alert: ContentAlert;
 
-  private teachersPath: string = globalProperties.teachersPath;
   private subscription: Subscription;
 
   constructor(private authService: AuthService,
-              private contentService: ContentService) {}
+              private teachersService: TeachersService) {}
 
   ngOnInit() {
     this.fetchContent();
@@ -40,17 +35,16 @@ export class TeachersComponent implements OnInit, OnDestroy  {
   }
 
   fetchContent() {
-    this.teachers = this.contentService
-      .getContent<Teacher[]>(this.teachersPath)
-      .catch(error => Observable.throw(error));
+    this.teachers = this.teachersService
+      .getTeachers()
+      .catch(error => {
+        this.alert = {type: "danger", message: error.message};
+        return Observable.throw(error)
+      });
   }
 
   details(entity: Teacher) {
     console.log("view details of: ", entity);
-  }
-
-  edit(entity: Teacher) {
-    console.log("edit details of: ", entity);
   }
 
   delete(teacher: Teacher) {
@@ -60,18 +54,12 @@ export class TeachersComponent implements OnInit, OnDestroy  {
       text: "Are you sure you want to delete the Teacher ?",
       action: () => {
         this.modalData.isBusy = true;
-        this.subscription = this.contentService
-          .deleteContent<MessageResponse>(this.teachersPath, teacher.id)
+        this.teachersService.deleteTeacher(teacher)
           .subscribe(
-            (response: MessageResponse) => {
+            (alert: ContentAlert) => {
+              this.alert = alert;
               this.modalData.isBusy = false;
-              this.alert = {type: "success", message: response.message, time: 3000};
               this.fetchContent();
-            },
-            (error: any) => {
-              this.modalData.isBusy = false;
-              this.confirmModal.close();
-              this.alert = {type: "danger", message: error.message, time: 3000};
             });
       }
     };

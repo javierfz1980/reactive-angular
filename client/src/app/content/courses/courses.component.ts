@@ -2,17 +2,14 @@ import {Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {Observable} from "rxjs/Observable";
 import "rxjs/add/operator/filter";
 import {Course} from "../../models/course";
-import {ContentService} from "../../core/providers/services/content.service";
-import {globalProperties} from "../../../environments/properties";
 import {AuthService} from "../../core/providers/services/auth.service";
 import {
   ConfirmationData,
   ConfirmationModalComponent
 } from "../commons/confirmation-modal/confirmation-modal.component";
-import {MessageResponse} from "../../models/api/message-response";
 import {Subscription} from "rxjs/Subscription";
 import {ContentAlert} from "../commons/content-alert/content-alert.component";
-import {Observer} from "rxjs/Observer";
+import {CoursesService} from "../../core/providers/services/content/courses.service";
 
 @Component({
   selector: "gl-cursos",
@@ -29,9 +26,8 @@ export class CoursesComponent implements OnInit, OnDestroy {
   alert: ContentAlert;
 
   private subscriptions: Subscription[] = [];
-  private coursesPath: string = globalProperties.coursesPath;
 
-  constructor(private contentService: ContentService,
+  constructor(private coursesService: CoursesService,
               private authService: AuthService) {}
 
   ngOnInit() {
@@ -40,9 +36,12 @@ export class CoursesComponent implements OnInit, OnDestroy {
   }
 
   private fetchContent() {
-    this.courses = this.contentService
-      .getContent<Course[]>(this.coursesPath)
-      .catch(error => Observable.throw(error));
+    this.courses = this.coursesService
+      .getCourses()
+      .catch(error => {
+        this.alert = {type: "danger", message: error.message};
+        return Observable.throw(error)
+      });
   }
 
   delete(course: Course) {
@@ -53,18 +52,12 @@ export class CoursesComponent implements OnInit, OnDestroy {
       action: () => {
         this.modalData.isBusy = true;
         this.subscriptions.push(
-          this.contentService
-            .deleteContent<MessageResponse>(this.coursesPath, course.id)
+          this.coursesService.deleteCourse(course)
             .subscribe(
-              (response: MessageResponse) => {
+              (alert: ContentAlert) => {
+                this.alert = alert;
                 this.modalData.isBusy = false;
-                this.alert = {type: "success", message: response.message, time: 3000};
                 this.fetchContent();
-              },
-              (error: any) => {
-                this.modalData.isBusy = false;
-                this.confirmModal.close();
-                this.alert = {type: "danger", message: error.message, time: 3000};
               })
         )}
     };
@@ -79,17 +72,12 @@ export class CoursesComponent implements OnInit, OnDestroy {
       action: () => {
         this.modalData.isBusy = true;
         this.subscriptions.push(
-          this.contentService
-            .patchContent<Course>(this.coursesPath, course.id, {active: !course.active})
+          this.coursesService.patchCourse(course.id, {active: !course.active})
             .subscribe(
-              (response: Course) => {
+              (alert: ContentAlert) => {
+                this.alert = alert;
                 this.modalData.isBusy = false;
-                this.alert = {type: "success", message: "Course status changed", time: 3000};
                 this.fetchContent();
-              },
-              (error: any) => {
-                this.modalData.isBusy = false;
-                this.alert = {type: "danger", message: error.message, time: 3000};
               })
         )}
     };

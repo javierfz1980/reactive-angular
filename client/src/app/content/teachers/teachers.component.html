@@ -15,7 +15,6 @@
         <clr-dg-action-overflow>
           <button class="action-item" (click)="details(teacher)">View Details</button>
           <ng-container *ngIf="isAdministrator">
-            <button class="action-item" (click)="edit(teacher)">Edit</button>
             <button class="action-item" (click)="delete(teacher)">Delete</button>
           </ng-container>
         </clr-dg-action-overflow>
