@@ -4,9 +4,12 @@ import {Observable} from "rxjs/Observable";
 import {Student, StudentInfo} from "../../../../models/student";
 import {globalProperties} from "../../../../../environments/properties";
 import {MessageResponse} from "../../../../models/api/message-response";
-import {ContentAlert} from "../../../../content/commons/content-alert/content-alert.component";
+import {ContentAlert} from "../../../../content/commons/alert/content-alert.component";
 import {Profile} from "../../../../models/profile";
 import {Course} from "../../../../models/course";
+import 'rxjs/add/operator/mergeMap'
+import 'rxjs/add/observable/forkJoin';
+import 'rxjs/add/observable/from';
 
 @Injectable()
 export class StudentsService {
@@ -32,7 +35,8 @@ export class StudentsService {
         const courses: Observable<Course[]> = Observable
           .from((<string[]>student.courses))
           .mergeMap((courseId: string) =>  this.contentService
-            .getContent<Course[]>(`${globalProperties.coursesPath}/${courseId}`))
+            .getContent<Course>(`${globalProperties.coursesPath}/${courseId}`))
+          .toArray();
 
         return Observable.forkJoin(profile, courses)
           .map(([profile, courses]) => ({info: student, profile: profile, courses: courses}))

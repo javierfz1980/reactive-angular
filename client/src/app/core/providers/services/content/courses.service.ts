@@ -3,9 +3,8 @@ import {globalProperties} from "../../../../../environments/properties";
 import {ContentService} from "./content.service";
 import {Observable} from "rxjs/Observable";
 import {Course} from "../../../../models/course";
-import {Student} from "../../../../models/student";
 import {MessageResponse} from "../../../../models/api/message-response";
-import {ContentAlert} from "../../../../content/commons/content-alert/content-alert.component";
+import {ContentAlert} from "../../../../content/commons/alert/content-alert.component";
 
 @Injectable()
 export class CoursesService {

@@ -4,7 +4,7 @@ import {ContentService} from "./content.service";
 import {Observable} from "rxjs/Observable";
 import {Teacher} from "../../../../models/teacher";
 import {MessageResponse} from "../../../../models/api/message-response";
-import {ContentAlert} from "../../../../content/commons/content-alert/content-alert.component";
+import {ContentAlert} from "../../../../content/commons/alert/content-alert.component";
 
 @Injectable()
 export class TeachersService {

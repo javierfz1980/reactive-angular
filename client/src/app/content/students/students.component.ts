@@ -6,7 +6,7 @@ import {
   ConfirmationData,
   ConfirmationModalComponent
 } from "../commons/confirmation-modal/confirmation-modal.component";
-import {ContentAlert} from "../commons/content-alert/content-alert.component";
+import {ContentAlert} from "../commons/alert/content-alert.component";
 import {Subscription} from "rxjs/Subscription";
 import {Router} from "@angular/router";
 import {appRoutePaths} from "../../app-routing.module";
