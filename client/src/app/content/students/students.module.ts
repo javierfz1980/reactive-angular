@@ -3,9 +3,13 @@ import {StudentsComponent} from "./students.component";
 import {ContentCommonsModule} from "../commons/content-commons-module";
 import {CommonsModule} from "../../commons/commons.module";
 import {StudentsRoutingModule} from "./students-routing.module";
+import {SingleStudentComponent} from "./single-student/single-student.component";
+import {CoursesFormComponent} from "./single-student/courses-form/courses-form.component";
 
 const contents = [
-  StudentsComponent
+  StudentsComponent,
+  SingleStudentComponent,
+  CoursesFormComponent
 ];
 
 @NgModule({
@@ -15,7 +19,7 @@ const contents = [
   imports: [
     CommonsModule,
     ContentCommonsModule,
-    StudentsRoutingModule
+    StudentsRoutingModule,
   ],
   exports: [
     ...contents

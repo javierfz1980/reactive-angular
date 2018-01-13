@@ -1,0 +1,141 @@
+<!-- {{info.first_name}} - {{isReadOnly}} -->
+<div class="row">
+  <div class="col-xs-12 col-md-2">
+    <div class="image-profile">
+      <img [src]="form.controls['profile'].controls['avatar'].value">
+    </div>
+  </div>
+  <div class="col-xs-12 col-md-10">
+    <form *ngIf="info" [formGroup]="form">
+
+        <!-- basic info -->
+      <section class="form-block">
+        <label>Basic Info</label><br><br>
+        <div formGroupName="info">
+          <div class="form-group">
+            <label class="required">First Name:</label>
+              <input type="text"
+                     formControlName="first_name"
+                     placeholder="Enter your first name"
+                     size="50"
+                     [readonly]="isReadOnly">
+          </div>
+          <div class="form-group">
+            <label class="required">Last Name:</label>
+              <input type="text"
+                     formControlName="last_name"
+                     placeholder="Enter your last name"
+                     size="50"
+                     [readonly]="isReadOnly">
+          </div>
+          <div class="form-group">
+            <label class="required">Email:</label>
+              <input type="email"
+                     formControlName="email"
+                     placeholder="Enter your email"
+                     size="50"
+                     [readonly]="isReadOnly">
+          </div>
+        </div>
+      </section>
+
+      <!-- profile info -->
+      <section class="form-block">
+        <label>Profile Info</label><br><br>
+
+        <div formGroupName="profile">
+          <div class="form-group">
+            <label class="required">Birthday:</label>
+            <input type="date"
+                   formControlName="birthday"
+                   placeholder="Enter your birthday"
+                   size="50"
+                   [readonly]="isReadOnly">
+          </div>
+          <div class="form-group">
+            <label class="required">Avatar:</label>
+            <input type="url"
+                   formControlName="avatar"
+                   placeholder="Enter a valid url"
+                   size="50"
+                   [readonly]="isReadOnly">
+          </div>
+          <div class="form-group">
+            <label class="required">2nd Email:</label>
+            <input type="email"
+                   formControlName="secondary_email"
+                   placeholder="Enter your secondary email"
+                   size="50"
+                   [readonly]="isReadOnly">
+          </div>
+          <div formGroupName="contact">
+            <div class="form-group">
+              <label class="required">Street:</label>
+              <input type="text"
+                     formControlName="street"
+                     placeholder="Enter your street address"
+                     size="50"
+                     [readonly]="isReadOnly">
+            </div>
+            <div class="form-group">
+              <label class="required">State:</label>
+              <input type="text"
+                     formControlName="state"
+                     placeholder="Enter your state"
+                     size="50"
+                     [readonly]="isReadOnly">
+            </div>
+            <div class="form-group">
+              <label class="required">Street:</label>
+              <input type="text"
+                     formControlName="street"
+                     placeholder="Enter your country"
+                     size="50"
+                     [readonly]="isReadOnly">
+            </div>
+            <div class="form-group">
+              <label class="required">City:</label>
+              <input type="text"
+                     formControlName="city"
+                     placeholder="Enter your city name"
+                     size="50"
+                     [readonly]="isReadOnly">
+            </div>
+            <div class="form-group">
+              <label class="required">Zip:</label>
+              <input type="text"
+                     formControlName="zip"
+                     placeholder="Enter your zip code"
+                     size="50"
+                     [readonly]="isReadOnly">
+            </div>
+            <div class="form-group">
+              <label class="required">Phone:</label>
+              <input type="tel"
+                     formControlName="phone"
+                     placeholder="Enter your phone number"
+                     size="50"
+                     [readonly]="isReadOnly">
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <section class="form-block" *ngIf="!isReadOnly">
+        <div class="form-group">
+          <button class="btn">Clear</button>
+          <button class="btn btn-primary"
+                  [disabled]="!form.valid"
+                  (click)="update()">Update</button>
+          <button class="btn btn-danger"
+                  [disabled]="!form.valid"
+                  (click)="delete()">
+            <clr-icon shape="trash"></clr-icon> Delete
+          </button>
+        </div>
+      </section>
+
+    </form>
+  </div>
+</div>

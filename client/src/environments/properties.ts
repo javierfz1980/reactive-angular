@@ -8,5 +8,6 @@ export const globalProperties = {
   coursesPath: "courses",
   accountPath: "account",
   studentsPath: "students",
-  teachersPath: "teachers"
+  teachersPath: "teachers",
+  profilesPath: "profiles"
 }

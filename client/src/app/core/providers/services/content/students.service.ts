@@ -23,21 +23,31 @@ export class StudentsService {
       .getContent<Student[]>(this.path);
   }
 
-  getStudent(id: string): Observable<StudentInfo> {
+  getStudent(id: string): Observable<Student> {
     return this.contentService
-      .getContent<Student>(`${this.path}/${id}`)
+      .getContent<Student>(`${this.path}/${id}`);
+  }
+
+  getStudentInfo(id: string): Observable<StudentInfo> {
+    return this.getStudent(id)
       .switchMap((student: Student) => {
 
         // once we get the student, we can parallelize the calls to get the profile and the courses.
         const profile: Observable<Profile> = this.contentService
           .getContent<Profile>(`${globalProperties.profilesPath}/${student.profile_id}`);
 
-        const courses: Observable<Course[]> = Observable
-          .from((<string[]>student.courses))
-          .mergeMap((courseId: string) =>  this.contentService
-            .getContent<Course>(`${globalProperties.coursesPath}/${courseId}`))
-          .toArray();
-
+        let courses: Observable<Course[]>;
+        if (student.courses) {
+          courses = Observable
+            .from(student.courses)
+            .mergeMap((courseId: string) =>  this.contentService
+              .getContent<Course>(`${globalProperties.coursesPath}/${courseId}`))
+            .toArray();
+        } else {
+          courses = Observable
+            .from([])
+            .toArray();
+        }
         return Observable.forkJoin(profile, courses)
           .map(([profile, courses]) => ({info: student, profile: profile, courses: courses}))
       })
