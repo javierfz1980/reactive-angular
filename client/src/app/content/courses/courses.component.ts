@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {Observable} from "rxjs/Observable";
 import "rxjs/add/operator/filter";
-import {Course} from "../../models/course";
+import {Course} from "../../models/content/course";
 import {AuthService} from "../../core/providers/services/auth.service";
 import {
   ConfirmationData,

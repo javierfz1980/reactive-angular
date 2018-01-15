@@ -2,10 +2,10 @@ import {Injectable} from "@angular/core";
 import {globalProperties} from "../../../../../environments/properties";
 import {ContentService} from "./content.service";
 import {Observable} from "rxjs/Observable";
-import {Teacher} from "../../../../models/teacher";
+import {Teacher} from "../../../../models/content/teacher";
 import {MessageResponse} from "../../../../models/api/message-response";
 import {ContentAlert} from "../../../../content/commons/alert/content-alert.component";
-import {Student} from "../../../../models/student";
+import {Student} from "../../../../models/content/student";
 
 @Injectable()
 export class TeachersService {

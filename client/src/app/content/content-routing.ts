@@ -1,4 +1,4 @@
-import {RouteElement} from "../models/route-element";
+import {RouteElement} from "../models/core/route-element";
 import {AuthGuard} from "../core/providers/guards/auth.guard";
 import {Routes} from "@angular/router";
 

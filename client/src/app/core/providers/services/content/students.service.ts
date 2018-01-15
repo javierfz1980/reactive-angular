@@ -1,12 +1,12 @@
 import {Injectable} from "@angular/core";
 import {ContentService} from "./content.service";
 import {Observable} from "rxjs/Observable";
-import {Student, StudentInfo} from "../../../../models/student";
+import {Student, StudentInfo} from "../../../../models/content/student";
 import {globalProperties} from "../../../../../environments/properties";
 import {MessageResponse} from "../../../../models/api/message-response";
 import {ContentAlert} from "../../../../content/commons/alert/content-alert.component";
-import {Profile} from "../../../../models/profile";
-import {Course} from "../../../../models/course";
+import {Profile} from "../../../../models/content/profile";
+import {Course} from "../../../../models/content/course";
 import 'rxjs/add/operator/mergeMap'
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/observable/from';

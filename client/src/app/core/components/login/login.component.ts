@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from "@angular/core";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
-import {Token} from "../../../models/token";
+import {Token} from "../../../models/api/token";
 import {Subscription} from "rxjs/Subscription";
 import {AuthService} from "../../providers/services/auth.service";
 import {appRoutePaths} from "../../../app-routing.module";

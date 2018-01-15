@@ -1,7 +1,7 @@
 import {NgModule} from "@angular/core";
 import {RouterModule, Routes} from "@angular/router";
 import {LoginComponent} from "./core/components/login/login.component";
-import {RouteElement} from "./models/route-element";
+import {RouteElement} from "./models/core/route-element";
 import {contentRoutePaths, contentRoutesComponents} from "./content/content-routing";
 
 /**

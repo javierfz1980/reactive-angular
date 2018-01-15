@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from "@angular/core";
-import {Course} from "../../../models/course";
+import {Course} from "../../../models/content/course";
 
 @Component({
   selector: "gl-course-card",

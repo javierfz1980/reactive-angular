@@ -1,5 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {RouteElement} from "../../../../models/route-element";
+import {RouteElement} from "../../../../models/core/route-element";
 import {appRoutePaths} from "../../../../app-routing.module";
 
 @Component({

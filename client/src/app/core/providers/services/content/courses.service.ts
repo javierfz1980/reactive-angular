@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {globalProperties} from "../../../../../environments/properties";
 import {ContentService} from "./content.service";
 import {Observable} from "rxjs/Observable";
-import {Course} from "../../../../models/course";
+import {Course} from "../../../../models/content/course";
 import {MessageResponse} from "../../../../models/api/message-response";
 import {ContentAlert} from "../../../../content/commons/alert/content-alert.component";
 

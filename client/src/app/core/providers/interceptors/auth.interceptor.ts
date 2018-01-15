@@ -1,5 +1,5 @@
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from "@angular/common/http";
-import {Course} from "../../../models/course";
+import {Course} from "../../../models/content/course";
 import {Observable} from "rxjs/Observable";
 import {AuthService} from "../services/auth.service";
 import {Injectable, Injector} from "@angular/core";

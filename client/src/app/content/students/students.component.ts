@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {Observable} from "rxjs/Observable";
-import {Student} from "../../models/student";
+import {Student} from "../../models/content/student";
 import {AuthService} from "../../core/providers/services/auth.service";
 import {
   ConfirmationData,
@@ -11,6 +11,7 @@ import {Subscription} from "rxjs/Subscription";
 import {Router} from "@angular/router";
 import {appRoutePaths} from "../../app-routing.module";
 import {StudentsService} from "../../core/providers/services/content/students.service";
+import {EmailFilter, NameLastnameFilter} from "../../models/filters/generic-string-filter";
 
 @Component({
   selector: "gl-alumnos",
@@ -25,6 +26,8 @@ export class StudentsComponent implements OnInit, OnDestroy {
   isAdministrator: boolean;
   modalData: ConfirmationData;
   alert: ContentAlert;
+  nameLastnameFilter = new NameLastnameFilter();
+  emailFilter = new EmailFilter();
 
   private subscription: Subscription;
 

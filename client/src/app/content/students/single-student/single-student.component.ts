@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {ActivatedRoute, Params, Router, Routes} from "@angular/router";
-import {Student, StudentInfo} from "../../../models/student";
+import {Student, StudentInfo} from "../../../models/content/student";
 import {Observable} from "rxjs/Observable";
 import {
   ContentAlert

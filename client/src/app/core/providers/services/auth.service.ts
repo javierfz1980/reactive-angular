@@ -4,11 +4,11 @@ import {LoginCredentials} from "../../../models/api/login-credentials";
 import {HttpClient} from "@angular/common/http";
 import {globalProperties} from "../../../../environments/properties";
 import {Observable} from "rxjs/Observable";
-import {Token} from "../../../models/token";
+import {Token} from "../../../models/api/token";
 import "rxjs/add/operator/catch";
 import "rxjs/add/operator/do";
 import "rxjs/add/operator/switchMap";
-import {Account} from "../../../models/account";
+import {Account} from "../../../models/core/account";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 @Injectable()
