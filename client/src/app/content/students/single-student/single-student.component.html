@@ -1,16 +1,17 @@
-<!-- content alert -->
-<gl-content-alert *ngIf="alert" [content]="alert"></gl-content-alert>
-
-
 <!-- content tabs -->
 <div *ngIf="info | async as studentInfo; else loading">
 
-  <!-- content delete -->
-  <div class="single-student-delete">
+  <h1>
+    {{studentInfo.info.first_name}} {{studentInfo.info.last_name}}
+    <!-- content delete -->
     <button class="btn btn-sm btn-danger" (click)="delete(studentInfo.info)">
       <clr-icon shape="trash"></clr-icon> Delete
     </button>
-  </div>
+  </h1>
+  <hr>
+
+  <!-- content alert -->
+  <gl-content-alert *ngIf="alert" [content]="alert"></gl-content-alert>
 
   <clr-tabs>
 
