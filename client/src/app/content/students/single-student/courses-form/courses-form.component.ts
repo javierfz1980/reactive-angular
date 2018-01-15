@@ -31,9 +31,4 @@ export class CoursesFormComponent implements OnInit {
         })
       });
   }
-
-  getSelectedCourses(): string[] {
-    return this.selectedCourses.map(course => course.id);
-  }
-
 }
