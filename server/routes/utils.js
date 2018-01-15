@@ -71,7 +71,7 @@ exports.update = function(req, res, param, data) {
   var match = getDataFromRequest(req, param, data);
 
   if (match) {
-    _.merge(match, req.body || {});
+    _.assign(match, req.body || {});
     res.status(200).json(match);
   } else {
     res.status(404).json(responses.NOT_MATCH);
