@@ -22,7 +22,7 @@ export class ContentService {
   }
 
   patchContent<T>(url: string, id: string, data: {[key: string]: any}): Observable<T> {
-    console.log("deleting content: ", url);
+    console.log("patching content: ", url);
     return this.httpClient.patch<T>(`${this.basePath}${url}/${id}`, data);
   }
 

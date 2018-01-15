@@ -31,40 +31,67 @@ export class StudentsService {
   getStudentInfo(id: string): Observable<StudentInfo> {
     return this.getStudent(id)
       .switchMap((student: Student) => {
-
-        // once we get the student, we can parallelize the calls to get the profile and the courses.
         const profile: Observable<Profile> = this.contentService
           .getContent<Profile>(`${globalProperties.profilesPath}/${student.profile_id}`);
 
-        let courses: Observable<Course[]>;
-        if (student.courses) {
-          courses = Observable
-            .from(student.courses)
-            .mergeMap((courseId: string) =>  this.contentService
-              .getContent<Course>(`${globalProperties.coursesPath}/${courseId}`))
-            .toArray();
-        } else {
-          courses = Observable
-            .from([])
-            .toArray();
-        }
+        const courses: Observable<Course[]> = Observable
+          .from((student.courses) ? student.courses : [])
+          .mergeMap((courseId: string) =>  this.contentService
+            .getContent<Course>(`${globalProperties.coursesPath}/${courseId}`))
+          .toArray();
+
         return Observable.forkJoin(profile, courses)
           .map(([profile, courses]) => ({info: student, profile: profile, courses: courses}))
       })
   }
 
   deleteStudent(student: Student): Observable<ContentAlert> {
-    return this.contentService
-      .deleteContent<MessageResponse>(this.path, student.id)
-      .map((message: MessageResponse) => (<ContentAlert>{
+    const deleteProfile: Observable<MessageResponse> =  this.contentService
+      .deleteContent<MessageResponse>(globalProperties.profilesPath, student.profile_id);
+
+    const deleteStudent: Observable<MessageResponse> =  this.contentService
+      .deleteContent<MessageResponse>(this.path, student.id);
+
+    return Observable.forkJoin(deleteProfile, deleteStudent)
+      .map(([deleteProfile, deleteStudent]) => (<ContentAlert>{
         type: "success",
-        message: message.message,
+        message: deleteProfile.message,
         time: 3000
       }))
       .catch((error: any) => Observable.of(<ContentAlert>{
         type: "danger",
-        message: error.message,
+        message: `Error deleting student: ${error.message}`,
         time: 3000
+      }))
+  }
+
+  updateStudentInfo(data:StudentInfo): Observable<ContentAlert> {
+    const infoId: string = data.info.id;
+    const profileId: string = data.profile.id;
+
+    delete data.info.id;
+    delete data.profile.id;
+
+    data.profile.birthday = new Date(data.profile.birthday).toString();
+    data.info.courses = data.courses.map((course: Course) => course.id);
+
+    console.log("updateStudentInfo :", data.info);
+
+    const patchInfo: Observable<Student> =
+        this.contentService.patchContent<Student>(this.path, infoId, data.info);
+
+    const patchProfile: Observable<Profile> =
+      this.contentService.patchContent<Profile>(globalProperties.profilesPath, profileId, data.profile);
+
+    return Observable.forkJoin(patchInfo, patchProfile)
+      .map(([patchInfo, patchProfile]) => (<ContentAlert>{
+        type: "success",
+        message: "Student info updated",
+        time: 3000
+      }))
+      .catch((error: any) => Observable.of(<ContentAlert>{
+        type: "danger",
+        message: `Error updating info: ${error.message}`
       }))
   }
 }

@@ -1,8 +1,17 @@
 <!-- content alert -->
 <gl-content-alert *ngIf="alert" [content]="alert"></gl-content-alert>
 
+
 <!-- content tabs -->
 <div *ngIf="info | async as studentInfo; else loading">
+
+  <!-- content delete -->
+  <div class="single-student-delete">
+    <button class="btn btn-sm btn-danger" (click)="delete(studentInfo.info)">
+      <clr-icon shape="trash"></clr-icon> Delete
+    </button>
+  </div>
+
   <clr-tabs>
 
     <!-- Info -->
@@ -11,30 +20,23 @@
       <clr-tab-content id="content1" *clrIfActive>
         <gl-info-form [info]="{info: studentInfo.info, profile: studentInfo.profile}"
                       [isReadOnly]="!isAdministrator"
-                      (delete)="delete($event)"
                       (update)="update($event)"></gl-info-form>
       </clr-tab-content>
     </clr-tab>
-
-    <!-- Profile -->
-    <!--<clr-tab>
-      <button clrTabLink>Profile</button>
-      <clr-tab-content *clrIfActive="true">
-        <gl-profile-form [profile]="studentInfo.profile"
-                         [isReadOnly]="!isAdministrator"></gl-profile-form>
-      </clr-tab-content>
-    </clr-tab>-->
 
     <!-- Courses -->
     <clr-tab>
       <button clrTabLink>Courses</button>
       <clr-tab-content>
-        <gl-single-student-courses-form [courses]="studentInfo.courses"
+        <gl-single-student-courses-form #studentCourses
+                                        [studentCourses]="studentInfo.courses"
                                         [isReadOnly]="!isAdministrator"></gl-single-student-courses-form>
       </clr-tab-content>
     </clr-tab>
 
   </clr-tabs>
+
+  <gl-confirmation-modal #confirmModal [modalData]="modalData"></gl-confirmation-modal>
 </div>
 
 <!-- content loader -->
