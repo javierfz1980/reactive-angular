@@ -30,7 +30,7 @@
       <button clrTabLink>Courses</button>
       <clr-tab-content>
         <gl-courses-form #studentCourses
-                         [markedCourses]="studentInfo.courses"
+                         [markedCourses]="studentInfo.info.courses"
                          [isReadOnly]="!isAdministrator"></gl-courses-form>
       </clr-tab-content>
     </clr-tab>

@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
-import {ActivatedRoute, Params, Router, Routes} from "@angular/router";
-import {Student, StudentInfo} from "../../../models/content/student";
+import {ActivatedRoute, Params, Router} from "@angular/router";
+import {Student} from "../../../models/content/student";
 import {Observable} from "rxjs/Observable";
 import {
   ContentAlert
@@ -31,7 +31,7 @@ export class SingleStudentComponent implements OnInit, OnDestroy {
   studentCourses: CoursesFormComponent;
 
   alert: ContentAlert;
-  info: Observable<StudentInfo>;
+  info: Observable<InfoProfileData>;
   isAdministrator: boolean;
   modalData: ConfirmationData;
 
@@ -55,7 +55,6 @@ export class SingleStudentComponent implements OnInit, OnDestroy {
         this.alert = {type: "danger", message: error.message};
         return Observable.throw(error)
       })
-      .do((finalData: StudentInfo) => console.log("final data: ", finalData));
   }
 
   delete(student: Student) {
@@ -78,18 +77,14 @@ export class SingleStudentComponent implements OnInit, OnDestroy {
   }
 
   update(data: InfoProfileData) {
-    const finalData: StudentInfo = {
-      info: (<Student>data.info),
-      profile: data.profile,
-      courses: this.studentCourses.selectedCourses
-    };
+    (<Student>data.info).courses = this.studentCourses.getSelectedCourses();
     this.modalData = {
       type: "confirm",
       title: "Update",
       text: "Are you sure you want to update this Student ?",
       action: () => {
         this.modalData.isBusy = true;
-        this.subscriptions.push(this.studentsService.updateStudentInfo(finalData)
+        this.subscriptions.push(this.studentsService.updateStudentInfo(data.info, data.profile)
           .subscribe(
             (alert: ContentAlert) => {
               this.alert = alert;

@@ -11,7 +11,7 @@ import {CoursesService} from "../../../core/providers/services/content/courses.s
 export class CoursesFormComponent implements OnInit {
 
   @Input()
-  markedCourses: Course[] = [];
+  markedCourses: string[] = [];
 
   @Input()
   isReadOnly: boolean;
@@ -22,14 +22,20 @@ export class CoursesFormComponent implements OnInit {
   constructor(private coursesService: CoursesService) {}
 
   ngOnInit() {
-    this.courses = (this.isReadOnly) ? Observable.of(this.markedCourses) : this.coursesService
+    this.courses = this.coursesService
       .getCoursesWithTeachers()
       .do((courses: Course[]) => {
         courses.forEach((course: Course) => {
-          const existsInStudentList: Course = this.markedCourses
-            .find(studentCourse => studentCourse.id === course.id);
+          const existsInStudentList: string = this.markedCourses
+            .find(studentCourse => studentCourse === course.id);
           if (existsInStudentList) this.selectedCourses.push(course);
         })
-      });
+      })
+      .map((courses: Course[]) => (this.isReadOnly ? this.selectedCourses : courses));
+  }
+
+  getSelectedCourses(): string[] {
+    return this.selectedCourses
+      .map((course:Course) => course.id);
   }
 }

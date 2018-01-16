@@ -1,24 +1,22 @@
 import {Injectable} from "@angular/core";
 import {ContentService} from "./content.service";
 import {Observable} from "rxjs/Observable";
-import {Student, StudentInfo} from "../../../../models/content/student";
+import {Student} from "../../../../models/content/student";
 import {globalProperties} from "../../../../../environments/properties";
 import {MessageResponse} from "../../../../models/api/message-response";
 import {ContentAlert} from "../../../../content/commons/alert/content-alert.component";
 import {Profile} from "../../../../models/content/profile";
-import {Course} from "../../../../models/content/course";
+import {InfoProfileData} from "../../../../content/commons/info-form/info-form.component";
 import 'rxjs/add/operator/mergeMap'
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/observable/from';
-import {CoursesService} from "./courses.service";
 
 @Injectable()
 export class StudentsService {
 
   private path: string = globalProperties.studentsPath;
 
-  constructor(private contentService: ContentService,
-              private coursesService: CoursesService) {}
+  constructor(private contentService: ContentService) {}
 
   getStudents(): Observable<Student[]> {
     return this.contentService
@@ -30,37 +28,32 @@ export class StudentsService {
       .getContent<Student>(`${this.path}/${id}`);
   }
 
-  getStudentInfo(id: string): Observable<StudentInfo> {
+  getStudentInfo(id: string): Observable<InfoProfileData> {
     return this.getStudent(id)
-      .do(data => console.log("data: ", data))
       .switchMap((student: Student) => {
-        const profile: Observable<Profile> = this.contentService
-          .getContent<Profile>(`${globalProperties.profilesPath}/${student.profile_id}`);
-
-        const courses: Observable<Course[]> = Observable
-          .from((student.courses) ? student.courses : [])
-          .mergeMap((courseId: string) =>  this.coursesService.getCourse(courseId))
-          .toArray();
-
-        return Observable.forkJoin(profile, courses)
-          .map(([profile, courses]) => ({info: student, profile: profile, courses: courses}))
+        return this.contentService
+          .getContent<Profile>(`${globalProperties.profilesPath}/${student.profile_id}`)
+          .map((profile: Profile) => ({
+            info: student,
+            profile: profile
+          }))
       })
   }
 
-  createStudent(data: StudentInfo): Observable<ContentAlert> {
-    data = this.normalizeStudentInfo(data);
+  createStudent(student: Student, profile: Profile): Observable<ContentAlert> {
+    profile.birthday = new Date(profile.birthday).toString();
 
     const postProfile: Observable<Profile> = this.contentService
-      .postContent<Profile>(globalProperties.profilesPath, data.profile);
+      .postContent<Profile>(globalProperties.profilesPath, profile);
 
     const postStudent: Observable<Student> = this.contentService
-      .postContent<Student>(this.path, data.info);
+      .postContent<Student>(this.path, student);
 
     return Observable.forkJoin(postStudent, postProfile)
       .switchMap(([postStudent, postProfile]) => {
         const dataPatch = {
           profile_id: postProfile.id,
-          courses: data.info.courses
+          courses: student.courses
         };
         return this.contentService.patchContent<Student>(this.path, postStudent.id, dataPatch)
       })
@@ -75,17 +68,20 @@ export class StudentsService {
       }));
   }
 
-  updateStudentInfo(data:StudentInfo): Observable<ContentAlert> {
-    const infoId: string = data.info.id;
-    const profileId: string = data.profile.id;
+  updateStudentInfo(student:Student, profile: Profile): Observable<ContentAlert> {
+    const infoId: string = student.id;
+    const profileId: string = profile.id;
 
-    data = this.normalizeStudentInfo(data, true);
+    delete student.id;
+    delete profile.id;
+
+    profile.birthday = new Date(profile.birthday).toString();
 
     const patchInfo: Observable<Student> = this.contentService
-      .patchContent<Student>(this.path, infoId, data.info);
+      .patchContent<Student>(this.path, infoId, student);
 
     const patchProfile: Observable<Profile> = this.contentService
-      .patchContent<Profile>(globalProperties.profilesPath, profileId, data.profile);
+      .patchContent<Profile>(globalProperties.profilesPath, profileId, profile);
 
     return Observable.forkJoin(patchInfo, patchProfile)
       .map(([patchInfo, patchProfile]) => (<ContentAlert>{
@@ -117,15 +113,5 @@ export class StudentsService {
         message: `Error deleting student: ${error.message}`,
         time: 3000
       }))
-  }
-
-  private normalizeStudentInfo(data: StudentInfo, delteIds: boolean = false): StudentInfo {
-    data.profile.birthday = new Date(data.profile.birthday).toString();
-    data.info.courses = data.courses.map((course: Course) => course.id);
-    if (delteIds) {
-      delete data.info.id;
-      delete data.profile.id;
-    }
-    return data;
   }
 }

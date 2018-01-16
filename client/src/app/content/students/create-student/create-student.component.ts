@@ -1,5 +1,5 @@
 import {Component, OnDestroy, ViewChild} from "@angular/core";
-import {Student, StudentInfo} from "../../../models/content/student";
+import {Student} from "../../../models/content/student";
 import {ContentAlert} from "../../commons/alert/content-alert.component";
 import {InfoProfileData} from "../../commons/info-form/info-form.component";
 import {CoursesFormComponent} from "../../commons/courses-form/courses-form.component";
@@ -34,19 +34,14 @@ export class CreateStudentComponent implements OnDestroy {
               private router: Router) {}
 
   create(data: InfoProfileData) {
-    const finalData: StudentInfo = {
-      info: (<Student>data.info),
-      profile: data.profile,
-      courses: this.studentCourses.selectedCourses
-    };
-
+    (<Student>data.info).courses = this.studentCourses.getSelectedCourses();
     this.modalData = {
       type: "confirm",
       title: "Create",
       text: "Are you sure you want to create this new Student ?",
       action: () => {
         this.modalData.isBusy = true;
-        this.subscription = this.studentsService.createStudent(finalData)
+        this.subscription = this.studentsService.createStudent(data.info, data.profile)
           .subscribe(
             (alert: ContentAlert) => {
               this.alert = alert;

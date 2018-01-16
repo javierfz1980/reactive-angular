@@ -7,10 +7,11 @@ import {
 } from "../../commons/confirmation-modal/confirmation-modal.component";
 import {Subscription} from "rxjs/Subscription";
 import {Router} from "@angular/router";
-import {Student, StudentInfo} from "../../../models/content/student";
+import {Student} from "../../../models/content/student";
 import {InfoProfileData} from "../../commons/info-form/info-form.component";
 import {appRoutePaths} from "../../../app-routing.module";
 import {TeachersService} from "../../../core/providers/services/content/teachers.service";
+import {TeacherInfo} from "../../../models/content/teacher";
 
 @Component({
   selector: "gl-create-teacher",
@@ -34,7 +35,7 @@ export class CreateTeacherComponent implements OnDestroy{
               private router: Router) {}
 
   create(data: InfoProfileData) {
-    const finalData: StudentInfo = {
+    const finalData: TeacherInfo = {
       info: (<Student>data.info),
       profile: data.profile,
       courses: this.teacherCourses.selectedCourses
