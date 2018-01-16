@@ -9,6 +9,7 @@ export type InfoProfileType = "create" | "update";
 export interface InfoProfileData {
   info: Student | Teacher;
   profile: Profile;
+  courses?: string[];
 }
 
 @Component({

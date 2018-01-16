@@ -9,7 +9,7 @@ import {
   ConfirmationData,
   ConfirmationModalComponent
 } from "../../commons/confirmation-modal/confirmation-modal.component";
-import {Teacher, TeacherInfo} from "../../../models/content/teacher";
+import {Teacher} from "../../../models/content/teacher";
 import {TeachersService} from "../../../core/providers/services/content/teachers.service";
 import {InfoProfileData} from "../../commons/info-form/info-form.component";
 import {appRoutePaths} from "../../../app-routing.module";
@@ -27,7 +27,7 @@ export class SingleTeacherComponente implements OnInit, OnDestroy{
   courses: CoursesFormComponent;
 
   alert: ContentAlert;
-  info: Observable<TeacherInfo>;
+  info: Observable<InfoProfileData>;
   isAdministrator: boolean;
   modalData: ConfirmationData;
 
@@ -51,7 +51,6 @@ export class SingleTeacherComponente implements OnInit, OnDestroy{
         this.alert = {type: "danger", message: error.message};
         return Observable.throw(error)
       })
-      .do((finalData: TeacherInfo) => console.log("final data: ", finalData));
   }
 
   delete(data: Teacher) {
@@ -74,18 +73,14 @@ export class SingleTeacherComponente implements OnInit, OnDestroy{
   }
 
   update(data: InfoProfileData) {
-    const finalData: TeacherInfo = {
-      info: (<Teacher>data.info),
-      profile: data.profile,
-      courses: this.courses.selectedCourses
-    };
     this.modalData = {
       type: "confirm",
       title: "Update",
       text: "Are you sure you want to update this Teacher?",
       action: () => {
         this.modalData.isBusy = true;
-        this.subscriptions.push(this.teachersService.updateTeacherInfo(finalData)
+        this.subscriptions.push(this.teachersService
+          .updateTeacherInfo(data.info, data.profile, this.courses.getSelectedCourses())
           .subscribe(
             (alert: ContentAlert) => {
               this.alert = alert;

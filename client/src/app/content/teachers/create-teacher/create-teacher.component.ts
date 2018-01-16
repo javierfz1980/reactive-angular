@@ -7,11 +7,9 @@ import {
 } from "../../commons/confirmation-modal/confirmation-modal.component";
 import {Subscription} from "rxjs/Subscription";
 import {Router} from "@angular/router";
-import {Student} from "../../../models/content/student";
 import {InfoProfileData} from "../../commons/info-form/info-form.component";
 import {appRoutePaths} from "../../../app-routing.module";
 import {TeachersService} from "../../../core/providers/services/content/teachers.service";
-import {TeacherInfo} from "../../../models/content/teacher";
 
 @Component({
   selector: "gl-create-teacher",
@@ -35,19 +33,13 @@ export class CreateTeacherComponent implements OnDestroy{
               private router: Router) {}
 
   create(data: InfoProfileData) {
-    const finalData: TeacherInfo = {
-      info: (<Student>data.info),
-      profile: data.profile,
-      courses: this.teacherCourses.selectedCourses
-    };
-    console.log("create: ", finalData);
     this.modalData = {
       type: "confirm",
       title: "Create",
       text: "Are you sure you want to create this new Teacher ?",
       action: () => {
         this.modalData.isBusy = true;
-        this.subscription = this.teachersService.createTeacher(finalData)
+        this.subscription = this.teachersService.createTeacher(data.info, data.profile, this.teacherCourses.getSelectedCourses())
           .subscribe(
             (alert: ContentAlert) => {
               this.alert = alert;
