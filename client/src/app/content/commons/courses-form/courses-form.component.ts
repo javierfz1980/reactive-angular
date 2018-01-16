@@ -1,10 +1,10 @@
 import {Component, Input, OnInit} from "@angular/core";
-import {Course} from "../../../../models/content/course";
+import {Course} from "../../../models/content/course";
 import {Observable} from "rxjs/Observable";
-import {CoursesService} from "../../../../core/providers/services/content/courses.service";
+import {CoursesService} from "../../../core/providers/services/content/courses.service";
 
 @Component({
-  selector: "gl-single-student-courses-form",
+  selector: "gl-courses-form",
   templateUrl: "./courses-form.component.html"
 })
 export class CoursesFormComponent implements OnInit {

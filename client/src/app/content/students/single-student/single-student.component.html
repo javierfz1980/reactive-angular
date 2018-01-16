@@ -29,9 +29,9 @@
     <clr-tab>
       <button clrTabLink>Courses</button>
       <clr-tab-content>
-        <gl-single-student-courses-form #studentCourses
-                                        [studentCourses]="studentInfo.courses"
-                                        [isReadOnly]="!isAdministrator"></gl-single-student-courses-form>
+        <gl-courses-form #studentCourses
+                         [studentCourses]="studentInfo.courses"
+                         [isReadOnly]="!isAdministrator"></gl-courses-form>
       </clr-tab-content>
     </clr-tab>
 

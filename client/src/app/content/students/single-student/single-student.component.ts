@@ -15,7 +15,7 @@ import {
 } from "../../commons/confirmation-modal/confirmation-modal.component";
 import {Subscription} from "rxjs/Subscription";
 import {appRoutePaths} from "../../../app-routing.module";
-import {CoursesFormComponent} from "./courses-form/courses-form.component";
+import {CoursesFormComponent} from "../../commons/courses-form/courses-form.component";
 
 @Component({
   selector: "gl-single-student",

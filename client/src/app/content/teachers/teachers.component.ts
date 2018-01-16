@@ -10,6 +10,8 @@ import {ContentAlert} from "../commons/alert/content-alert.component";
 import {Subscription} from "rxjs/Subscription";
 import {TeachersService} from "../../core/providers/services/content/teachers.service";
 import {EmailFilter, NameLastnameFilter} from "../../models/filters/generic-string-filter";
+import {appRoutePaths} from "../../app-routing.module";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: "gl-profesores",
@@ -30,7 +32,9 @@ export class TeachersComponent implements OnInit, OnDestroy  {
   private subscription: Subscription;
 
   constructor(private authService: AuthService,
-              private teachersService: TeachersService) {}
+              private teachersService: TeachersService,
+              private router: Router,
+              private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.fetchContent();
@@ -67,6 +71,10 @@ export class TeachersComponent implements OnInit, OnDestroy  {
       }
     };
     this.confirmModal.open();
+  }
+
+  create() {
+    this.router.navigate([appRoutePaths.students.childs.create.path], {relativeTo: this.route})
   }
 
   ngOnDestroy() {

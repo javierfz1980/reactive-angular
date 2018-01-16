@@ -1,6 +1,6 @@
 <h1>
   {{ title }}
-  <button class="btn btn-sm btn-primary" (click)="create()">Add Student</button>
+  <button *ngIf="isAdministrator" class="btn btn-sm btn-primary" (click)="create()">Add Student</button>
 </h1>
 <hr>
 

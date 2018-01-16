@@ -1,4 +1,7 @@
-<h1>{{ title }}</h1>
+<h1>
+  {{ title }}
+  <button *ngIf="isAdministrator" class="btn btn-sm btn-primary" (click)="create()">Add Teacher</button>
+</h1>
 <hr>
 
 <!-- content alert -->
