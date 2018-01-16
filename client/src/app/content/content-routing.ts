@@ -1,6 +1,7 @@
 import {RouteElement} from "../models/core/route-element";
 import {AuthGuard} from "../core/providers/guards/auth.guard";
 import {Routes} from "@angular/router";
+import {contentStudentsRoutePaths} from "./students/students-routing.module";
 
 /**
  * Predefined Routes for Content Module
@@ -9,8 +10,9 @@ import {Routes} from "@angular/router";
 export const contentRoutePaths: {[key:string]: RouteElement} = {
   dashboard: {path: "dashboard", icon: "dashboard"},
   courses: {path: "courses", icon: "library"},
-  students: {path: "students", icon: "happy-face"},
+  students: {path: "students", icon: "happy-face", childs: contentStudentsRoutePaths},
   teachers: {path: "teachers", icon: "sad-face"},
+
 };
 
 export const contentRoutesComponents: Routes = [

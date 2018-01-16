@@ -26,4 +26,9 @@ export class ContentService {
     return this.httpClient.patch<T>(`${this.basePath}${url}/${id}`, data);
   }
 
+  postContent<T>(url: string, data: T): Observable<T> {
+    console.log("posting content: ", url);
+    return this.httpClient.post<T>(`${this.basePath}${url}`, data);
+  }
+
 }

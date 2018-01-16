@@ -45,14 +45,14 @@ export class ContentInfoComponent implements OnInit {
     this.info = this.validateInfo();
 
     this.info_fg = this.fb.group({
-      id: [this.info.info.id, Validators.required ],
+      id: [this.info.info.id ],
       first_name: [this.info.info.first_name, Validators.required ],
       last_name: [this.info.info.last_name, Validators.required ],
       email: [this.info.info.email, [Validators.required, Validators.email] ]
     });
 
     this.profile_fg = this.fb.group({
-      id: [this.info.profile.id, Validators.required ],
+      id: [this.info.profile.id ],
       birthday: [this.getDateString(this.info.profile.birthday), Validators.required ],
       avatar: [this.info.profile.avatar],
       secondary_email: [this.info.profile.secondary_email],
@@ -73,7 +73,7 @@ export class ContentInfoComponent implements OnInit {
   }
 
   private getDateString(dateString: string): string {
-    return new Date(dateString).toISOString().slice(0,10);
+    return dateString ? new Date(dateString).toISOString().slice(0,10) : "";
   }
 
   private validateInfo(): InfoProfileData{

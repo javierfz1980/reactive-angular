@@ -8,7 +8,7 @@ import {
 } from "../commons/confirmation-modal/confirmation-modal.component";
 import {ContentAlert} from "../commons/alert/content-alert.component";
 import {Subscription} from "rxjs/Subscription";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {appRoutePaths} from "../../app-routing.module";
 import {StudentsService} from "../../core/providers/services/content/students.service";
 import {EmailFilter, NameLastnameFilter} from "../../models/filters/generic-string-filter";
@@ -33,7 +33,8 @@ export class StudentsComponent implements OnInit, OnDestroy {
 
   constructor(private studentsService: StudentsService,
               private authService: AuthService,
-              private router: Router) {}
+              private router: Router,
+              private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.fetchContent();
@@ -70,6 +71,10 @@ export class StudentsComponent implements OnInit, OnDestroy {
       }
     };
     this.confirmModal.open();
+  }
+
+  create() {
+    this.router.navigate([appRoutePaths.students.childs.create.path], {relativeTo: this.route})
   }
 
   ngOnDestroy() {

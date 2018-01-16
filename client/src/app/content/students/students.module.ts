@@ -5,11 +5,13 @@ import {CommonsModule} from "../../commons/commons.module";
 import {StudentsRoutingModule} from "./students-routing.module";
 import {SingleStudentComponent} from "./single-student/single-student.component";
 import {CoursesFormComponent} from "./single-student/courses-form/courses-form.component";
+import {CreateStudentComponent} from "./create-student/create-student.component";
 
 const contents = [
   StudentsComponent,
   SingleStudentComponent,
-  CoursesFormComponent
+  CoursesFormComponent,
+  CreateStudentComponent
 ];
 
 @NgModule({

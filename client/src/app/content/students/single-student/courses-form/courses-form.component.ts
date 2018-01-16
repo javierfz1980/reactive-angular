@@ -10,7 +10,7 @@ import {CoursesService} from "../../../../core/providers/services/content/course
 export class CoursesFormComponent implements OnInit {
 
   @Input()
-  studentCourses: Course[];
+  studentCourses: Course[] = [];
 
   @Input()
   isReadOnly: boolean;

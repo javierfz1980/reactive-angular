@@ -1,0 +1,39 @@
+<h1>
+  {{ title }}
+</h1>
+<hr>
+<!-- content tabs -->
+<div>
+
+  <!-- content alert -->
+  <gl-content-alert *ngIf="alert" [content]="alert"></gl-content-alert>
+
+  <clr-tabs>
+
+    <!-- Info -->
+    <clr-tab>
+      <button clrTabLink id="link1">Profile</button>
+      <clr-tab-content>
+        <gl-info-form [isReadOnly]="false"
+                      (create)="create($event)"></gl-info-form>
+      </clr-tab-content>
+    </clr-tab>
+
+    <!-- Courses -->
+    <clr-tab>
+      <button clrTabLink>Courses</button>
+      <clr-tab-content>
+        <gl-single-student-courses-form #studentCourses
+                                        [isReadOnly]="false"></gl-single-student-courses-form>
+      </clr-tab-content>
+    </clr-tab>
+
+  </clr-tabs>
+
+  <gl-confirmation-modal #confirmModal [modalData]="modalData"></gl-confirmation-modal>
+</div>
+
+<!-- content loader -->
+<ng-template #loading>
+  <gl-content-loader></gl-content-loader>
+</ng-template>

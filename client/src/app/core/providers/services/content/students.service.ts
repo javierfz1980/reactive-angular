@@ -30,6 +30,7 @@ export class StudentsService {
 
   getStudentInfo(id: string): Observable<StudentInfo> {
     return this.getStudent(id)
+      .do(data => console.log("data: ", data))
       .switchMap((student: Student) => {
         const profile: Observable<Profile> = this.contentService
           .getContent<Profile>(`${globalProperties.profilesPath}/${student.profile_id}`);
@@ -69,19 +70,13 @@ export class StudentsService {
     const infoId: string = data.info.id;
     const profileId: string = data.profile.id;
 
-    delete data.info.id;
-    delete data.profile.id;
+    data = this.normalizeStudentInfo(data, true);
 
-    data.profile.birthday = new Date(data.profile.birthday).toString();
-    data.info.courses = data.courses.map((course: Course) => course.id);
+    const patchInfo: Observable<Student> = this.contentService
+      .patchContent<Student>(this.path, infoId, data.info);
 
-    console.log("updateStudentInfo :", data.info);
-
-    const patchInfo: Observable<Student> =
-        this.contentService.patchContent<Student>(this.path, infoId, data.info);
-
-    const patchProfile: Observable<Profile> =
-      this.contentService.patchContent<Profile>(globalProperties.profilesPath, profileId, data.profile);
+    const patchProfile: Observable<Profile> = this.contentService
+      .patchContent<Profile>(globalProperties.profilesPath, profileId, data.profile);
 
     return Observable.forkJoin(patchInfo, patchProfile)
       .map(([patchInfo, patchProfile]) => (<ContentAlert>{
@@ -93,5 +88,43 @@ export class StudentsService {
         type: "danger",
         message: `Error updating info: ${error.message}`
       }))
+  }
+
+  createStudent(data: StudentInfo): Observable<ContentAlert> {
+    data = this.normalizeStudentInfo(data);
+
+    const postProfile: Observable<Profile> = this.contentService
+      .postContent<Profile>(globalProperties.profilesPath, data.profile);
+
+    const postStudent: Observable<Student> = this.contentService
+      .postContent<Student>(this.path, data.info);
+
+    return Observable.forkJoin(postStudent, postProfile)
+      .switchMap(([postStudent, postProfile]) => {
+        const dataPatch = {
+          profile_id: postProfile.id,
+          courses: data.info.courses
+        };
+        return this.contentService.patchContent<Student>(this.path, postStudent.id, dataPatch)
+      })
+      .map((student: Student) => (<ContentAlert>{
+        type: "success",
+        message: "Student created",
+        time: 3000
+      }))
+      .catch((error: any) => Observable.of(<ContentAlert>{
+        type: "danger",
+        message: `Error creating student: ${error.message}`
+      }));
+  }
+
+  private normalizeStudentInfo(data: StudentInfo, delteIds: boolean = false): StudentInfo {
+    data.profile.birthday = new Date(data.profile.birthday).toString();
+    data.info.courses = data.courses.map((course: Course) => course.id);
+    if (delteIds) {
+      delete data.info.id;
+      delete data.profile.id;
+    }
+    return data;
   }
 }
