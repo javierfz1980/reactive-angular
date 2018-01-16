@@ -1,6 +1,5 @@
 <!-- content -->
 <div *ngIf="courses | async as coursesList; else loading">
-<!--<div *ngIf="studentCourses; else loading">-->
   <div class="container-fluid">
     <clr-datagrid class="_content-datagrid" [(clrDgSelected)]="selectedCourses">
       <clr-dg-column>Course</clr-dg-column>

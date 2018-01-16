@@ -4,7 +4,7 @@
   <h1>
     {{studentInfo.info.first_name}} {{studentInfo.info.last_name}}
     <!-- content delete -->
-    <button class="btn btn-sm btn-danger" (click)="delete(studentInfo.info)">
+    <button *ngIf="isAdministrator" class="btn btn-sm btn-danger" (click)="delete(studentInfo.info)">
       <clr-icon shape="trash"></clr-icon> Delete
     </button>
   </h1>

@@ -21,7 +21,8 @@ export class CoursesFormComponent implements OnInit {
   constructor(private coursesService: CoursesService) {}
 
   ngOnInit() {
-    this.courses = this.coursesService
+
+    this.courses = (this.isReadOnly) ? Observable.of(this.studentCourses) : this.coursesService
       .getCourses()
       .do((courses: Course[]) => {
         courses.forEach((course: Course) => {
