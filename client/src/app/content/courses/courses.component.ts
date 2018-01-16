@@ -72,7 +72,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
       action: () => {
         this.modalData.isBusy = true;
         this.subscriptions.push(
-          this.coursesService.patchCourse(course.id, {active: !course.active})
+          this.coursesService.updateCourse(course.id, {active: !course.active})
             .subscribe(
               (alert: ContentAlert) => {
                 this.alert = alert;

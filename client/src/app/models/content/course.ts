@@ -1,4 +1,5 @@
 import {Student} from "./student";
+import {Teacher} from "./teacher";
 
 export interface Course{
   id: string;
@@ -8,4 +9,5 @@ export interface Course{
   active: boolean;
   teacher: string;
   students: Student[];
+  teacherInfo?: Teacher;
 }

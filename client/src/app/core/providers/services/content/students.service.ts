@@ -10,13 +10,15 @@ import {Course} from "../../../../models/content/course";
 import 'rxjs/add/operator/mergeMap'
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/observable/from';
+import {CoursesService} from "./courses.service";
 
 @Injectable()
 export class StudentsService {
 
   private path: string = globalProperties.studentsPath;
 
-  constructor(private contentService: ContentService) {}
+  constructor(private contentService: ContentService,
+              private coursesService: CoursesService) {}
 
   getStudents(): Observable<Student[]> {
     return this.contentService
@@ -37,57 +39,12 @@ export class StudentsService {
 
         const courses: Observable<Course[]> = Observable
           .from((student.courses) ? student.courses : [])
-          .mergeMap((courseId: string) =>  this.contentService
-            .getContent<Course>(`${globalProperties.coursesPath}/${courseId}`))
+          .mergeMap((courseId: string) =>  this.coursesService.getCourse(courseId))
           .toArray();
 
         return Observable.forkJoin(profile, courses)
           .map(([profile, courses]) => ({info: student, profile: profile, courses: courses}))
       })
-  }
-
-  deleteStudent(student: Student): Observable<ContentAlert> {
-    const deleteProfile: Observable<MessageResponse> =  this.contentService
-      .deleteContent<MessageResponse>(globalProperties.profilesPath, student.profile_id);
-
-    const deleteStudent: Observable<MessageResponse> =  this.contentService
-      .deleteContent<MessageResponse>(this.path, student.id);
-
-    return Observable.forkJoin(deleteProfile, deleteStudent)
-      .map(([deleteProfile, deleteStudent]) => (<ContentAlert>{
-        type: "success",
-        message: deleteProfile.message,
-        time: 3000
-      }))
-      .catch((error: any) => Observable.of(<ContentAlert>{
-        type: "danger",
-        message: `Error deleting student: ${error.message}`,
-        time: 3000
-      }))
-  }
-
-  updateStudentInfo(data:StudentInfo): Observable<ContentAlert> {
-    const infoId: string = data.info.id;
-    const profileId: string = data.profile.id;
-
-    data = this.normalizeStudentInfo(data, true);
-
-    const patchInfo: Observable<Student> = this.contentService
-      .patchContent<Student>(this.path, infoId, data.info);
-
-    const patchProfile: Observable<Profile> = this.contentService
-      .patchContent<Profile>(globalProperties.profilesPath, profileId, data.profile);
-
-    return Observable.forkJoin(patchInfo, patchProfile)
-      .map(([patchInfo, patchProfile]) => (<ContentAlert>{
-        type: "success",
-        message: "Student info updated",
-        time: 3000
-      }))
-      .catch((error: any) => Observable.of(<ContentAlert>{
-        type: "danger",
-        message: `Error updating info: ${error.message}`
-      }))
   }
 
   createStudent(data: StudentInfo): Observable<ContentAlert> {
@@ -116,6 +73,50 @@ export class StudentsService {
         type: "danger",
         message: `Error creating student: ${error.message}`
       }));
+  }
+
+  updateStudentInfo(data:StudentInfo): Observable<ContentAlert> {
+    const infoId: string = data.info.id;
+    const profileId: string = data.profile.id;
+
+    data = this.normalizeStudentInfo(data, true);
+
+    const patchInfo: Observable<Student> = this.contentService
+      .patchContent<Student>(this.path, infoId, data.info);
+
+    const patchProfile: Observable<Profile> = this.contentService
+      .patchContent<Profile>(globalProperties.profilesPath, profileId, data.profile);
+
+    return Observable.forkJoin(patchInfo, patchProfile)
+      .map(([patchInfo, patchProfile]) => (<ContentAlert>{
+        type: "success",
+        message: "Student info updated",
+        time: 3000
+      }))
+      .catch((error: any) => Observable.of(<ContentAlert>{
+        type: "danger",
+        message: `Error updating info: ${error.message}`
+      }))
+  }
+
+  deleteStudent(student: Student): Observable<ContentAlert> {
+    const deleteProfile: Observable<MessageResponse> =  this.contentService
+      .deleteContent<MessageResponse>(globalProperties.profilesPath, student.profile_id);
+
+    const deleteStudent: Observable<MessageResponse> =  this.contentService
+      .deleteContent<MessageResponse>(this.path, student.id);
+
+    return Observable.forkJoin(deleteProfile, deleteStudent)
+      .map(([deleteProfile, deleteStudent]) => (<ContentAlert>{
+        type: "success",
+        message: deleteProfile.message,
+        time: 3000
+      }))
+      .catch((error: any) => Observable.of(<ContentAlert>{
+        type: "danger",
+        message: `Error deleting student: ${error.message}`,
+        time: 3000
+      }))
   }
 
   private normalizeStudentInfo(data: StudentInfo, delteIds: boolean = false): StudentInfo {

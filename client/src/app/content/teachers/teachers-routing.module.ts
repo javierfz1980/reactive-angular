@@ -4,6 +4,7 @@ import {TeachersComponent} from "./teachers.component";
 import {RouterModule, Routes} from "@angular/router";
 import {CreateTeacherComponent} from "./create-teacher/create-teacher.component";
 import {RouteElement} from "../../models/core/route-element";
+import {SingleTeacherComponente} from "./single-teacher/single-teacher.componente";
 
 export const contentTeachersRoutePaths: {[key:string]: RouteElement} = {
   create: {path: "create", icon: null}
@@ -12,7 +13,7 @@ export const contentTeachersRoutePaths: {[key:string]: RouteElement} = {
 export const teachersRoutes: Routes = [
   {path: "", component: TeachersComponent, canActivate: [AuthGuard]},
   {path: "create", component: CreateTeacherComponent, canActivate: [AuthGuard]},
-  /*{path: ":id", component: SingleStudentComponent, canActivate: [AuthGuard]}*/
+  {path: ":id", component: SingleTeacherComponente, canActivate: [AuthGuard]}
 ];
 
 @NgModule({

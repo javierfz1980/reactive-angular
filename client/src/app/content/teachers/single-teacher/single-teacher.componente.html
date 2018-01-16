@@ -1,10 +1,10 @@
 <!-- content tabs -->
-<div *ngIf="info | async as studentInfo; else loading">
+<div *ngIf="info | async as teacherInfo; else loading">
 
   <h1>
-    {{studentInfo.info.first_name}} {{studentInfo.info.last_name}}
+    {{teacherInfo.info.first_name}} {{teacherInfo.info.last_name}}
     <!-- content delete -->
-    <button *ngIf="isAdministrator" class="btn btn-sm btn-danger" (click)="delete(studentInfo.info)">
+    <button *ngIf="isAdministrator" class="btn btn-sm btn-danger" (click)="delete(teacherInfo.info)">
       <clr-icon shape="trash"></clr-icon> Delete
     </button>
   </h1>
@@ -19,7 +19,7 @@
     <clr-tab>
       <button clrTabLink id="link1">Profile</button>
       <clr-tab-content>
-        <gl-info-form [info]="{info: studentInfo.info, profile: studentInfo.profile}"
+        <gl-info-form [info]="{info: teacherInfo.info, profile: teacherInfo.profile}"
                       [isReadOnly]="!isAdministrator"
                       (update)="update($event)"></gl-info-form>
       </clr-tab-content>
@@ -29,8 +29,9 @@
     <clr-tab>
       <button clrTabLink>Courses</button>
       <clr-tab-content>
-        <gl-courses-form #studentCourses
-                         [markedCourses]="studentInfo.courses"
+        <p>Note: If you select a Course which already has a Teacher it will be updated and assigned to you.</p>
+        <gl-courses-form #courses
+                         [markedCourses]="teacherInfo.courses"
                          [isReadOnly]="!isAdministrator"></gl-courses-form>
       </clr-tab-content>
     </clr-tab>

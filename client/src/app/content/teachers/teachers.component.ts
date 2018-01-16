@@ -50,8 +50,8 @@ export class TeachersComponent implements OnInit, OnDestroy  {
       });
   }
 
-  details(entity: Teacher) {
-    console.log("view details of: ", entity);
+  details(teacher: Teacher) {
+    this.router.navigate([appRoutePaths.teachers.path, teacher.id]);
   }
 
   delete(teacher: Teacher) {

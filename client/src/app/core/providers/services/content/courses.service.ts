@@ -5,6 +5,7 @@ import {Observable} from "rxjs/Observable";
 import {Course} from "../../../../models/content/course";
 import {MessageResponse} from "../../../../models/api/message-response";
 import {ContentAlert} from "../../../../content/commons/alert/content-alert.component";
+import {Teacher} from "../../../../models/content/teacher";
 
 @Injectable()
 export class CoursesService {
@@ -18,12 +19,37 @@ export class CoursesService {
       .getContent<Course[]>(this.path);
   }
 
-  deleteCourse(course: Course): Observable<ContentAlert> {
+  getCoursesWithTeachers(): Observable<Course[]> {
+    return this.getCourses()
+      .switchMap((courses: Course[]) => {
+        return Observable.from(courses)
+          .mergeMap((course: Course) => {
+            if (course.teacher) {
+              return this.contentService
+                .getContent<Teacher>(`${globalProperties.teachersPath}/${course.teacher}`)
+                .map((teacher: Teacher) => {
+                  course.teacherInfo = teacher;
+                  return course;
+                })
+            } else {
+              return Observable.of(course);
+            }
+          })
+      })
+      .toArray();
+  }
+
+  getCourse(id: string): Observable<Course> {
     return this.contentService
-      .deleteContent<MessageResponse>(this.path, course.id)
-      .map((message: MessageResponse) => (<ContentAlert>{
+      .getContent<Course>(`${this.path}/${id}`);
+  }
+
+  updateCourse(id: string, data: {[key: string]: any}): Observable<ContentAlert> {
+    return this.contentService
+      .patchContent<Course>(this.path, id, data)
+      .map((course: Course) => (<ContentAlert>{
         type: "success",
-        message: message.message,
+        message: "The selected course status was updated",
         time: 3000
       }))
       .catch((error: any) => Observable.of(<ContentAlert>{
@@ -33,12 +59,20 @@ export class CoursesService {
       }))
   }
 
-  patchCourse(id: string, data: {[key: string]: any}): Observable<ContentAlert> {
+  updateMultipleCoursesWithSameData(courses: Course[], data: {[key: string]: any}): Observable<ContentAlert[]> {
+    return Observable.from(courses)
+      .mergeMap((course: Course) => {
+        return this.updateCourse(course.id, data)
+      })
+      .toArray();
+  }
+
+  deleteCourse(course: Course): Observable<ContentAlert> {
     return this.contentService
-      .patchContent<Course>(this.path, id, data)
-      .map((course: Course) => (<ContentAlert>{
+      .deleteContent<MessageResponse>(this.path, course.id)
+      .map((message: MessageResponse) => (<ContentAlert>{
         type: "success",
-        message: "The slected course status was updated",
+        message: message.message,
         time: 3000
       }))
       .catch((error: any) => Observable.of(<ContentAlert>{

@@ -3,9 +3,16 @@
   <div class="container-fluid">
     <clr-datagrid class="_content-datagrid" [(clrDgSelected)]="selectedCourses">
       <clr-dg-column>Course</clr-dg-column>
+      <clr-dg-column>Teacher</clr-dg-column>
+      <clr-dg-column>Students</clr-dg-column>
 
       <clr-dg-row *clrDgItems="let course of coursesList" [clrDgItem]="course">
-        <clr-dg-cell>{{course.title}}</clr-dg-cell>
+        <clr-dg-cell class="title">{{course.title}}</clr-dg-cell>
+        <clr-dg-cell>
+          {{course.teacherInfo ?
+            course.teacherInfo.first_name + " " + course.teacherInfo.last_name  : "unassigned"}}
+        </clr-dg-cell>
+        <clr-dg-cell>{{course.students ? course.students.length : "0"}}</clr-dg-cell>
         <clr-dg-row-detail *clrIfExpanded>
           {{course.short_description}}
         </clr-dg-row-detail>

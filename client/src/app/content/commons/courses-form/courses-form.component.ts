@@ -5,12 +5,13 @@ import {CoursesService} from "../../../core/providers/services/content/courses.s
 
 @Component({
   selector: "gl-courses-form",
-  templateUrl: "./courses-form.component.html"
+  templateUrl: "./courses-form.component.html",
+  styleUrls: ["./courses-form.component.css"]
 })
 export class CoursesFormComponent implements OnInit {
 
   @Input()
-  studentCourses: Course[] = [];
+  markedCourses: Course[] = [];
 
   @Input()
   isReadOnly: boolean;
@@ -21,12 +22,11 @@ export class CoursesFormComponent implements OnInit {
   constructor(private coursesService: CoursesService) {}
 
   ngOnInit() {
-
-    this.courses = (this.isReadOnly) ? Observable.of(this.studentCourses) : this.coursesService
-      .getCourses()
+    this.courses = (this.isReadOnly) ? Observable.of(this.markedCourses) : this.coursesService
+      .getCoursesWithTeachers()
       .do((courses: Course[]) => {
         courses.forEach((course: Course) => {
-          const existsInStudentList: Course = this.studentCourses
+          const existsInStudentList: Course = this.markedCourses
             .find(studentCourse => studentCourse.id === course.id);
           if (existsInStudentList) this.selectedCourses.push(course);
         })
