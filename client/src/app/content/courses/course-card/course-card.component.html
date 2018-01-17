@@ -1,5 +1,5 @@
 <div class="card">
-  <div class="card-header" [ngClass]="{'content-disabled': !course.active}">
+  <div class="card-header" [ngClass]="{'content-disabled': !course.active}" (click)="viewCourse(course)">
     {{ course.title | capitalize }}
   </div>
   <div class="card-block">
@@ -8,7 +8,7 @@
     </div>
   </div>
   <div class="card-footer">
-    <button class="btn btn-sm btn-link" (click)="goToSinglePost()">view</button>
+    <button class="btn btn-sm btn-link" (click)="viewCourse(course)">view</button>
     <div class="admin-actions" *ngIf="isAdministrator">
       <div class="toggle-switch">
         <input type="checkbox" [id]="course.id" [checked]="course.active" (change)="toggle(course)">
@@ -16,6 +16,9 @@
       </div>
       <button class="btn btn-sm btn-link" (click)="delete(course)">
         <clr-icon shape="trash"></clr-icon>
+      </button>
+      <button class="btn btn-sm btn-link" (click)="editCourse(course)">
+        <clr-icon shape="pencil"></clr-icon>
       </button>
     </div>
   </div>

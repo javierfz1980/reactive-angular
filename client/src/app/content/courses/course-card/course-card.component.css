@@ -5,3 +5,7 @@
 .content-disabled {
   color: #ccc!important;
 }
+
+.card-header {
+  cursor: pointer;
+}

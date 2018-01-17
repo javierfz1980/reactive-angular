@@ -20,12 +20,26 @@ export class CourseCardComponent {
   @Output('onToggle')
   toggleEvent: EventEmitter<Course> = new EventEmitter<Course>();
 
+  @Output('onEdit')
+  editEvent: EventEmitter<Course> = new EventEmitter<Course>();
+
+  @Output('onView')
+  viewEvent: EventEmitter<Course> = new EventEmitter<Course>();
+
   toggle(course: Course) {
     this.toggleEvent.emit(course);
   }
 
   delete(course: Course) {
     this.deleteEvent.emit(course);
+  }
+
+  editCourse(course: Course) {
+    this.editEvent.emit(course);
+  }
+
+  viewCourse(course: Course) {
+    this.viewEvent.emit(course);
   }
 
 }

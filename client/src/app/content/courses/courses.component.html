@@ -13,6 +13,8 @@
                         [course]="course"
                         [isAdministrator]="isAdministrator"
                         (onDelete)="delete($event)"
+                        (onEdit)="editCourse($event)"
+                        (onView)="viewCourse($event)"
                         (onToggle)="toggleStatus($event)">
         </gl-course-card>
       </div>
