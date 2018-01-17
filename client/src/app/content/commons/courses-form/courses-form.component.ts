@@ -18,14 +18,22 @@ export class CoursesFormComponent implements OnInit {
   link: string;
 
   @Input()
-  isReadOnly: boolean;
+  set isReadOnly(value: boolean) {
+    this._isReadOnly = value;
+    this.fetchContent();
+  }
 
   courses: Observable<Course[]>;
   selectedCourses: Course[] = [];
+  private _isReadOnly: boolean;
 
   constructor(private coursesService: CoursesService) {}
 
   ngOnInit() {
+    this.fetchContent();
+  }
+
+  fetchContent() {
     this.courses = this.coursesService
       .getCoursesWithTeachers()
       .map((courses: Course[]) => {
@@ -35,7 +43,13 @@ export class CoursesFormComponent implements OnInit {
             .some((student: Student) => student.id === this.link);
           return linkedToTeacher || linkedToStudent;
         });
-        return (this.isReadOnly ? this.selectedCourses : courses);
+        if (this._isReadOnly) {
+          const res: Course[] = this.selectedCourses.slice();
+          this.selectedCourses = null;
+          return res
+        } else {
+          return courses
+        }
       });
   }
 

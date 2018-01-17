@@ -33,6 +33,7 @@ export class SingleStudentComponent implements OnInit, OnDestroy {
   alert: ContentAlert;
   info: Observable<InfoProfileData>;
   isAdministrator: boolean;
+  editMode: boolean = false;
   modalData: ConfirmationData;
 
   private subscriptions: Subscription[] = [];
@@ -43,6 +44,7 @@ export class SingleStudentComponent implements OnInit, OnDestroy {
               private studentsService: StudentsService) {}
 
   ngOnInit() {
+    this.editMode = this.route.queryParams["value"]["edit"];
     this.isAdministrator = this.authService.isAdministrator();
     this.fetchContent();
   }
@@ -94,6 +96,11 @@ export class SingleStudentComponent implements OnInit, OnDestroy {
       }
     };
     this.confirmModal.open();
+  }
+
+  toggleEditMode() {
+    this.editMode = !this.editMode;
+    console.log(this.isAdministrator && this.editMode);
   }
 
   ngOnDestroy() {

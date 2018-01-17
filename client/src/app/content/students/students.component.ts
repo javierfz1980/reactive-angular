@@ -50,10 +50,6 @@ export class StudentsComponent implements OnInit, OnDestroy {
       });
   }
 
-  details(student: Student) {
-    this.router.navigate([appRoutePaths.students.path, student.id]);
-  }
-
   delete(student: Student) {
     this.modalData = {
       type: "delete",
@@ -75,6 +71,14 @@ export class StudentsComponent implements OnInit, OnDestroy {
 
   create() {
     this.router.navigate([appRoutePaths.students.childs.create.path], {relativeTo: this.route})
+  }
+
+  edit(student: Student) {
+    this.router.navigate([appRoutePaths.students.path, student.id], { queryParams: { edit: true}});
+  }
+
+  details(student: Student) {
+    this.router.navigate([appRoutePaths.students.path, student.id]);
   }
 
   ngOnDestroy() {

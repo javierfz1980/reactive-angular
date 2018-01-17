@@ -2,11 +2,17 @@
 <div *ngIf="info | async as studentInfo; else loading">
 
   <h1>
-    {{studentInfo.info.first_name}} {{studentInfo.info.last_name}}
-    <!-- content delete -->
-    <button *ngIf="isAdministrator" class="btn btn-sm btn-danger" (click)="delete(studentInfo.info)">
-      <clr-icon shape="trash"></clr-icon> Delete
-    </button>
+    {{studentInfo.info.first_name}} {{studentInfo.info.last_name}}&nbsp;
+    <!-- content edit -->
+    <ng-container *ngIf="isAdministrator" >
+      <button class="btn btn-sm" [ngClass]="{'btn-primary': editMode, 'btn-outline': !editMode}" (click)="toggleEditMode()">
+        <clr-icon shape="pencil"></clr-icon> Edit
+      </button>
+      <!-- content delete -->
+      <button class="btn btn-sm btn-danger" (click)="delete(studentInfo.info)">
+        <clr-icon shape="trash"></clr-icon> Delete
+      </button>
+    </ng-container>
   </h1>
   <br>
 
@@ -20,7 +26,7 @@
       <button clrTabLink id="link1">Profile</button>
       <clr-tab-content>
         <gl-info-form [info]="{info: studentInfo.info, profile: studentInfo.profile}"
-                      [isReadOnly]="!isAdministrator"
+                      [isReadOnly]="!(isAdministrator && editMode)"
                       (update)="update($event)"></gl-info-form>
       </clr-tab-content>
     </clr-tab>
@@ -31,7 +37,7 @@
       <clr-tab-content>
         <gl-courses-form #studentCourses
                          [link]="studentInfo.info.id"
-                         [isReadOnly]="!isAdministrator"></gl-courses-form>
+                         [isReadOnly]="!(isAdministrator && editMode)"></gl-courses-form>
       </clr-tab-content>
     </clr-tab>
 
