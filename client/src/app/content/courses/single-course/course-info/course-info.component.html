@@ -54,7 +54,7 @@
           <label for="active"></label>
         </div>
     </div>
-    <div class="form-group">
+    <div class="form-group" *ngIf="form.controls['active'].value || isAdministrator">
       <label> Teacher: </label>
       <div *ngIf="teachersList | async as teachers" class="select">
         <select id="teacher"
@@ -67,6 +67,14 @@
           </option>
         </select>
       </div>
+      <label *ngIf="form.controls['teacher'].value">
+        <a class="_pointer-mouse" (click)="gotoTeacher()">
+          <clr-icon shape="user"></clr-icon>
+        </a>
+        <a *ngIf="isAdministrator" class="_pointer-mouse" (click)="gotoTeacher(true)">
+          <clr-icon shape="edit"></clr-icon>
+        </a>
+      </label>
     </div>
 
   </section>

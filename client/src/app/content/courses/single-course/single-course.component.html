@@ -32,7 +32,7 @@
     </clr-tab>
 
     <!-- Students -->
-    <clr-tab>
+    <clr-tab *ngIf="courseInfo.active || isAdministrator">
       <button clrTabLink>Students</button>
       <clr-tab-content>
         <gl-course-students #courseStudents

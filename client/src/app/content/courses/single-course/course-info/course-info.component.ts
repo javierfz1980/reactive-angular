@@ -4,6 +4,9 @@ import {Course} from "../../../../models/content/course";
 import {TeachersService} from "../../../../core/providers/services/content/teachers.service";
 import {Observable} from "rxjs/Observable";
 import {Teacher} from "../../../../models/content/teacher";
+import {AuthService} from "../../../../core/providers/services/auth.service";
+import {Router} from "@angular/router";
+import {appRoutePaths} from "../../../../app-routing.module";
 
 export type CourseInfoType = "create" | "update";
 
@@ -38,15 +41,19 @@ export class CourseInfoComponent implements OnInit{
   createEvent: EventEmitter<Course> = new EventEmitter<Course>();
 
   _isReadOnly: boolean;
+  isAdministrator: boolean;
   form: FormGroup;
-  teachersList: Observable<Teacher[]>
+  teachersList: Observable<Teacher[]>;
 
   private type: CourseInfoType;
 
   constructor(private fb: FormBuilder,
-              private teachersService: TeachersService) {}
+              private teachersService: TeachersService,
+              private authService: AuthService,
+              private router: Router) {}
 
   ngOnInit() {
+    this.isAdministrator = this.authService.isAdministrator();
 
     this.teachersList = this.teachersService
       .getTeachers();
@@ -63,7 +70,6 @@ export class CourseInfoComponent implements OnInit{
       active: [{value: this.info.active, disabled: this._isReadOnly}, Validators.required ],
       teacher: [{value: this.info.teacher, disabled: this._isReadOnly}, Validators.required ]
     });
-
   }
 
   private validateInfo(): Course {
@@ -79,6 +85,11 @@ export class CourseInfoComponent implements OnInit{
       }
     }
     return this.info;
+  }
+
+  gotoTeacher(edit: boolean = false) {
+    const queryParams = edit ? {queryParams: { edit: true}} : {};
+    this.router.navigate([appRoutePaths.teachers.path, this.form.controls["teacher"].value], queryParams);
   }
 
   update() {

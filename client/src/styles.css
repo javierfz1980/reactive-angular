@@ -40,3 +40,7 @@ hr {
   top: 50%;
   margin-top: 145px;
 }
+
+._pointer-mouse {
+  cursor: pointer;
+}
