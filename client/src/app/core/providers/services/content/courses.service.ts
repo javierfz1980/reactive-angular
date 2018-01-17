@@ -121,18 +121,19 @@ export class CoursesService {
   }
 
   deleteCourse(course: Course): Observable<ContentAlert> {
-    // TODO: also remove this course form students.courses !!!
-    return this.contentService
-      .deleteContent<MessageResponse>(this.path, course.id)
-      .map((message: MessageResponse) => (<ContentAlert>{
-        type: "success",
-        message: message.message,
-        time: 3000
-      }))
-      .catch((error: any) => Observable.of(<ContentAlert>{
-        type: "danger",
-        message: error.message,
-        time: 3000
-      }))
+    return Observable.forkJoin(
+      this.delteCurseFromStudents(course.id),
+      this.contentService.deleteContent<MessageResponse>(this.path, course.id)
+    )
+    .map(([students, course]) => (<ContentAlert>{
+      type: "success",
+      message: course.message,
+      time: 3000
+    }))
+    .catch((error: any) => Observable.of(<ContentAlert>{
+      type: "danger",
+      message: error.message,
+      time: 3000
+    }))
   }
 }
