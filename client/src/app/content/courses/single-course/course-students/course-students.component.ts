@@ -2,6 +2,8 @@ import {Component, Input} from "@angular/core";
 import {Observable} from "rxjs/Observable";
 import {Student} from "../../../../models/content/student";
 import {StudentsService} from "../../../../core/providers/services/content/students.service";
+import {Router} from "@angular/router";
+import {appRoutePaths} from "../../../../app-routing.module";
 
 @Component({
   selector: "gl-course-students",
@@ -22,7 +24,8 @@ export class CourseStudentsComponent {
   selectedStudents: Student[] = [];
   private _isReadOnly: boolean;
 
-  constructor(private studentsService: StudentsService) {}
+  constructor(private studentsService: StudentsService,
+              private router: Router) {}
 
   ngOnInit() {
     this.fetchContent();
@@ -45,6 +48,10 @@ export class CourseStudentsComponent {
           return students
         }
       });
+  }
+
+  gotoStudent(id: string) {
+    this.router.navigate([appRoutePaths.students.path, id])
   }
 
   getSelectedStudents(): string[] {

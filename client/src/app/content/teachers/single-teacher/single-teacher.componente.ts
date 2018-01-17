@@ -49,6 +49,7 @@ export class SingleTeacherComponente implements OnInit, OnDestroy{
     this.info = this.route.params
       .map((params: Params) => params.id)
       .switchMap((id:string) => this.teachersService.getTeacherInfo(id))
+      .do(data => console.log("ACACACA: ", data))
       .catch((error: any) => {
         this.alert = {type: "danger", message: error.message};
         return Observable.throw(error)

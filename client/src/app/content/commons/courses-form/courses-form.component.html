@@ -7,10 +7,16 @@
       <clr-dg-column>Students</clr-dg-column>
 
       <clr-dg-row *clrDgItems="let course of coursesList" [clrDgItem]="course">
-        <clr-dg-cell class="title">{{course.title}}</clr-dg-cell>
+        <clr-dg-cell class="title">
+          <a class="_pointer-mouse" (click)="gotoCourse(course.id)">{{course.title}}</a>
+        </clr-dg-cell>
         <clr-dg-cell>
-          {{course.teacherInfo ?
-            course.teacherInfo.first_name + " " + course.teacherInfo.last_name  : "unassigned"}}
+          <a *ngIf="course.teacherInfo; else unassigned"
+             class="_pointer-mouse"
+             (click)="gotoTeacher(course.teacherInfo.id)">
+            {{course.teacherInfo.first_name}} {{course.teacherInfo.last_name}}
+          </a>
+          <ng-template #unassigned>unassigned</ng-template>
         </clr-dg-cell>
         <clr-dg-cell>{{course.students ? course.students.length : "0"}}</clr-dg-cell>
         <clr-dg-row-detail *clrIfExpanded>

@@ -20,6 +20,15 @@ export interface InfoProfileData {
 export class ContentInfoComponent implements OnInit {
 
   @Input()
+  set infoProfile(data: InfoProfileData) {
+    this.info = data;
+    if (this.form) {
+      this.form.reset();
+      this.form.controls["info"].patchValue(data.info);
+      this.form.controls["profile"].patchValue(data.profile);
+    }
+  };
+
   info: InfoProfileData;
 
   @Input()
@@ -49,7 +58,9 @@ export class ContentInfoComponent implements OnInit {
       id: [this.info.info.id ],
       first_name: [this.info.info.first_name, Validators.required ],
       last_name: [this.info.info.last_name, Validators.required ],
-      email: [this.info.info.email, [Validators.required, Validators.email] ]
+      email: [this.info.info.email, [Validators.required, Validators.email] ],
+      // profile_id: [this.info.info.profile_id ],
+      // courses: [this.info.info.courses ]
     });
 
     this.profile_fg = this.fb.group({
