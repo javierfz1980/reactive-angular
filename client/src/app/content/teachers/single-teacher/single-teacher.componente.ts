@@ -29,6 +29,7 @@ export class SingleTeacherComponente implements OnInit, OnDestroy{
   alert: ContentAlert;
   info: Observable<InfoProfileData>;
   isAdministrator: boolean;
+  editMode: boolean = false;
   modalData: ConfirmationData;
 
   private subscriptions: Subscription[] = [];
@@ -39,6 +40,7 @@ export class SingleTeacherComponente implements OnInit, OnDestroy{
               private teachersService: TeachersService) {}
 
   ngOnInit() {
+    this.editMode = this.route.queryParams["value"]["edit"];
     this.isAdministrator = this.authService.isAdministrator();
     this.fetchContent();
   }
@@ -90,6 +92,11 @@ export class SingleTeacherComponente implements OnInit, OnDestroy{
       }
     };
     this.confirmModal.open();
+  }
+
+  toggleEditMode() {
+    this.editMode = !this.editMode;
+    console.log(this.isAdministrator && this.editMode);
   }
 
   ngOnDestroy() {

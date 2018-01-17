@@ -12,6 +12,7 @@ import {TeachersService} from "../../core/providers/services/content/teachers.se
 import {EmailFilter, NameLastnameFilter} from "../../models/filters/generic-string-filter";
 import {appRoutePaths} from "../../app-routing.module";
 import {ActivatedRoute, Router} from "@angular/router";
+import {Student} from "../../models/content/student";
 
 @Component({
   selector: "gl-profesores",
@@ -50,10 +51,6 @@ export class TeachersComponent implements OnInit, OnDestroy  {
       });
   }
 
-  details(teacher: Teacher) {
-    this.router.navigate([appRoutePaths.teachers.path, teacher.id]);
-  }
-
   delete(teacher: Teacher) {
     this.modalData = {
       type: "delete",
@@ -75,6 +72,14 @@ export class TeachersComponent implements OnInit, OnDestroy  {
 
   create() {
     this.router.navigate([appRoutePaths.students.childs.create.path], {relativeTo: this.route})
+  }
+
+  details(teacher: Teacher) {
+    this.router.navigate([appRoutePaths.teachers.path, teacher.id]);
+  }
+
+  edit(student: Student) {
+    this.router.navigate([appRoutePaths.teachers.path, student.id], { queryParams: { edit: true}});
   }
 
   ngOnDestroy() {

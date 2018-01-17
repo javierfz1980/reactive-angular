@@ -4,9 +4,15 @@
   <h1>
     {{teacherInfo.info.first_name}} {{teacherInfo.info.last_name}}
     <!-- content delete -->
-    <button *ngIf="isAdministrator" class="btn btn-sm btn-danger" (click)="delete(teacherInfo.info)">
-      <clr-icon shape="trash"></clr-icon> Delete
-    </button>
+    <ng-container *ngIf="isAdministrator" >
+      <button class="btn btn-sm" [ngClass]="{'btn-primary': editMode, 'btn-outline': !editMode}" (click)="toggleEditMode()">
+        <clr-icon shape="pencil"></clr-icon> Edit
+      </button>
+      <!-- content delete -->
+      <button class="btn btn-sm btn-danger" (click)="delete(teacherInfo.info)">
+        <clr-icon shape="trash"></clr-icon> Delete
+      </button>
+    </ng-container>
   </h1>
   <br>
 
@@ -20,7 +26,7 @@
       <button clrTabLink id="link1">Profile</button>
       <clr-tab-content>
         <gl-info-form [info]="{info: teacherInfo.info, profile: teacherInfo.profile}"
-                      [isReadOnly]="!isAdministrator"
+                      [isReadOnly]="!(isAdministrator && editMode)"
                       (update)="update($event)"></gl-info-form>
       </clr-tab-content>
     </clr-tab>
@@ -32,7 +38,7 @@
         <p>Note: If you select a Course which already has a Teacher it will be updated and assigned to you.</p>
         <gl-courses-form #courses
                          [markedCourses]="teacherInfo.info.courses"
-                         [isReadOnly]="!isAdministrator"></gl-courses-form>
+                         [isReadOnly]="!(isAdministrator && editMode)"></gl-courses-form>
       </clr-tab-content>
     </clr-tab>
 
