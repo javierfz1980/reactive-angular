@@ -8,13 +8,14 @@ import {ContentAlert} from "../../../../content/commons/alert/content-alert.comp
 import {Profile} from "../../../../models/content/profile";
 import {Course} from "../../../../models/content/course";
 import {CoursesService} from "./courses.service";
-import 'rxjs/add/observable/empty';
 import {InfoProfileData} from "../../../../content/commons/info-form/info-form.component";
+import 'rxjs/add/observable/empty';
 
 @Injectable()
 export class TeachersService {
 
   private path: string = globalProperties.teachersPath;
+  private profilesPath: string = globalProperties.profilesPath;
 
   constructor(private contentService: ContentService,
               private coursesService: CoursesService) {}
@@ -38,36 +39,27 @@ export class TeachersService {
   getTeacherInfo(id: string): Observable<InfoProfileData> {
     return this.getTeacher(id)
       .switchMap((teacher: Teacher) => {
-        const profile: Observable<Profile> = this.contentService
-          .getContent<Profile>(`${globalProperties.profilesPath}/${teacher.profile_id}`);
-
-        const courses: Observable<string[]> = this.getTeacherCourses(teacher.id)
-          .map((courses: Course[]) => courses.map((course: Course) => course.id));
-
-        return Observable.forkJoin(profile, courses)
-          .map(([profile, courses]) => ({info: teacher, profile: profile, courses: courses}))
+        return this.contentService.getContent<Profile>(`${this.profilesPath}/${teacher.profile_id}`)
+          .map((profile) => ({
+            info: teacher,
+            profile: profile
+          }))
       })
   }
 
   createTeacher(teacher: Teacher, profile: Profile, courses: string[]): Observable<ContentAlert> {
     profile.birthday = new Date(profile.birthday).toString();
 
-    const newProfile: Observable<Profile> = this.contentService
-      .postContent<Profile>(globalProperties.profilesPath, profile);
-
-    const info: Observable<Teacher> = this.contentService
-      .postContent<Teacher>(this.path, teacher);
-
-    return Observable.forkJoin(info, newProfile)
-      .switchMap(([info, newProfile]) => {
-        const patchTeacher: Observable<Teacher> = this.contentService
-          .patchContent<Teacher>(this.path, info.id, {profile_id: newProfile.id});
-
-        const patchCourses: Observable<ContentAlert[]> = this.coursesService
-          .updateMultipleCoursesWithSameData(courses, {teacher: info.id})
-
-        return Observable.forkJoin(patchTeacher, patchCourses)
-          .map((data) => (<ContentAlert>{
+    return Observable.forkJoin(
+        this.contentService.postContent<Profile>(this.profilesPath, profile),
+        this.contentService.postContent<Teacher>(this.path, teacher)
+      )
+      .switchMap(([newProfile, info]) => {
+        return Observable.forkJoin(
+            this.contentService.patchContent<Teacher>(this.path, info.id, {profile_id: newProfile.id}),
+            this.coursesService.updateMultipleCoursesWithSameData(courses, {teacher: info.id})
+          )
+          .map(() => (<ContentAlert>{
             type: "success",
             message: "Teacher created",
             time: 3000
@@ -89,20 +81,16 @@ export class TeachersService {
 
     profile.birthday = new Date(profile.birthday).toString();
 
-    const patchInfo: Observable<Teacher> = this.contentService
-      .patchContent<Teacher>(this.path, infoId, teacher);
-
-    const patchProfile: Observable<Profile> = this.contentService
-      .patchContent<Profile>(globalProperties.profilesPath, profileId, profile);
-
-    const patchCourses: Observable<ContentAlert[]> = this.deleteAllCursesForTeacher(infoId)
-      .switchMap(() => {
-        return (courses.length === 0) ? Observable.of([]) : this.coursesService
-          .updateMultipleCoursesWithSameData(courses, {teacher: infoId});
-      });
-
-    return Observable.forkJoin(patchInfo, patchProfile, patchCourses)
-      .map((data) => (<ContentAlert>{
+    return Observable.forkJoin(
+        this.contentService.patchContent<Teacher>(this.path, infoId, teacher),
+        this.contentService.patchContent<Profile>(this.profilesPath, profileId, profile),
+        this.deleteAllCursesForTeacher(infoId)
+          .switchMap(() => {
+            return (courses.length === 0) ? Observable.of([]) : this.coursesService
+              .updateMultipleCoursesWithSameData(courses, {teacher: infoId});
+          })
+      )
+      .map(() => (<ContentAlert>{
         type: "success",
         message: "Teacher info updated",
         time: 3000
@@ -114,15 +102,11 @@ export class TeachersService {
   }
 
   deleteTeacher(teacher: Teacher): Observable<ContentAlert> {
-    const deleteProfile: Observable<MessageResponse> =  this.contentService
-      .deleteContent<MessageResponse>(globalProperties.profilesPath, teacher.profile_id);
-
-    const deleteTeacher: Observable<MessageResponse> =  this.contentService
-      .deleteContent<MessageResponse>(this.path, teacher.id);
-
-    const deleteTeacherCourses: Observable<ContentAlert> = this.deleteAllCursesForTeacher(teacher.id);
-
-    return Observable.forkJoin(deleteProfile, deleteTeacher, deleteTeacherCourses)
+    return Observable.forkJoin(
+        this.contentService.deleteContent<MessageResponse>(this.profilesPath, teacher.profile_id),
+        this.contentService.deleteContent<MessageResponse>(this.path, teacher.id),
+        this.deleteAllCursesForTeacher(teacher.id)
+      )
       .map(([deleteProfile, deleteTeacher, deleteTeacherCourses]) => (<ContentAlert>{
         type: "success",
         message: deleteProfile.message,
@@ -135,13 +119,14 @@ export class TeachersService {
       }))
   }
 
-  deleteAllCursesForTeacher(id: string): Observable<ContentAlert> {
+  deleteAllCursesForTeacher(id: string): Observable<ContentAlert[]> {
     return this.getTeacherCourses(id)
       .switchMap((courses: Course[]) => {
         return (courses.length === 0) ?  Observable.of([]) :  Observable.from(courses)
           .mergeMap((course: Course) => {
             return this.coursesService.updateCourse(course.id, {teacher: null})
-          });
+          })
+          .toArray();
       });
   }
 

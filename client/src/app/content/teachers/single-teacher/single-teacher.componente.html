@@ -31,7 +31,7 @@
       <clr-tab-content>
         <p>Note: If you select a Course which already has a Teacher it will be updated and assigned to you.</p>
         <gl-courses-form #courses
-                         [markedCourses]="teacherInfo.courses"
+                         [link]="teacherInfo.info.id"
                          [isReadOnly]="!isAdministrator"></gl-courses-form>
       </clr-tab-content>
     </clr-tab>

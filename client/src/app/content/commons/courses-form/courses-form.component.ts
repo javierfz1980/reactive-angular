@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from "@angular/core";
 import {Course} from "../../../models/content/course";
 import {Observable} from "rxjs/Observable";
 import {CoursesService} from "../../../core/providers/services/content/courses.service";
+import {Student} from "../../../models/content/student";
 
 @Component({
   selector: "gl-courses-form",
@@ -10,8 +11,11 @@ import {CoursesService} from "../../../core/providers/services/content/courses.s
 })
 export class CoursesFormComponent implements OnInit {
 
+  /**
+   * The id of the Student or the Teacher in order to show the selected courses for them.
+   */
   @Input()
-  markedCourses: string[] = [];
+  link: string;
 
   @Input()
   isReadOnly: boolean;
@@ -24,14 +28,15 @@ export class CoursesFormComponent implements OnInit {
   ngOnInit() {
     this.courses = this.coursesService
       .getCoursesWithTeachers()
-      .do((courses: Course[]) => {
-        courses.forEach((course: Course) => {
-          const existsInStudentList: string = this.markedCourses
-            .find(studentCourse => studentCourse === course.id);
-          if (existsInStudentList) this.selectedCourses.push(course);
-        })
-      })
-      .map((courses: Course[]) => (this.isReadOnly ? this.selectedCourses : courses));
+      .map((courses: Course[]) => {
+        this.selectedCourses = courses.filter((course: Course) => {
+          const linkedToTeacher: boolean = course.teacher && course.teacher === this.link;
+          const linkedToStudent: boolean = course.students && course.students
+            .some((student: Student) => student.id === this.link);
+          return linkedToTeacher || linkedToStudent;
+        });
+        return (this.isReadOnly ? this.selectedCourses : courses);
+      });
   }
 
   getSelectedCourses(): string[] {

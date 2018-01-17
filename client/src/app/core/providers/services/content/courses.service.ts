@@ -24,16 +24,13 @@ export class CoursesService {
       .switchMap((courses: Course[]) => {
         return Observable.from(courses)
           .mergeMap((course: Course) => {
-            if (course.teacher) {
-              return this.contentService
-                .getContent<Teacher>(`${globalProperties.teachersPath}/${course.teacher}`)
-                .map((teacher: Teacher) => {
-                  course.teacherInfo = teacher;
-                  return course;
-                })
-            } else {
-              return Observable.of(course);
-            }
+            if (!course.teacher) return Observable.of(course);
+            return this.contentService
+              .getContent<Teacher>(`${globalProperties.teachersPath}/${course.teacher}`)
+              .map((teacher: Teacher) => {
+                course.teacherInfo = teacher;
+                return course;
+              })
           })
       })
       .toArray();

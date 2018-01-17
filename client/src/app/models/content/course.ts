@@ -1,5 +1,5 @@
-import {Student} from "./student";
 import {Teacher} from "./teacher";
+import {Student} from "./student";
 
 export interface Course{
   id: string;
