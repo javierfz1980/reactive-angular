@@ -71,7 +71,7 @@ export class CoursesService {
     delete course.id;
 
     return Observable.forkJoin(
-      //this.updateCourseForStudents(course),
+      this.updateCourseForStudents(courseCopy),
       this.updateCourse(courseCopy.id, course)
     )
     .map(() => (<ContentAlert>{
@@ -89,6 +89,8 @@ export class CoursesService {
   updateCourseForStudents(course: Course): Observable<Student> {
     return this.delteCurseFromStudents(course.id)
       .switchMap(() => {
+        console.log("ACA1: ", course.students.length);
+        if (course.students.length === 0) return Observable.of([]);
         return Observable.from(course.students)
           .mergeMap((studentId: string) => {
             return this.contentService.getContent<Student>(`${this.studentsPath}/${studentId}`)
@@ -107,6 +109,8 @@ export class CoursesService {
           .some((courseId: string) => courseId === id))
       })
       .switchMap((students: Student[]) => {
+        console.log("ACA2: ", students.length);
+        if (students.length === 0) return Observable.of([]);
         return Observable.from(students)
           .mergeMap((student: Student) => {
             student.courses = student.courses.filter((courseId: string) => courseId !== id);

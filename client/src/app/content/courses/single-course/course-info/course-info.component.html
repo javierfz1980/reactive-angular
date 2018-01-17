@@ -60,7 +60,9 @@
         <select id="teacher"
                 formControlName="teacher"
                 placeholder="Enter the teacher">
-          <option *ngFor="let teacher of teachers" [selected]="teacher.id === form.controls['teacher'].value">
+          <option *ngFor="let teacher of teachers"
+                  [selected]="teacher.id === form.controls['teacher'].value"
+                  [value]="teacher.id">
             {{teacher.first_name}} {{teacher.last_name}}
           </option>
         </select>
