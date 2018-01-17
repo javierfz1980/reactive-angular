@@ -2,9 +2,9 @@
 <div *ngIf="info | async as teacherInfo; else loading">
 
   <h1>
-    {{teacherInfo.info.first_name}} {{teacherInfo.info.last_name}}
+    {{teacherInfo.info.first_name}} {{teacherInfo.info.last_name}}&nbsp;<br>
     <!-- content delete -->
-    <ng-container *ngIf="isAdministrator" >
+    <div class="btn-group" *ngIf="isAdministrator" >
       <button class="btn btn-sm" [ngClass]="{'btn-primary': editMode, 'btn-outline': !editMode}" (click)="toggleEditMode()">
         <clr-icon shape="pencil"></clr-icon> Edit
       </button>
@@ -12,7 +12,7 @@
       <button class="btn btn-sm btn-danger" (click)="delete(teacherInfo.info)">
         <clr-icon shape="trash"></clr-icon> Delete
       </button>
-    </ng-container>
+    </div>
   </h1>
   <br>
 
