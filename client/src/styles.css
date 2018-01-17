@@ -33,3 +33,10 @@ hr {
   margin: 1em 0;
   padding: 0;
 }
+
+._loader-wrapper {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-top: 145px;
+}

@@ -28,9 +28,6 @@
         <gl-course-info [info]="courseInfo"
                         [isReadOnly]="!(isAdministrator && editMode)"
                         (update)="update($event)"></gl-course-info>
-        <!--<gl-info-form [info]="{info: studentInfo.info, profile: studentInfo.profile}"
-                      [isReadOnly]="!(isAdministrator && editMode)"
-                      (update)="update($event)"></gl-info-form>-->
       </clr-tab-content>
     </clr-tab>
 
@@ -38,10 +35,9 @@
     <clr-tab>
       <button clrTabLink>Students</button>
       <clr-tab-content>
-        <gl-course-students></gl-course-students>
-        <!--<gl-courses-form #studentCourses
-                         [markedCourses]="studentInfo.info.courses"
-                         [isReadOnly]="!(isAdministrator && editMode)"></gl-courses-form>-->
+        <gl-course-students #courseStudents
+                            [markedStudents]="courseInfo.students"
+                            [isReadOnly]="!(isAdministrator && editMode)"></gl-course-students>
       </clr-tab-content>
     </clr-tab>
 

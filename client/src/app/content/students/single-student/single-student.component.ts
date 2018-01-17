@@ -19,8 +19,7 @@ import {CoursesFormComponent} from "../../commons/courses-form/courses-form.comp
 
 @Component({
   selector: "gl-single-student",
-  templateUrl: "./single-student.component.html",
-  styleUrls: ["./single-student.component.css"]
+  templateUrl: "./single-student.component.html"
 })
 export class SingleStudentComponent implements OnInit, OnDestroy {
 

@@ -11,8 +11,8 @@ import {
 import {Course} from "../../../models/content/course";
 import {CoursesService} from "../../../core/providers/services/content/courses.service";
 import {appRoutePaths} from "../../../app-routing.module";
-import {Student} from "../../../models/content/student";
 import {InfoProfileData} from "../../commons/info-form/info-form.component";
+import {CourseStudentsComponent} from "./course-students/course-students.component";
 
 @Component({
   selector: "gl-single-course",
@@ -23,8 +23,8 @@ export class SingleCourseComponent {
   @ViewChild("confirmModal")
   confirmModal: ConfirmationModalComponent;
 
-  // @ViewChild("students")
-  // students: CoursesFormComponent;
+  @ViewChild("courseStudents")
+  students: CourseStudentsComponent;
 
   alert: ContentAlert;
   info: Observable<any>;
