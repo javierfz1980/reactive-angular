@@ -68,7 +68,6 @@ export class StudentsService {
             message: `Error creating student: ${error.message}`
           }));
       })
-
   }
 
   addStudentToCourses(courses: string[], student: Student): Observable<ContentAlert[]> {
@@ -77,8 +76,8 @@ export class StudentsService {
         return this.coursesService.getCourse(id)
       })
       .mergeMap((course: Course) => {
-        const students: Student[] = course.students ? [...course.students, student] : [student];
-        return this.coursesService.updateCourse(course.id, {students: students})
+        course.students = course.students ? [...course.students, student.id] : [student.id];
+        return this.coursesService.updateCourse(course.id, {students: course.students})
       })
       .toArray();
   }
@@ -88,13 +87,13 @@ export class StudentsService {
       .getCourses()
       .map((courses: Course[]) => courses
         .filter((course: Course) => course.students)
-        .filter((course: Course) => course.students
-          .some((studentFiltered: Student) => studentFiltered.id === studentId)))
+        .filter((course: Course) => course.students && course.students
+          .some((studentFilteredId: string) => studentFilteredId === studentId)))
       .switchMap((courses: Course[]) => {
         return Observable.from(courses)
           .mergeMap((course: Course) => {
-            const students: Student[] = course.students
-              .filter((studentFiltered: Student) => studentFiltered.id !== studentId);
+            const students: string[] = course.students
+              .filter((studentFilteredId: string) => studentFilteredId !== studentId);
             return this.coursesService.updateCourse(course.id, {students: students})
           })
           .toArray();

@@ -75,21 +75,22 @@ export class SingleCourseComponent {
     this.confirmModal.open();
   }
 
-  update(data: InfoProfileData) {
+  update(data: Course) {
     //(<Student>data.info).courses = this.studentCourses.getSelectedCourses();
+    data.students = this.students.getSelectedStudents();
     this.modalData = {
       type: "confirm",
       title: "Update",
       text: "Are you sure you want to update this Course ?",
-      action: () => {/*
+      action: () => {
         this.modalData.isBusy = true;
-        this.subscriptions.push(this.studentsService.updateStudentInfo(data.info, data.profile)
+        this.subscriptions.push(this.coursesService.updateCourseInfo(data)
           .subscribe(
             (alert: ContentAlert) => {
               this.alert = alert;
               this.modalData.isBusy = false;
               this.fetchContent();
-            }));*/
+            }));
       }
     };
     this.confirmModal.open();

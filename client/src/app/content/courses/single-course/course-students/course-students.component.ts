@@ -47,7 +47,8 @@ export class CourseStudentsComponent {
       });
   }
 
-  getSelectedCourses(): Student[] {
-    return this.selectedStudents;
+  getSelectedStudents(): string[] {
+    return this.selectedStudents
+      .map((student: Student) => student.id);
   }
 }
