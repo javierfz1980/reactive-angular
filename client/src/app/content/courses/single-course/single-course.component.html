@@ -1,1 +1,56 @@
-single
+<!-- content tabs -->
+<div *ngIf="info | async as courseInfo; else loading">
+
+  <h1>
+    {{courseInfo.title}}&nbsp;<br>
+    <!-- content edit -->
+    <div class="btn-group" *ngIf="isAdministrator" >
+      <button class="btn btn-sm" [ngClass]="{'btn-primary': editMode, 'btn-outline': !editMode}" (click)="toggleEditMode()">
+        <clr-icon shape="pencil"></clr-icon> Edit
+      </button>
+      <!-- content delete -->
+      <button class="btn btn-sm btn-danger" (click)="delete(courseInfo)">
+        <clr-icon shape="trash"></clr-icon> Delete
+      </button>
+    </div>
+  </h1>
+  <br>
+
+  <!-- content alert -->
+  <gl-content-alert *ngIf="alert" [content]="alert"></gl-content-alert>
+
+  <clr-tabs>
+
+    <!-- Info -->
+    <clr-tab>
+      <button clrTabLink id="link1">Info</button>
+      <clr-tab-content>
+        <gl-course-info [info]="courseInfo"
+                        [isReadOnly]="!(isAdministrator && editMode)"
+                        (update)="update($event)"></gl-course-info>
+        <!--<gl-info-form [info]="{info: studentInfo.info, profile: studentInfo.profile}"
+                      [isReadOnly]="!(isAdministrator && editMode)"
+                      (update)="update($event)"></gl-info-form>-->
+      </clr-tab-content>
+    </clr-tab>
+
+    <!-- Students -->
+    <clr-tab>
+      <button clrTabLink>Students</button>
+      <clr-tab-content>
+        <gl-course-students></gl-course-students>
+        <!--<gl-courses-form #studentCourses
+                         [markedCourses]="studentInfo.info.courses"
+                         [isReadOnly]="!(isAdministrator && editMode)"></gl-courses-form>-->
+      </clr-tab-content>
+    </clr-tab>
+
+  </clr-tabs>
+
+  <gl-confirmation-modal #confirmModal [modalData]="modalData"></gl-confirmation-modal>
+</div>
+
+<!-- content loader -->
+<ng-template #loading>
+  <gl-content-loader></gl-content-loader>
+</ng-template>

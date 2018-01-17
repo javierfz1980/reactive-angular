@@ -5,11 +5,15 @@ import {ContentCommonsModule} from "../commons/content-commons-module";
 import {CommonsModule} from "../../commons/commons.module";
 import {CoursesRoutingModule} from "./courses-routing.module";
 import {SingleCourseComponent} from "./single-course/single-course.component";
+import {CourseInfoComponent} from "./single-course/course-info/course-info.component";
+import {CourseStudentsComponent} from "./single-course/course-students/course-students.component";
 
 const contents = [
   CoursesComponent,
   CourseCardComponent,
-  SingleCourseComponent
+  SingleCourseComponent,
+  CourseInfoComponent,
+  CourseStudentsComponent
 ];
 
 @NgModule({

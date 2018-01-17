@@ -65,6 +65,7 @@ export class CoursesService {
   }
 
   deleteCourse(course: Course): Observable<ContentAlert> {
+    // TODO: also remove this course form students.courses !!!
     return this.contentService
       .deleteContent<MessageResponse>(this.path, course.id)
       .map((message: MessageResponse) => (<ContentAlert>{

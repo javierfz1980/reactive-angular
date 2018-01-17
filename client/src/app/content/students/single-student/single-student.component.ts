@@ -100,7 +100,6 @@ export class SingleStudentComponent implements OnInit, OnDestroy {
 
   toggleEditMode() {
     this.editMode = !this.editMode;
-    console.log(this.isAdministrator && this.editMode);
   }
 
   ngOnDestroy() {
