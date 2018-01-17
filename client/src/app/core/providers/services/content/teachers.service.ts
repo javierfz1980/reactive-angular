@@ -39,11 +39,15 @@ export class TeachersService {
   getTeacherInfo(id: string): Observable<InfoProfileData> {
     return this.getTeacher(id)
       .switchMap((teacher: Teacher) => {
-        return this.contentService.getContent<Profile>(`${this.profilesPath}/${teacher.profile_id}`)
-          .map((profile) => ({
-            info: teacher,
-            profile: profile
-          }))
+        return Observable.forkJoin(
+            this.contentService.getContent<Profile>(`${this.profilesPath}/${teacher.profile_id}`),
+            this.getTeacherCourses(teacher.id)
+              .map((courses: Course[]) => courses.map((course: Course) => course.id))
+          )
+          .map(([profile, courses]) => {
+            teacher.courses = courses;
+            return {info: teacher, profile: profile}
+          })
       })
   }
 

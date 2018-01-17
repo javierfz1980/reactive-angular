@@ -36,7 +36,7 @@
       <button clrTabLink>Courses</button>
       <clr-tab-content>
         <gl-courses-form #studentCourses
-                         [link]="studentInfo.info.id"
+                         [markedCourses]="studentInfo.info.courses"
                          [isReadOnly]="!(isAdministrator && editMode)"></gl-courses-form>
       </clr-tab-content>
     </clr-tab>

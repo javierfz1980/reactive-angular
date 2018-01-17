@@ -4,4 +4,5 @@ export interface Teacher {
   last_name: string;
   email: string;
   profile_id: string;
+  courses?:string[]
 }

@@ -11,11 +11,8 @@ import {Student} from "../../../models/content/student";
 })
 export class CoursesFormComponent implements OnInit {
 
-  /**
-   * The id of the Student or the Teacher in order to show the selected courses for them.
-   */
   @Input()
-  link: string;
+  markedCourses: string[] = [];
 
   @Input()
   set isReadOnly(value: boolean) {
@@ -37,12 +34,10 @@ export class CoursesFormComponent implements OnInit {
     this.courses = this.coursesService
       .getCoursesWithTeachers()
       .map((courses: Course[]) => {
-        this.selectedCourses = courses.filter((course: Course) => {
-          const linkedToTeacher: boolean = course.teacher && course.teacher === this.link;
-          const linkedToStudent: boolean = course.students && course.students
-            .some((student: Student) => student.id === this.link);
-          return linkedToTeacher || linkedToStudent;
-        });
+        this.selectedCourses = courses
+          .filter((course: Course) => this.markedCourses
+            .some((idCourses: string) => idCourses === course.id)
+        );
         if (this._isReadOnly) {
           const res: Course[] = this.selectedCourses.slice();
           this.selectedCourses = null;
