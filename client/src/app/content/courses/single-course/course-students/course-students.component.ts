@@ -7,7 +7,8 @@ import {appRoutePaths} from "../../../../app-routing.module";
 
 @Component({
   selector: "gl-course-students",
-  templateUrl: "./course-students.component.html"
+  templateUrl: "./course-students.component.html",
+  styleUrls: ["./course-students.component.css"]
 })
 export class CourseStudentsComponent {
 
@@ -22,6 +23,8 @@ export class CourseStudentsComponent {
 
   students: Observable<Student[]>;
   selectedStudents: Student[] = [];
+  gridSize: number = 50;
+  maxSize: number = this.gridSize;
   private _isReadOnly: boolean;
 
   constructor(private studentsService: StudentsService,
@@ -43,8 +46,10 @@ export class CourseStudentsComponent {
         if (this._isReadOnly) {
           const res: Student[] = this.selectedStudents.slice();
           this.selectedStudents = null;
+          this.maxSize = res.length;
           return res
         } else {
+          this.maxSize = students.length;
           return students
         }
       });
@@ -52,6 +57,10 @@ export class CourseStudentsComponent {
 
   gotoStudent(id: string) {
     this.router.navigate([appRoutePaths.students.path, id])
+  }
+
+  changeGridSize(value?: number) {
+    this.gridSize = value ? value : this.maxSize;
   }
 
   getSelectedStudents(): string[] {

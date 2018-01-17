@@ -1,4 +1,9 @@
 <!-- content -->
+<div class="qty-wrapper">
+  <span class="qty-span" (click)="changeGridSize()"><clr-icon shape="view-list"></clr-icon>show all</span>
+  <span class="qty-span" (click)="changeGridSize(50)"><clr-icon shape="view-list"></clr-icon>show 50</span>
+  <span class="qty-span" (click)="changeGridSize(25)"><clr-icon shape="view-list"></clr-icon>show 25</span>
+</div>
 <div *ngIf="students | async as studentsList; else loading">
   <div class="container-fluid">
     <clr-datagrid class="_content-datagrid" [(clrDgSelected)]="selectedStudents">
@@ -14,7 +19,7 @@
 
       <clr-dg-footer>{{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
         of {{pagination.totalItems}} students
-        <clr-dg-pagination #pagination [clrDgPageSize]="40"></clr-dg-pagination></clr-dg-footer>
+        <clr-dg-pagination #pagination [(clrDgPageSize)]="gridSize"></clr-dg-pagination></clr-dg-footer>
     </clr-datagrid>
   </div>
 </div>

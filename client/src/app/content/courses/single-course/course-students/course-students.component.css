@@ -1,0 +1,9 @@
+.qty-wrapper {
+  padding-top: 20px;
+  padding-left: 5px;
+}
+
+.qty-span {
+  margin-left: 10px;
+  cursor: pointer;
+}
