@@ -14,6 +14,9 @@
             (click)="onOkClicked()"
             [disabled]="data.isBusy"
             [class]="(data && data.type === 'delete') ?
-                'btn ok-btn btn-warning' : 'btn ok-btn btn-primary'" >Ok</button>
+                'btn ok-btn btn-warning' : 'btn ok-btn btn-primary'" >
+      <clr-icon *ngIf="data.type === 'delete'" shape="trash"></clr-icon>
+      {{data.type === 'delete' ? 'delete' : 'ok'}}
+    </button>
   </div>
 </clr-modal>

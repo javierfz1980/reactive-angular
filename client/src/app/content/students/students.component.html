@@ -20,17 +20,15 @@
         <clr-dg-string-filter [clrDgStringFilter]="emailFilter"></clr-dg-string-filter>
       </clr-dg-column>
 
-      <clr-dg-row *clrDgItems="let student of studentsList">
+      <clr-dg-row *clrDgItems="let student of studentsList" >
 
-        <clr-dg-action-overflow>
-          <button class="action-item" (click)="details(student)">View Details</button>
-          <ng-container *ngIf="isAdministrator">
-            <button class="action-item" (click)="delete(student)">Delete</button>
-          </ng-container>
+        <clr-dg-action-overflow *ngIf="isAdministrator">
+          <button class="action-item" (click)="details(student)"><clr-icon shape="edit"></clr-icon> View Details</button>
+          <button class="action-item" (click)="delete(student)"><clr-icon shape="trash"></clr-icon> Delete</button>
         </clr-dg-action-overflow>
 
-        <clr-dg-cell>{{student.first_name}} {{student.last_name}}</clr-dg-cell>
-        <clr-dg-cell>{{student.email}}</clr-dg-cell>
+        <clr-dg-cell (click)="details(student)">{{student.first_name}} {{student.last_name}}</clr-dg-cell>
+        <clr-dg-cell (click)="details(student)">{{student.email}}</clr-dg-cell>
       </clr-dg-row>
 
       <clr-dg-footer>{{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
