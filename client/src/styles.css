@@ -44,3 +44,7 @@ hr {
 ._pointer-mouse {
   cursor: pointer;
 }
+
+._default-cursor {
+  cursor: default!important;
+}

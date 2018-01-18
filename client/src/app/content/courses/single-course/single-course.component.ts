@@ -76,7 +76,6 @@ export class SingleCourseComponent {
   }
 
   update(data: Course) {
-    //(<Student>data.info).courses = this.studentCourses.getSelectedCourses();
     data.students = this.students.getSelectedStudents();
     this.modalData = {
       type: "confirm",
