@@ -59,8 +59,8 @@ export class ContentInfoComponent implements OnInit {
       first_name: [this.info.info.first_name, Validators.required ],
       last_name: [this.info.info.last_name, Validators.required ],
       email: [this.info.info.email, [Validators.required, Validators.email] ],
-      // profile_id: [this.info.info.profile_id ],
-      // courses: [this.info.info.courses ]
+      profile_id: [this.info.info.profile_id ],
+      courses: [this.info.info.courses ]
     });
 
     this.profile_fg = this.fb.group({

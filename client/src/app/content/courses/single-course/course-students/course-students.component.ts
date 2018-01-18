@@ -35,7 +35,6 @@ export class CourseStudentsComponent {
   }
 
   fetchContent() {
-    console.log("markedStudents: ", this.markedStudents)
     this.students = this.studentsService
       .getStudents()
       .map((students: Student[]) => {

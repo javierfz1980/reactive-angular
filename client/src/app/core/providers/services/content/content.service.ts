@@ -12,22 +12,18 @@ export class ContentService {
   constructor(private httpClient: HttpClient) {}
 
   getContent<T>(url: string): Observable<T> {
-    console.log("fetching content");
     return this.httpClient.get<T>(`${this.basePath}${url}`);
   }
 
   deleteContent<T>(url: string, id: string): Observable<T> {
-    console.log("deleting content: ", url);
     return this.httpClient.delete<T>(`${this.basePath}${url}/${id}`);
   }
 
   patchContent<T>(url: string, id: string, data: {[key: string]: any}): Observable<T> {
-    console.log("patching content: ", url);
     return this.httpClient.patch<T>(`${this.basePath}${url}/${id}`, data);
   }
 
   postContent<T>(url: string, data: T): Observable<T> {
-    console.log("posting content: ", url);
     return this.httpClient.post<T>(`${this.basePath}${url}`, data);
   }
 

@@ -68,7 +68,8 @@ export class CourseInfoComponent implements OnInit{
       short_description: [this.info.short_description, Validators.required ],
       detail: [this.info.detail, Validators.required ],
       active: [{value: this.info.active, disabled: this._isReadOnly}, Validators.required ],
-      teacher: [{value: this.info.teacher, disabled: this._isReadOnly}, Validators.required ]
+      teacher: [{value: this.info.teacher, disabled: this._isReadOnly}, Validators.required ],
+      students: [this.info.students ]
     });
   }
 

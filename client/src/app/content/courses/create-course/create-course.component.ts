@@ -40,14 +40,13 @@ export class CreateCourseComponent implements OnInit, OnDestroy {
   }
 
   create(data: Course) {
-    data.students = this.students.getSelectedStudents();
     this.modalData = {
       type: "confirm",
       title: "Create",
       text: "Are you sure you want to create this new Course?",
       action: () => {
         this.modalData.isBusy = true;
-        this.subscription = this.courseService.createCourse(data)
+        this.subscription = this.courseService.createCourse(data, this.students.getSelectedStudents())
           .subscribe(
             (alert: ContentAlert) => {
               this.alert = alert;

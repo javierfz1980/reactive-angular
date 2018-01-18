@@ -23,14 +23,12 @@ export class AuthInterceptor implements HttpInterceptor {
 
     // validates if the url of the request should be skipped
     if (this.skipUrls.indexOf(request.url) >= 0) {
-      console.log("http request itercept should be skipped: ", request);
       return next.handle(request);
     }
 
     // manual injection of the AuthService to avoid cyclic dependency error
     let authService = this.injector.get(AuthService);
 
-    console.log("http request intercepted: ", request);
     const newRequest = request.clone({
       headers: request.headers.set("Token", authService.getToken())
     });

@@ -11,8 +11,8 @@ import {
 import {Course} from "../../../models/content/course";
 import {CoursesService} from "../../../core/providers/services/content/courses.service";
 import {appRoutePaths} from "../../../app-routing.module";
-import {InfoProfileData} from "../../commons/info-form/info-form.component";
 import {CourseStudentsComponent} from "./course-students/course-students.component";
+import {getDifferencesBetween} from "../../../commons/utils";
 
 @Component({
   selector: "gl-single-course",
@@ -53,7 +53,6 @@ export class SingleCourseComponent {
         this.alert = {type: "danger", message: error.message};
         return Observable.throw(error)
       })
-      .do((finalData: Course) => console.log("final data single course: ", finalData));
   }
 
   delete(course: Course) {
@@ -76,6 +75,8 @@ export class SingleCourseComponent {
   }
 
   update(data: Course) {
+    const studentsToBeRemoved = getDifferencesBetween<string>(data.students, this.students.getSelectedStudents());
+    const studentsToBeAdded = getDifferencesBetween<string>(this.students.getSelectedStudents(), data.students);
     data.students = this.students.getSelectedStudents();
     this.modalData = {
       type: "confirm",
@@ -83,7 +84,7 @@ export class SingleCourseComponent {
       text: "Are you sure you want to update this Course ?",
       action: () => {
         this.modalData.isBusy = true;
-        this.subscriptions.push(this.coursesService.updateCourseInfo(data)
+        this.subscriptions.push(this.coursesService.updateCourseInfo(data, studentsToBeRemoved, studentsToBeAdded)
           .subscribe(
             (alert: ContentAlert) => {
               this.alert = alert;
