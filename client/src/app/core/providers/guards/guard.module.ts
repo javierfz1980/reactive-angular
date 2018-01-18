@@ -1,8 +1,10 @@
 import {ModuleWithProviders, NgModule} from "@angular/core";
 import {AuthGuard} from "./auth.guard";
+import {RoleGuard} from "./role.guard";
 
 const guards = [
-  AuthGuard
+  AuthGuard,
+  RoleGuard
 ];
 
 @NgModule()
