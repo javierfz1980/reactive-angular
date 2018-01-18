@@ -86,23 +86,48 @@ export class CoursesService {
     }))
   }
 
-  updateCourseForStudents(course: Course): Observable<Student> {
+  updateCourseForStudents(course: Course): Observable<Student[]> {
     return this.delteCurseFromStudents(course.id)
-      .switchMap(() => {
-        console.log("ACA1: ", course.students.length);
-        if (course.students.length === 0) return Observable.of([]);
-        return Observable.from(course.students)
-          .mergeMap((studentId: string) => {
-            return this.contentService.getContent<Student>(`${this.studentsPath}/${studentId}`)
-              .switchMap((student: Student) => {
-                student.courses = student.courses ? [...student.courses, course.id] : [course.id];
-                return this.contentService.patchContent<Student>(this.studentsPath, student.id, {courses: student.courses})
-              })
-          })
-      })
+      .switchMap(() => this.addCurseToStudents(course))
   }
 
-  delteCurseFromStudents(id: string): Observable<Student> {
+  createCourse(data: Course): Observable<ContentAlert> {
+    return this.contentService.postContent<Course>(this.path, data)
+      .switchMap((createdCourse: Course) => {
+        return this.contentService
+          .patchContent<Course>(this.path, createdCourse.id, {teacher: data.teacher, students: data.students})
+      })
+      .switchMap((createdCourse: Course) => {
+        createdCourse.students = data.students;
+        return this.addCurseToStudents(createdCourse)
+      })
+      .map(() => (<ContentAlert>{
+        type: "success",
+        message: "Teacher created",
+        time: 3000
+      }))
+      .catch((error: any) => Observable.of(<ContentAlert>{
+        type: "danger",
+        message: `Error creating teacher: ${error.message}`
+      }));
+  }
+
+  addCurseToStudents(course: Course): Observable<Student[]> {
+    if (course.students.length === 0) return Observable.of([]);
+    return Observable.from(course.students)
+      .mergeMap((studentId: string) => {
+        return this.contentService
+          .getContent<Student>(`${this.studentsPath}/${studentId}`)
+          .switchMap((student: Student) => {
+            student.courses = student.courses ? [...student.courses, course.id] : [course.id];
+            return this.contentService
+              .patchContent<Student>(this.studentsPath, student.id, {courses: student.courses})
+          })
+      })
+      .toArray()
+  }
+
+  delteCurseFromStudents(id: string): Observable<Student[]> {
     return this.contentService.getContent<Student[]>(this.studentsPath)
       .map((students: Student[]) => {
         return students.filter((student: Student) => student.courses && student.courses
@@ -117,6 +142,7 @@ export class CoursesService {
             return this.contentService
               .patchContent<Student>(this.studentsPath, student.id, {courses: student.courses})
           })
+          .toArray()
       })
   }
 

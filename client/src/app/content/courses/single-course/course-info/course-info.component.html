@@ -43,8 +43,7 @@
         </textarea>
     </div>
     <div class="form-group">
-      <label class="required"
-             [ngClass]="{'invalid': !form.controls['title'].valid && form.controls['title'].touched}">
+      <label class="required">
         Active:
       </label>
         <div class="toggle-switch">
@@ -55,9 +54,11 @@
         </div>
     </div>
     <div class="form-group" *ngIf="form.controls['active'].value || isAdministrator">
-      <label> Teacher: </label>
+      <label class="required"> Teacher: </label>
       <div *ngIf="teachersList | async as teachers" class="select">
         <select id="teacher"
+                [ngClass]="{'invalid-select': !form.controls['teacher'].valid  &&
+                  form.controls['teacher'].touched}"
                 formControlName="teacher"
                 placeholder="Enter the teacher">
           <option *ngFor="let teacher of teachers"

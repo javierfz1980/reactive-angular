@@ -11,7 +11,7 @@ import {Subscription} from "rxjs/Subscription";
 import {ContentAlert} from "../commons/alert/content-alert.component";
 import {CoursesService} from "../../core/providers/services/content/courses.service";
 import {appRoutePaths} from "../../app-routing.module";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: "gl-cursos",
@@ -31,7 +31,8 @@ export class CoursesComponent implements OnInit, OnDestroy {
 
   constructor(private coursesService: CoursesService,
               private authService: AuthService,
-              private router: Router) {}
+              private router: Router,
+              private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.fetchContent();
@@ -93,6 +94,10 @@ export class CoursesComponent implements OnInit, OnDestroy {
 
   viewCourse(course: Course) {
     this.router.navigate([appRoutePaths.courses.path, course.id])
+  }
+
+  create() {
+    this.router.navigate([appRoutePaths.courses.childs.create.path], {relativeTo: this.route})
   }
 
   ngOnDestroy() {

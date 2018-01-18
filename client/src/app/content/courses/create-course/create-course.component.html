@@ -1,0 +1,33 @@
+<h1>{{title}}</h1>
+<br>
+
+<!-- content tabs -->
+<div>
+
+  <!-- content alert -->
+  <gl-content-alert *ngIf="alert" [content]="alert"></gl-content-alert>
+
+  <clr-tabs>
+
+    <!-- Info -->
+    <clr-tab>
+      <button clrTabLink id="link1">Info</button>
+      <clr-tab-content>
+        <gl-course-info [isReadOnly]="!(isAdministrator)"
+                        (create)="create($event)"></gl-course-info>
+      </clr-tab-content>
+    </clr-tab>
+
+    <!-- Students -->
+    <clr-tab>
+      <button clrTabLink>Students</button>
+      <clr-tab-content>
+        <gl-course-students #courseStudents
+                            [isReadOnly]="!(isAdministrator)"></gl-course-students>
+      </clr-tab-content>
+    </clr-tab>
+
+  </clr-tabs>
+
+  <gl-confirmation-modal #confirmModal [modalData]="modalData"></gl-confirmation-modal>
+</div>

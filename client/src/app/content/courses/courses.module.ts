@@ -7,13 +7,15 @@ import {CoursesRoutingModule} from "./courses-routing.module";
 import {SingleCourseComponent} from "./single-course/single-course.component";
 import {CourseInfoComponent} from "./single-course/course-info/course-info.component";
 import {CourseStudentsComponent} from "./single-course/course-students/course-students.component";
+import {CreateCourseComponent} from "./create-course/create-course.component";
 
 const contents = [
   CoursesComponent,
   CourseCardComponent,
   SingleCourseComponent,
   CourseInfoComponent,
-  CourseStudentsComponent
+  CourseStudentsComponent,
+  CreateCourseComponent
 ];
 
 @NgModule({
