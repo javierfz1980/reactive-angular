@@ -57,7 +57,6 @@ export class SingleStudentComponent implements OnInit, OnDestroy {
         this.alert = {type: "danger", message: error.message};
         return Observable.throw(error)
       })
-      .do(data => console.log("student data: ", data))
   }
 
   delete(student: Student) {

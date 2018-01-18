@@ -41,7 +41,6 @@ export class CoursesFormComponent implements OnInit {
   fetchContent() {
     this.courses = this.coursesService
       .getCoursesWithTeachers()
-      .do(() => console.log("ACA: ", this.markedCourses))
       .map((courses: Course[]) => {
         this.selectedCourses = courses
           .filter((course: Course) => this.markedCourses && this.markedCourses
