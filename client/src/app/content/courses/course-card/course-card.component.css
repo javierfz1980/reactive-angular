@@ -8,4 +8,6 @@
 
 .card-header {
   cursor: pointer;
+  font-weight: bold;
+  color: dimgray;
 }

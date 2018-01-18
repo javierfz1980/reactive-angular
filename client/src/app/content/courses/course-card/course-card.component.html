@@ -9,20 +9,23 @@
   </div>
   <div class="card-footer">
     <button class="btn btn-sm btn-link" (click)="viewCourse(course)">view</button>
-    <div class="admin-actions" *ngIf="isAdministrator">
-      <div class="toggle-switch">
-        <input #checkBoxStatus type="checkbox" [id]="course.id" [checked]="course.active" (change)="toggle(course)">
-        <label [for]="course.id"></label>
-      </div>
+    <div class="admin-actions">
+      <ng-container *ngIf="isAdministrator">
+        <div class="toggle-switch">
+          <input #checkBoxStatus type="checkbox" [id]="course.id" [checked]="course.active" (change)="toggle(course)">
+          <label [for]="course.id"></label>
+        </div>
+        <button class="btn btn-sm btn-link" (click)="delete(course)">
+          <clr-icon shape="trash"></clr-icon>
+        </button>
+        <button class="btn btn-sm btn-link" (click)="editCourse(course)">
+          <clr-icon shape="pencil"></clr-icon>
+        </button>
+      </ng-container>
       <button class="btn btn-sm btn-link _default-cursor">
         <clr-icon shape="users"></clr-icon> {{course.students ? course.students.length : 0}}
       </button>
-      <button class="btn btn-sm btn-link" (click)="delete(course)">
-        <clr-icon shape="trash"></clr-icon>
-      </button>
-      <button class="btn btn-sm btn-link" (click)="editCourse(course)">
-        <clr-icon shape="pencil"></clr-icon>
-      </button>
     </div>
+
   </div>
 </div>
