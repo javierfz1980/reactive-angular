@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from "@angular/core";
+import {Component, ElementRef, EventEmitter, Input, Output, ViewChild} from "@angular/core";
 import {Course} from "../../../models/content/course";
 
 @Component({
@@ -14,19 +14,23 @@ export class CourseCardComponent {
   @Input()
   isAdministrator: boolean;
 
-  @Output('onDelete')
+  @Output("onDelete")
   deleteEvent: EventEmitter<Course> = new EventEmitter<Course>();
 
-  @Output('onToggle')
+  @Output("onToggle")
   toggleEvent: EventEmitter<Course> = new EventEmitter<Course>();
 
-  @Output('onEdit')
+  @Output("onEdit")
   editEvent: EventEmitter<Course> = new EventEmitter<Course>();
 
-  @Output('onView')
+  @Output("onView")
   viewEvent: EventEmitter<Course> = new EventEmitter<Course>();
 
+  @ViewChild("checkBoxStatus")
+  checkBoxStatus: ElementRef;
+
   toggle(course: Course) {
+    this.checkBoxStatus.nativeElement["checked"] = course.active;
     this.toggleEvent.emit(course);
   }
 
