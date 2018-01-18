@@ -32,7 +32,7 @@
           </div>
           <div class="form-group">
             <label class="required">Last Name:</label>
-            <label for="first_name" aria-haspopup="true" role="tooltip"
+            <label for="last_name" aria-haspopup="true" role="tooltip"
                    class="tooltip tooltip-validation tooltip-sm"
                    [ngClass]="{'invalid': !form.controls['info'].controls['last_name'].valid
                       && form.controls['info'].controls['last_name'].touched}">
@@ -47,7 +47,7 @@
           </div>
           <div class="form-group">
             <label class="required">Email:</label>
-            <label for="first_name" aria-haspopup="true" role="tooltip"
+            <label for="email" aria-haspopup="true" role="tooltip"
                    class="tooltip tooltip-validation tooltip-sm"
                    [ngClass]="{'invalid': !form.controls['info'].controls['email'].valid
                       && form.controls['info'].controls['email'].touched}">
@@ -70,12 +70,12 @@
         <div formGroupName="profile">
           <div class="form-group">
             <label class="required">Birthday:</label>
-            <label for="first_name" aria-haspopup="true" role="tooltip"
+            <label for="birthday" aria-haspopup="true" role="tooltip"
                    class="tooltip tooltip-validation tooltip-sm"
                    [ngClass]="{'invalid': !form.controls['profile'].controls['birthday'].valid
                       && form.controls['profile'].controls['birthday'].touched}">
               <input type="date"
-                     id="date"
+                     id="birthday"
                      formControlName="birthday"
                      placeholder="Enter your birthday"
                      size="50"
@@ -104,7 +104,7 @@
           <div formGroupName="contact">
             <div class="form-group">
               <label class="required">Street:</label>
-              <label for="first_name" aria-haspopup="true" role="tooltip"
+              <label for="street" aria-haspopup="true" role="tooltip"
                      class="tooltip tooltip-validation tooltip-sm"
                      [ngClass]="{'invalid': !form.controls['profile'].controls['contact'].controls['street'].valid
                         && form.controls['profile'].controls['contact'].controls['street'].touched}">
@@ -119,7 +119,7 @@
             </div>
             <div class="form-group">
               <label class="required">State:</label>
-              <label for="first_name" aria-haspopup="true" role="tooltip"
+              <label for="state" aria-haspopup="true" role="tooltip"
                      class="tooltip tooltip-validation tooltip-sm"
                      [ngClass]="{'invalid': !form.controls['profile'].controls['contact'].controls['state'].valid
                         && form.controls['profile'].controls['contact'].controls['state'].touched}">
@@ -134,7 +134,7 @@
             </div>
             <div class="form-group">
               <label class="required">Country:</label>
-              <label for="first_name" aria-haspopup="true" role="tooltip"
+              <label for="country" aria-haspopup="true" role="tooltip"
                      class="tooltip tooltip-validation tooltip-sm"
                      [ngClass]="{'invalid': !form.controls['profile'].controls['contact'].controls['country'].valid
                         && form.controls['profile'].controls['contact'].controls['country'].touched}">
@@ -149,7 +149,7 @@
             </div>
             <div class="form-group">
               <label class="required">City:</label>
-              <label for="first_name" aria-haspopup="true" role="tooltip"
+              <label for="city" aria-haspopup="true" role="tooltip"
                      class="tooltip tooltip-validation tooltip-sm"
                      [ngClass]="{'invalid': !form.controls['profile'].controls['contact'].controls['city'].valid
                         && form.controls['profile'].controls['contact'].controls['city'].touched}">
@@ -164,7 +164,7 @@
             </div>
             <div class="form-group">
               <label class="required">Zip:</label>
-              <label for="first_name" aria-haspopup="true" role="tooltip"
+              <label for="zip" aria-haspopup="true" role="tooltip"
                      class="tooltip tooltip-validation tooltip-sm"
                      [ngClass]="{'invalid': !form.controls['profile'].controls['contact'].controls['zip'].valid
                         && form.controls['profile'].controls['contact'].controls['zip'].touched}">
@@ -179,7 +179,7 @@
             </div>
             <div class="form-group">
               <label class="required">Phone:</label>
-              <label for="first_name" aria-haspopup="true" role="tooltip"
+              <label for="phone" aria-haspopup="true" role="tooltip"
                      class="tooltip tooltip-validation tooltip-sm"
                      [ngClass]="{'invalid': !form.controls['profile'].controls['contact'].controls['phone'].valid
                         && form.controls['profile'].controls['contact'].controls['phone'].touched}">

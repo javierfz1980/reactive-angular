@@ -16,6 +16,7 @@ import {
 import {Subscription} from "rxjs/Subscription";
 import {appRoutePaths} from "../../../app-routing.module";
 import {CoursesFormComponent} from "../../commons/courses-form/courses-form.component";
+import {getDifferencesBetween} from "../../../commons/utils";
 
 @Component({
   selector: "gl-single-student",
@@ -79,6 +80,8 @@ export class SingleStudentComponent implements OnInit, OnDestroy {
   }
 
   update(data: InfoProfileData) {
+    const coursesToBeRemoved = getDifferencesBetween<string>((<Student>data.info).courses, this.studentCourses.getSelectedCourses());
+    const coursesToBeAdded = getDifferencesBetween<string>(this.studentCourses.getSelectedCourses(), (<Student>data.info).courses);
     (<Student>data.info).courses = this.studentCourses.getSelectedCourses();
     this.modalData = {
       type: "confirm",
@@ -86,7 +89,7 @@ export class SingleStudentComponent implements OnInit, OnDestroy {
       text: "Are you sure you want to update this Student ?",
       action: () => {
         this.modalData.isBusy = true;
-        this.subscriptions.push(this.studentsService.updateStudentInfo(data.info, data.profile)
+        this.subscriptions.push(this.studentsService.updateStudentInfo(data.info, data.profile, coursesToBeRemoved, coursesToBeAdded)
           .subscribe(
             (alert: ContentAlert) => {
               this.alert = alert;
