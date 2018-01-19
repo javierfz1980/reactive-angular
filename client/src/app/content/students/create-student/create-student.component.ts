@@ -44,9 +44,21 @@ export class CreateStudentComponent implements OnDestroy {
         this.subscription = this.studentsService.createStudent(data.info, data.profile, this.studentCourses.getSelectedCourses())
           .subscribe(
             (alert: ContentAlert) => {
-              this.alert = alert;
-              this.modalData.isBusy = false;
-              if (alert.type === "success") this.router.navigate([appRoutePaths.students.path]);
+              if (alert.type === "success") {
+                this.alert = alert;
+                this.modalData = {
+                  type: "response",
+                  title: "Student successfully created",
+                  text: "You will be redirected to Students list when you click ok.",
+                  action: () => {
+                    this.router.navigate([appRoutePaths.students.path])
+                  }
+                }
+              } else {
+                this.alert = alert;
+                this.modalData.isBusy = false;
+                this.confirmModal.close();
+              }
             });
       }
     };
