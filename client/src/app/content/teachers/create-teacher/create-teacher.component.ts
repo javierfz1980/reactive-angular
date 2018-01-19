@@ -42,9 +42,21 @@ export class CreateTeacherComponent implements OnDestroy{
         this.subscription = this.teachersService.createTeacher(data.info, data.profile, this.teacherCourses.getSelectedCourses())
           .subscribe(
             (alert: ContentAlert) => {
-              this.alert = alert;
-              this.modalData.isBusy = false;
-              if (alert.type === "success") this.router.navigate([appRoutePaths.teachers.path]);
+              if (alert.type === "success") {
+                this.alert = alert;
+                this.modalData = {
+                  type: "response",
+                  title: "Teacher successfully created",
+                  text: "You will be redirected to Teachers list when you click ok.",
+                  action: () => {
+                    this.router.navigate([appRoutePaths.teachers.path])
+                  }
+                }
+              } else {
+                this.alert = alert;
+                this.modalData.isBusy = false;
+                this.confirmModal.close();
+              }
             });
       }
     };
