@@ -13,6 +13,8 @@ import {Teacher} from "../../../models/content/teacher";
 import {TeachersService} from "../../../core/providers/services/content/teachers.service";
 import {InfoProfileData} from "../../commons/info-form/info-form.component";
 import {appRoutePaths} from "../../../app-routing.module";
+import {Student} from "../../../models/content/student";
+import {getDifferencesBetween} from "../../../commons/utils";
 
 @Component({
   selector: "gl-single-teacher",
@@ -76,6 +78,8 @@ export class SingleTeacherComponente implements OnInit, OnDestroy{
   }
 
   update(data: InfoProfileData) {
+    const coursesToBeRemoved = getDifferencesBetween<string>((<Teacher>data.info).courses, this.courses.getSelectedCourses());
+    const coursesToBeAdded = getDifferencesBetween<string>(this.courses.getSelectedCourses(), (<Teacher>data.info).courses);
     this.modalData = {
       type: "confirm",
       title: "Update",
@@ -83,7 +87,7 @@ export class SingleTeacherComponente implements OnInit, OnDestroy{
       action: () => {
         this.modalData.isBusy = true;
         this.subscriptions.push(this.teachersService
-          .updateTeacherInfo(data.info, data.profile, this.courses.getSelectedCourses())
+          .updateTeacherInfo(data.info, data.profile, coursesToBeRemoved, coursesToBeAdded)
           .subscribe(
             (alert: ContentAlert) => {
               this.alert = alert;

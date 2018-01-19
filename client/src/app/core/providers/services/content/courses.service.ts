@@ -58,14 +58,6 @@ export class CoursesService {
       }))
   }
 
-  updateMultipleCoursesWithSameData(courses: string[], data: {[key: string]: any}): Observable<ContentAlert[]> {
-    return Observable.from(courses)
-      .mergeMap((id: string) => {
-        return this.updateCourse(id, data)
-      })
-      .toArray();
-  }
-
   updateCourseInfo(course: Course, studentsToBeRemoved: string[], studentsToBeAdded: string[]): Observable<ContentAlert> {
     const courseId: string = course.id;
     delete course.id;

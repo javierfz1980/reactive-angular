@@ -44,7 +44,7 @@ export class StudentsService {
   }
 
   updateStudentsForCourses(studentId: string, coursesToBeRemoved: string[], coursesToBeAdded: string[]): Observable<Course[]> {
-    return this.delteStudentFromCourses(studentId, coursesToBeRemoved)
+    return this.deleteStudentFromCourses(studentId, coursesToBeRemoved)
       .switchMap(() => this.addStudentToCourses(studentId, coursesToBeAdded))
   }
 
@@ -111,7 +111,7 @@ export class StudentsService {
       })
   }
 
-  delteStudentFromCourses(studentId: string, courses: string[]): Observable<Course[]> {
+  deleteStudentFromCourses(studentId: string, courses: string[]): Observable<Course[]> {
     if (courses.length === 0) return Observable.of([]);
     return Observable.from(courses)
       .mergeMap((courseId: string) => this.contentService
@@ -128,7 +128,7 @@ export class StudentsService {
     return Observable.forkJoin(
         this.contentService.deleteContent<MessageResponse>(this.profilesPath, student.profile_id),
         this.contentService.deleteContent<MessageResponse>(this.path, student.id),
-        this.delteStudentFromCourses(student.id, student.courses)
+        this.deleteStudentFromCourses(student.id, student.courses)
       )
       .map(([deleteProfile, deleteStudent]) => (<ContentAlert>{
         type: "success",
