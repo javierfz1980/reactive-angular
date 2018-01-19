@@ -4,6 +4,7 @@ import {Routes} from "@angular/router";
 import {contentStudentsRoutePaths} from "./students/students-routing.module";
 import {contentTeachersRoutePaths} from "./teachers/teachers-routing.module";
 import {contentCoursesRoutePaths} from "./courses/courses-routing.module";
+import {DashboardComponent} from "./dashboard/dashboard.component";
 
 /**
  * Predefined Routes for Content Module
@@ -18,8 +19,7 @@ export const contentRoutePaths: {[key:string]: RouteElement} = {
 };
 
 export const contentRoutesComponents: Routes = [
-  {path: contentRoutePaths.dashboard.path,
-      loadChildren: "app/content/dashboard/dashboard.module#DashboardModule", canLoad: [AuthGuard]},
+  {path: contentRoutePaths.dashboard.path, component: DashboardComponent, canActivate: [AuthGuard]},
   {path: contentRoutePaths.courses.path,
     loadChildren: "app/content/courses/courses.module#CoursesModule", canLoad: [AuthGuard]},
   {path: contentRoutePaths.students.path,

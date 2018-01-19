@@ -6,6 +6,7 @@ import {CommonsModule} from "./commons/commons.module";
 import {BrowserModule} from "@angular/platform-browser";
 import {CoreModule} from "./core/core.module";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {DashboardModule} from "./content/dashboard/dashboard.module";
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
     BrowserModule,
     BrowserAnimationsModule,
     CommonsModule,
+    DashboardModule,
     CoreModule,
     AppRoutingModule,
   ],
