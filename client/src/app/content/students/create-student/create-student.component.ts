@@ -7,7 +7,6 @@ import {
   ConfirmationData,
   ConfirmationModalComponent
 } from "../../commons/confirmation-modal/confirmation-modal.component";
-import {Subscription} from "rxjs/Subscription";
 import {StudentsService} from "../../../core/providers/services/content/students.service";
 import {Router} from "@angular/router";
 import {appRoutePaths} from "../../../app-routing.module";
@@ -28,7 +27,7 @@ export class CreateStudentComponent implements OnDestroy {
   modalData: ConfirmationData;
   alert: ContentAlert;
 
-  private subscription: Subscription;
+  private isAlive: boolean = true;
 
   constructor(private studentsService: StudentsService,
               private router: Router) {}
@@ -41,7 +40,9 @@ export class CreateStudentComponent implements OnDestroy {
       text: "Are you sure you want to create this new Student ?",
       action: () => {
         this.modalData.isBusy = true;
-        this.subscription = this.studentsService.createStudent(data.info, data.profile, this.studentCourses.getSelectedCourses())
+        this.studentsService
+          .createStudent(data.info, data.profile, this.studentCourses.getSelectedCourses())
+          .takeWhile(() => this.isAlive)
           .subscribe(
             (alert: ContentAlert) => {
               if (alert.type === "success") {
@@ -66,6 +67,6 @@ export class CreateStudentComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.subscription) this.subscription.unsubscribe();
+    this.isAlive = false;
   }
 }

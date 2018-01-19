@@ -1,17 +1,16 @@
 import {Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {Observable} from "rxjs/Observable";
-import "rxjs/add/operator/filter";
 import {Course} from "../../models/content/course";
 import {AuthService} from "../../core/providers/services/auth.service";
 import {
   ConfirmationData,
   ConfirmationModalComponent
 } from "../commons/confirmation-modal/confirmation-modal.component";
-import {Subscription} from "rxjs/Subscription";
 import {ContentAlert} from "../commons/alert/content-alert.component";
 import {CoursesService} from "../../core/providers/services/content/courses.service";
 import {appRoutePaths} from "../../app-routing.module";
 import {ActivatedRoute, Router} from "@angular/router";
+import 'rxjs/add/operator/takeWhile';
 
 @Component({
   selector: "gl-cursos",
@@ -27,7 +26,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
   modalData: ConfirmationData;
   alert: ContentAlert;
 
-  private subscriptions: Subscription[] = [];
+  private isAlive: boolean = true;
 
   constructor(private coursesService: CoursesService,
               private authService: AuthService,
@@ -55,15 +54,16 @@ export class CoursesComponent implements OnInit, OnDestroy {
       text: "Are you sure you want to delete the Course ?",
       action: () => {
         this.modalData.isBusy = true;
-        this.subscriptions.push(
-          this.coursesService.deleteCourse(course)
+          this.coursesService
+            .deleteCourse(course)
+            .takeWhile(() => this.isAlive)
             .subscribe(
               (alert: ContentAlert) => {
                 this.alert = alert;
                 this.modalData.isBusy = false;
                 this.fetchContent();
               })
-        )}
+        }
     };
     this.confirmModal.open();
   }
@@ -75,15 +75,16 @@ export class CoursesComponent implements OnInit, OnDestroy {
       text: "Are you sure you want to change the Course status ?",
       action: () => {
         this.modalData.isBusy = true;
-        this.subscriptions.push(
-          this.coursesService.updateCourse(course.id, {active: !course.active})
+          this.coursesService
+            .updateCourse(course.id, {active: !course.active})
+            .takeWhile(() => this.isAlive)
             .subscribe(
               (alert: ContentAlert) => {
                 this.alert = alert;
                 this.modalData.isBusy = false;
                 this.fetchContent();
               })
-        )}
+        }
     };
     this.confirmModal.open();
   }
@@ -101,7 +102,6 @@ export class CoursesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.subscriptions.length > 0)
-      this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.isAlive = false;
   }
 }

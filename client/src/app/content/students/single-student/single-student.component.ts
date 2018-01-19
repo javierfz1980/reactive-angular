@@ -13,10 +13,10 @@ import {
   ConfirmationData,
   ConfirmationModalComponent
 } from "../../commons/confirmation-modal/confirmation-modal.component";
-import {Subscription} from "rxjs/Subscription";
 import {appRoutePaths} from "../../../app-routing.module";
 import {CoursesFormComponent} from "../../commons/courses-form/courses-form.component";
 import {getDifferencesBetween} from "../../../helpers/helpers";
+import 'rxjs/add/operator/takeWhile';
 
 @Component({
   selector: "gl-single-student",
@@ -36,7 +36,7 @@ export class SingleStudentComponent implements OnInit, OnDestroy {
   editMode: boolean = false;
   modalData: ConfirmationData;
 
-  private subscriptions: Subscription[] = [];
+  private isAlive: boolean = true;
 
   constructor(private router: Router,
               private route: ActivatedRoute,
@@ -66,13 +66,15 @@ export class SingleStudentComponent implements OnInit, OnDestroy {
       text: "Are you sure you want to delete this Student ?",
       action: () => {
         this.modalData.isBusy = true;
-        this.subscriptions.push(this.studentsService.deleteStudent(student)
+        this.studentsService
+          .deleteStudent(student)
+          .takeWhile(() => this.isAlive)
           .subscribe(
             (alert: ContentAlert) => {
               this.alert = alert;
               this.modalData.isBusy = false;
               this.router.navigate([appRoutePaths.students.path]);
-            }));
+            });
       }
     };
     this.confirmModal.open();
@@ -88,13 +90,15 @@ export class SingleStudentComponent implements OnInit, OnDestroy {
       text: "Are you sure you want to update this Student ?",
       action: () => {
         this.modalData.isBusy = true;
-        this.subscriptions.push(this.studentsService.updateStudentInfo(data.info, data.profile, coursesToBeRemoved, coursesToBeAdded)
+        this.studentsService
+          .updateStudentInfo(data.info, data.profile, coursesToBeRemoved, coursesToBeAdded)
+          .takeWhile(() => this.isAlive)
           .subscribe(
             (alert: ContentAlert) => {
               this.alert = alert;
               this.modalData.isBusy = false;
               this.fetchContent();
-            }));
+            });
       }
     };
     this.confirmModal.open();
@@ -105,7 +109,6 @@ export class SingleStudentComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.subscriptions.length > 0)
-          this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.isAlive = false;
   }
 }

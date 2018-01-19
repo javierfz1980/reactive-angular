@@ -7,11 +7,11 @@ import {
   ConfirmationModalComponent
 } from "../commons/confirmation-modal/confirmation-modal.component";
 import {ContentAlert} from "../commons/alert/content-alert.component";
-import {Subscription} from "rxjs/Subscription";
 import {ActivatedRoute, Router} from "@angular/router";
 import {appRoutePaths} from "../../app-routing.module";
 import {StudentsService} from "../../core/providers/services/content/students.service";
 import {EmailFilter, NameLastnameFilter} from "../../models/filters/generic-string-filter";
+import 'rxjs/add/operator/takeWhile';
 
 @Component({
   selector: "gl-alumnos",
@@ -29,7 +29,7 @@ export class StudentsComponent implements OnInit, OnDestroy {
   nameLastnameFilter = new NameLastnameFilter();
   emailFilter = new EmailFilter();
 
-  private subscription: Subscription;
+  private isAlive: boolean = true;
 
   constructor(private studentsService: StudentsService,
               private authService: AuthService,
@@ -57,7 +57,9 @@ export class StudentsComponent implements OnInit, OnDestroy {
       text: "Are you sure you want to delete the Student ?",
       action: () => {
         this.modalData.isBusy = true;
-        this.subscription = this.studentsService.deleteStudent(student)
+        this.studentsService
+          .deleteStudent(student)
+          .takeWhile(() => this.isAlive)
           .subscribe(
             (alert: ContentAlert) => {
               this.alert = alert;
@@ -82,7 +84,7 @@ export class StudentsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.subscription) this.subscription.unsubscribe();
+    this.isAlive = false;
   }
 
 }

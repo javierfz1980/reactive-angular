@@ -5,7 +5,6 @@ import {
   ConfirmationModalComponent
 } from "../../commons/confirmation-modal/confirmation-modal.component";
 import {ContentAlert} from "../../commons/alert/content-alert.component";
-import {Subscription} from "rxjs/Subscription";
 import {appRoutePaths} from "../../../app-routing.module";
 import {Course} from "../../../models/content/course";
 import {CourseStudentsComponent} from "../single-course/course-students/course-students.component";
@@ -29,7 +28,7 @@ export class CreateCourseComponent implements OnInit, OnDestroy {
   modalData: ConfirmationData;
   alert: ContentAlert;
 
-  private subscription: Subscription;
+  private isAlive: boolean = true;
 
   constructor(private authService: AuthService,
               private courseService: CoursesService,
@@ -46,7 +45,9 @@ export class CreateCourseComponent implements OnInit, OnDestroy {
       text: "Are you sure you want to create this new Course?",
       action: () => {
         this.modalData.isBusy = true;
-        this.subscription = this.courseService.createCourse(data, this.students.getSelectedStudents())
+        this.courseService
+          .createCourse(data, this.students.getSelectedStudents())
+          .takeWhile(() => this.isAlive)
           .subscribe(
             (alert: ContentAlert) => {
               if (alert.type === "success") {
@@ -71,6 +72,6 @@ export class CreateCourseComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.subscription) this.subscription.unsubscribe();
+    this.isAlive = false;
   }
 }

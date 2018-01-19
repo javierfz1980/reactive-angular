@@ -1,9 +1,8 @@
-import {Component, ViewChild} from "@angular/core";
+import {Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {ContentAlert} from "../../commons/alert/content-alert.component";
 import {Observable} from "rxjs/Observable";
 import {AuthService} from "../../../core/providers/services/auth.service";
-import {Subscription} from "rxjs/Subscription";
 import {
   ConfirmationData,
   ConfirmationModalComponent
@@ -13,12 +12,13 @@ import {CoursesService} from "../../../core/providers/services/content/courses.s
 import {appRoutePaths} from "../../../app-routing.module";
 import {CourseStudentsComponent} from "./course-students/course-students.component";
 import {getDifferencesBetween} from "../../../helpers/helpers";
+import 'rxjs/add/operator/takeWhile';
 
 @Component({
   selector: "gl-single-course",
   templateUrl: "./single-course.component.html"
 })
-export class SingleCourseComponent {
+export class SingleCourseComponent implements OnInit, OnDestroy{
 
   @ViewChild("confirmModal")
   confirmModal: ConfirmationModalComponent;
@@ -32,7 +32,7 @@ export class SingleCourseComponent {
   editMode: boolean = false;
   modalData: ConfirmationData;
 
-  private subscriptions: Subscription[] = [];
+  private isAlive: boolean = true;
 
   constructor(private router: Router,
               private route: ActivatedRoute,
@@ -62,13 +62,15 @@ export class SingleCourseComponent {
       text: "Are you sure you want to delete this Course ?",
       action: () => {
         this.modalData.isBusy = true;
-        this.subscriptions.push(this.coursesService.deleteCourse(course)
+        this.coursesService
+          .deleteCourse(course)
+          .takeWhile(() => this.isAlive)
           .subscribe(
             (alert: ContentAlert) => {
               this.alert = alert;
               this.modalData.isBusy = false;
               this.router.navigate([appRoutePaths.courses.path]);
-            }));
+            });
       }
     };
     this.confirmModal.open();
@@ -84,13 +86,15 @@ export class SingleCourseComponent {
       text: "Are you sure you want to update this Course ?",
       action: () => {
         this.modalData.isBusy = true;
-        this.subscriptions.push(this.coursesService.updateCourseInfo(data, studentsToBeRemoved, studentsToBeAdded)
+        this.coursesService
+          .updateCourseInfo(data, studentsToBeRemoved, studentsToBeAdded)
+          .takeWhile(() => this.isAlive)
           .subscribe(
             (alert: ContentAlert) => {
               this.alert = alert;
               this.modalData.isBusy = false;
               this.fetchContent();
-            }));
+            });
       }
     };
     this.confirmModal.open();
@@ -101,7 +105,6 @@ export class SingleCourseComponent {
   }
 
   ngOnDestroy() {
-    if (this.subscriptions.length > 0)
-      this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.isAlive = false;
   }
 }
