@@ -40,9 +40,11 @@ export class AuthService {
     return this.httpClient
       .get<Account>(this.basePath + this.accountPath)
       .do((account: Account) => this.account = account)
+      .do((account: Account) => console.log(account))
   }
 
-  getAccount(): Account {
+  getAccount(subscribe: boolean = false): Account | Observable<Account> {
+    if (subscribe) return this.fetchAccount();
     return this.account;
   }
 

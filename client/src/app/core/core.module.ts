@@ -8,12 +8,14 @@ import {ServicesModule} from "./providers/services/services.module";
 import {InterceptorsModule} from "./providers/interceptors/interceptors.module";
 import {AppI18nModule} from "./i18n/app-i18n.module";
 import {GuardModule} from "./providers/guards/guard.module";
+import {AccountComponent} from "./components/header/account/account.component";
 
 const elements = [
   SideNavComponent,
   AlertsComponent,
   HeaderComponent,
   LoginComponent,
+  AccountComponent
 ];
 
 @NgModule({

@@ -1,0 +1,23 @@
+<clr-dropdown [clrCloseMenuOnItemClick]="false">
+  <button type="button" clrDropdownTrigger>
+    <clr-icon shape="user" size="24"></clr-icon>
+    <clr-icon shape="caret down"></clr-icon>
+  </button>
+  <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
+    <ng-container *ngIf="account | async as accountInfo; else noAccount">
+      <label class="dropdown-header">{{accountInfo.name}}</label>
+      <div class="dropdown-divider"></div>
+      <button type="button" clrDropdownItem><clr-icon shape="user">
+        </clr-icon> Account
+      </button>
+      <button type="button" clrDropdownItem (click)="logout()">
+        <clr-icon shape="logout"></clr-icon> Logout
+      </button>
+    </ng-container>
+    <ng-template #noAccount>
+      <button type="button" clrDropdownItem (click)="logout()">
+        <clr-icon shape="logout"></clr-icon> Logout
+      </button>
+    </ng-template>
+  </clr-dropdown-menu>
+</clr-dropdown>
