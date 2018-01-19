@@ -23,7 +23,7 @@
       <clr-dg-row *clrDgItems="let student of studentsList" >
 
         <clr-dg-action-overflow *ngIf="isAdministrator">
-          <button class="action-item" (click)="edit(student)"><clr-icon shape="edit"></clr-icon> View Details</button>
+          <button class="action-item" (click)="edit(student)"><clr-icon shape="edit"></clr-icon> Edit Details</button>
           <button class="action-item" (click)="delete(student)"><clr-icon shape="trash"></clr-icon> Delete</button>
         </clr-dg-action-overflow>
 
