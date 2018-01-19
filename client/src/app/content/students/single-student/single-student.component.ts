@@ -16,7 +16,7 @@ import {
 import {Subscription} from "rxjs/Subscription";
 import {appRoutePaths} from "../../../app-routing.module";
 import {CoursesFormComponent} from "../../commons/courses-form/courses-form.component";
-import {getDifferencesBetween} from "../../../commons/utils";
+import {getDifferencesBetween} from "../../../helpers/helpers";
 
 @Component({
   selector: "gl-single-student",

@@ -14,7 +14,7 @@ import {TeachersService} from "../../../core/providers/services/content/teachers
 import {InfoProfileData} from "../../commons/info-form/info-form.component";
 import {appRoutePaths} from "../../../app-routing.module";
 import {Student} from "../../../models/content/student";
-import {getDifferencesBetween} from "../../../commons/utils";
+import {getDifferencesBetween} from "../../../helpers/helpers";
 
 @Component({
   selector: "gl-single-teacher",

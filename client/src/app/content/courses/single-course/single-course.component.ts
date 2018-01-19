@@ -12,7 +12,7 @@ import {Course} from "../../../models/content/course";
 import {CoursesService} from "../../../core/providers/services/content/courses.service";
 import {appRoutePaths} from "../../../app-routing.module";
 import {CourseStudentsComponent} from "./course-students/course-students.component";
-import {getDifferencesBetween} from "../../../commons/utils";
+import {getDifferencesBetween} from "../../../helpers/helpers";
 
 @Component({
   selector: "gl-single-course",
