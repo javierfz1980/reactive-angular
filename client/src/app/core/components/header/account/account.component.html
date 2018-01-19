@@ -7,7 +7,7 @@
     <ng-container *ngIf="account | async as accountInfo; else noAccount">
       <label class="dropdown-header">{{accountInfo.name}}</label>
       <div class="dropdown-divider"></div>
-      <button type="button" clrDropdownItem><clr-icon shape="user">
+      <button type="button" clrDropdownItem (click)="showAccountInfo()"><clr-icon shape="user">
         </clr-icon> Account
       </button>
       <button type="button" clrDropdownItem (click)="logout()">
@@ -21,3 +21,7 @@
     </ng-template>
   </clr-dropdown-menu>
 </clr-dropdown>
+
+<div *ngIf="account | async as accountInfo">
+  <gl-account-details-modal #accountModal [modalData]="accountInfo"></gl-account-details-modal>
+</div>

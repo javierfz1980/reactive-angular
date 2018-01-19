@@ -1,0 +1,28 @@
+<clr-modal #modal>
+  <div class="modal-title account-title" *ngIf="data">
+    {{(data) ? data.name : ""}}<hr>
+  </div>
+  <div class="modal-body account-body">
+    <div *ngIf="data">
+      <p>
+        <label>Name:</label>
+        {{data.name}}
+      </p>
+      <p>
+        <label>Email:</label>
+        {{data.email}}
+      </p>
+      <p>
+        <label>Role:</label>
+        {{data.role}}
+      </p>
+    </div>
+  </div>
+  <div class="modal-footer" *ngIf="data">
+    <button type="button"
+            (click)="close()"
+            class="btn ok-btn btn-primary" >
+      Ok
+    </button>
+  </div>
+</clr-modal>

@@ -9,13 +9,15 @@ import {InterceptorsModule} from "./providers/interceptors/interceptors.module";
 import {AppI18nModule} from "./i18n/app-i18n.module";
 import {GuardModule} from "./providers/guards/guard.module";
 import {AccountComponent} from "./components/header/account/account.component";
+import {AccountDetailsModalComponent} from "./components/header/account/account-details-modal/account-details-modal.component";
 
 const elements = [
   SideNavComponent,
   AlertsComponent,
   HeaderComponent,
   LoginComponent,
-  AccountComponent
+  AccountComponent,
+  AccountDetailsModalComponent
 ];
 
 @NgModule({
