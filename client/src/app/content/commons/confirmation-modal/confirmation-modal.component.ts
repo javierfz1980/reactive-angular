@@ -3,7 +3,7 @@ import {Student} from "../../../models/content/student";
 import {Teacher} from "../../../models/content/teacher";
 import {Course} from "../../../models/content/course";
 
-export type ConfirmationType = "delete" | "confirm";
+export type ConfirmationType = "delete" | "confirm" | "response";
 export interface ConfirmationData {
   title: string;
   text: string;

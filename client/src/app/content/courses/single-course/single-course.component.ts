@@ -75,8 +75,8 @@ export class SingleCourseComponent {
   }
 
   update(data: Course) {
-    const studentsToBeRemoved = getDifferencesBetween<string>(data.students, this.students.getSelectedStudents());
-    const studentsToBeAdded = getDifferencesBetween<string>(this.students.getSelectedStudents(), data.students);
+    const studentsToBeRemoved = getDifferencesBetween<string>(data.students ? data.students : [], this.students.getSelectedStudents());
+    const studentsToBeAdded = getDifferencesBetween<string>(this.students.getSelectedStudents(), data.students ? data.students : []);
     data.students = this.students.getSelectedStudents();
     this.modalData = {
       type: "confirm",

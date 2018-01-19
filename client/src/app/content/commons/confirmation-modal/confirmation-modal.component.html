@@ -1,4 +1,5 @@
-<clr-modal #modal>
+<clr-modal #modal
+           [clrModalClosable]="data && data.type !== 'response'">
   <h3 class="modal-title">
     {{(data) ? data.title : ""}}
     <span *ngIf="data && data.isBusy" class="spinner spinner-sm"></span>
@@ -7,7 +8,7 @@
     <p>{{(data) ? data.text : ""}}</p>
   </div>
   <div class="modal-footer" *ngIf="data">
-    <button type="button" class="btn btn-outline"
+    <button *ngIf="data && data.type !== 'response'" type="button" class="btn btn-outline"
             [disabled]="data.isBusy"
             (click)="close()">Cancel</button>
     <button type="button"

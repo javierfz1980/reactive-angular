@@ -49,9 +49,21 @@ export class CreateCourseComponent implements OnInit, OnDestroy {
         this.subscription = this.courseService.createCourse(data, this.students.getSelectedStudents())
           .subscribe(
             (alert: ContentAlert) => {
-              this.alert = alert;
-              this.modalData.isBusy = false;
-              if (alert.type === "success") this.router.navigate([appRoutePaths.courses.path]);
+              if (alert.type === "success") {
+                this.alert = alert;
+                this.modalData = {
+                  type: "response",
+                  title: "Course successfully created",
+                  text: "You will be redirected to Courses list when you click ok.",
+                  action: () => {
+                    this.router.navigate([appRoutePaths.courses.path])
+                  }
+                }
+              } else {
+                this.alert = alert;
+                this.modalData.isBusy = false;
+                this.confirmModal.close();
+              }
             });
       }
     };
