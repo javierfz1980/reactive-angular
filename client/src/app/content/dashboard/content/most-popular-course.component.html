@@ -1,0 +1,27 @@
+<div class="_db-card" *ngIf="course | async as courseInfo; else loading" (click)="gotoCourse(courseInfo.id)">
+  <div class="course-title">
+      {{courseInfo.title}}
+  </div>
+  <p>
+    {{courseInfo.short_description}}
+  </p>
+  <div class="header-subtitle">
+    {{courseInfo.students.length}} <clr-icon shape="users"></clr-icon> More popular Course...
+  </div>
+</div>
+
+<ng-template #loading>
+  <div class="spinner spinner-md"></div>
+</ng-template>
+
+
+<!--
+
+<div class="course-students">
+      {{courseInfo.students.length}}
+      <span class="header-subtitle">
+        <br><clr-icon shape="users"></clr-icon> More popular Course...
+      </span>
+    </div>
+
+-->

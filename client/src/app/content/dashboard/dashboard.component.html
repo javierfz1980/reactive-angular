@@ -1,1 +1,59 @@
-Dashboard
+<h1>
+  {{ title }}<br>
+  <div class="btn-group btn-primary" *ngIf="isAdministrator" >
+    <button class="btn btn-sm"
+            (click)="navigateTo(routes.courses.path+'/'+routes.courses.childs.create.path)">Create new Course</button>
+    <button class="btn btn-sm"
+            (click)="navigateTo(routes.students.path+'/'+routes.students.childs.create.path)">Add new Student</button>
+    <button class="btn btn-sm"
+            (click)="navigateTo(routes.teachers.path+'/'+routes.teachers.childs.create.path)">Add new Teacher</button>
+  </div>
+</h1>
+
+<hr>
+
+<div class="row db-row">
+  <div class="col-sm-12 col-md-6 db-col">
+    <div class="db-col-content-wrapper">
+      <div class="db-col-content-container">
+        <div class="content"><gl-most-popular-course></gl-most-popular-course></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-6 db-col">
+    <div class="db-col-content-wrapper">
+      <div class="db-col-content-container" (click)="navigateTo(routes.courses.path)">
+        <div class="content">
+          <gl-generic-amount *ngIf="totalCourses | async as valueCourses"
+                             [title]="'Courses'"
+                             [total]="valueCourses"
+                             [link]=""></gl-generic-amount>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row db-row">
+  <div class="col-sm-12 col-md-6 db-col">
+    <div class="db-col-content-wrapper">
+      <div class="db-col-content-container" (click)="navigateTo(routes.teachers.path)">
+        <div class="content">
+          <gl-generic-amount *ngIf="totalTeachers | async as valueTeachers"
+                             [title]="'Teachers'"
+                             [total]="valueTeachers"></gl-generic-amount>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-6 db-col">
+    <div class="db-col-content-wrapper">
+      <div class="db-col-content-container" (click)="navigateTo(routes.students.path)">
+        <div class="content">
+          <gl-generic-amount *ngIf="totalStudents | async as valueStudents"
+                             [title]="'Students'"
+                             [total]="valueStudents"></gl-generic-amount>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

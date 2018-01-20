@@ -1,0 +1,25 @@
+.course-header {
+
+}
+
+.header-subtitle {
+  line-height: 60px;
+  font-size: 20px;
+  color: #000;
+}
+
+.course-title {
+  font-size: 60px;
+  line-height: 50px;
+}
+
+/*
+.course-students {
+  font-size: 115px;
+  line-height: 20px;
+  font-weight: bold;
+  float: left;
+  margin-top: 40px;
+  color: #000;
+}
+*/

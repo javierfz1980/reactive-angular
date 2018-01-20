@@ -48,3 +48,7 @@ hr {
 ._default-cursor {
   cursor: default!important;
 }
+
+._db-card {
+  cursor: pointer;
+}
