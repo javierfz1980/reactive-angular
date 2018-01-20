@@ -1,12 +1,9 @@
-<clr-dropdown [clrCloseMenuOnItemClick]="false">
+<clr-dropdown [clrCloseMenuOnItemClick]="false" *ngIf="account | async as accountInfo; else noAccount">
   <button type="button" clrDropdownTrigger>
-    <clr-icon shape="user" size="24"></clr-icon>
-    <clr-icon shape="caret down"></clr-icon>
+    {{accountInfo.name}} <clr-icon shape="caret down"></clr-icon>
   </button>
   <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
-    <ng-container *ngIf="account | async as accountInfo; else noAccount">
-      <label class="dropdown-header">{{accountInfo.name}}</label>
-      <div class="dropdown-divider"></div>
+    <ng-container>
       <button type="button" clrDropdownItem (click)="showAccountInfo()"><clr-icon shape="user">
         </clr-icon> Account
       </button>
@@ -22,6 +19,6 @@
   </clr-dropdown-menu>
 </clr-dropdown>
 
-<div *ngIf="account | async as accountInfo">
-  <gl-account-details-modal #accountModal [modalData]="accountInfo"></gl-account-details-modal>
-</div>
+<ng-template #noAccount>
+  <div class="spinner spinner-inverse spinner-sm"></div>
+</ng-template>
