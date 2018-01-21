@@ -10,6 +10,7 @@ import {AppI18nModule} from "./i18n/app-i18n.module";
 import {GuardModule} from "./providers/guards/guard.module";
 import {AccountComponent} from "./components/header/account/account.component";
 import {AccountDetailsModalComponent} from "./components/header/account/account-details-modal/account-details-modal.component";
+import {SearchComponent} from "./components/header/search/search.component";
 
 const elements = [
   SideNavComponent,
@@ -17,7 +18,8 @@ const elements = [
   HeaderComponent,
   LoginComponent,
   AccountComponent,
-  AccountDetailsModalComponent
+  AccountDetailsModalComponent,
+  SearchComponent
 ];
 
 @NgModule({

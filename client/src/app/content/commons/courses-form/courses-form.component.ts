@@ -1,15 +1,15 @@
-import {Component, Input, OnInit} from "@angular/core";
+import {ChangeDetectionStrategy, Component, Input, OnInit} from "@angular/core";
 import {Course} from "../../../models/content/course";
 import {Observable} from "rxjs/Observable";
 import {CoursesService} from "../../../core/providers/services/content/courses.service";
-import {Student} from "../../../models/content/student";
 import {Router} from "@angular/router";
 import {appRoutePaths} from "../../../app-routing.module";
 
 @Component({
   selector: "gl-courses-form",
   templateUrl: "./courses-form.component.html",
-  styleUrls: ["./courses-form.component.css"]
+  styleUrls: ["./courses-form.component.css"],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CoursesFormComponent implements OnInit {
 
