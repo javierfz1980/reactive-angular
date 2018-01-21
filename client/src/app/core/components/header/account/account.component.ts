@@ -22,7 +22,7 @@ export class AccountComponent implements OnInit {
               private router: Router) {}
 
   ngOnInit() {
-    this.account = (<Observable<Account>>this.authService.getAccount(true));
+    this.account = this.authService.account;
   }
 
   showAccountInfo() {

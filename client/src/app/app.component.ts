@@ -21,8 +21,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.isAuthorized = this.authService
-      .authEmitter
-      .asObservable();
+    this.isAuthorized = this.authService.isUserAuthorized;
   }
 }
