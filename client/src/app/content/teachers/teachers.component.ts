@@ -38,17 +38,16 @@ export class TeachersComponent implements OnInit, OnDestroy  {
               private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.fetchContent();
     this.isAdministrator = this.authService.isAdministrator();
-  }
 
-  fetchContent() {
     this.teachers = this.teachersService
-      .getTeachers()
+      .teachers
       .catch(error => {
         this.alert = {type: "danger", message: error.message};
         return Observable.throw(error)
       });
+
+    this.teachersService.fetchData();
   }
 
   delete(teacher: Teacher) {
@@ -59,13 +58,13 @@ export class TeachersComponent implements OnInit, OnDestroy  {
       action: () => {
         this.modalData.isBusy = true;
         this.teachersService
-          .deleteTeacher(teacher)
+          .deleteData(teacher)
           .takeWhile(() => this.isAlive)
           .subscribe(
             (alert: ContentAlert) => {
               this.alert = alert;
               this.modalData.isBusy = false;
-              this.fetchContent();
+              setTimeout(() => this.confirmModal.close(), 1)
             });
       }
     };

@@ -39,7 +39,7 @@ export class CreateTeacherComponent implements OnDestroy{
       action: () => {
         this.modalData.isBusy = true;
         this.teachersService
-          .createTeacher(data.info, data.profile, this.teacherCourses.getSelectedCourses())
+          .createData(data.info, data.profile, this.teacherCourses.getSelectedCourses())
           .takeWhile(() => this.isAlive)
           .subscribe(
             (alert: ContentAlert) => {
@@ -49,9 +49,7 @@ export class CreateTeacherComponent implements OnDestroy{
                   type: "response",
                   title: "Teacher successfully created",
                   text: "You will be redirected to Teachers list when you click ok.",
-                  action: () => {
-                    this.router.navigate([appRoutePaths.teachers.path])
-                  }
+                  action: () => this.router.navigate([appRoutePaths.teachers.path])
                 }
               } else {
                 this.alert = alert;

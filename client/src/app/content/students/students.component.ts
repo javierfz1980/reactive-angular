@@ -47,7 +47,7 @@ export class StudentsComponent implements OnInit, OnDestroy {
         return Observable.throw(error)
       });
 
-    this.studentsService.fetchStudents();
+    this.studentsService.fetchData();
   }
 
   delete(student: Student) {
@@ -58,7 +58,7 @@ export class StudentsComponent implements OnInit, OnDestroy {
       action: () => {
         this.modalData.isBusy = true;
         this.studentsService
-          .deleteStudent(student)
+          .deleteData(student)
           .takeWhile(() => this.isAlive)
           .subscribe(
             (alert: ContentAlert) => {

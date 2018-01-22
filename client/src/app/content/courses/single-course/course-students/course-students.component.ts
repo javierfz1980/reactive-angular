@@ -53,7 +53,7 @@ export class CourseStudentsComponent {
         }
       });
 
-    this.studentsService.fetchStudents();
+    this.studentsService.fetchData();
   }
 
   gotoStudent(id: string) {

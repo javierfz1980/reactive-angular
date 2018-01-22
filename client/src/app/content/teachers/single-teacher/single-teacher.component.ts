@@ -14,12 +14,14 @@ import {InfoProfileData} from "../../commons/info-form/info-form.component";
 import {appRoutePaths} from "../../../app-routing.module";
 import {getDifferencesBetween} from "../../../helpers/helpers";
 import 'rxjs/add/operator/takeWhile';
+import {Profile} from "../../../models/content/profile";
+import {Student} from "../../../models/content/student";
 
 @Component({
   selector: "gl-single-teacher",
-  templateUrl: "./single-teacher.componente.html"
+  templateUrl: "./single-teacher.component.html"
 })
-export class SingleTeacherComponente implements OnInit, OnDestroy{
+export class SingleTeacherComponent implements OnInit, OnDestroy{
 
   @ViewChild("confirmModal")
   confirmModal: ConfirmationModalComponent;
@@ -29,6 +31,7 @@ export class SingleTeacherComponente implements OnInit, OnDestroy{
 
   alert: ContentAlert;
   info: Observable<InfoProfileData>;
+  teacherId: Observable<string>;
   isAdministrator: boolean;
   editMode: boolean = false;
   modalData: ConfirmationData;
@@ -43,18 +46,26 @@ export class SingleTeacherComponente implements OnInit, OnDestroy{
   ngOnInit() {
     this.editMode = this.route.queryParams["value"]["edit"];
     this.isAdministrator = this.authService.isAdministrator();
-    this.fetchContent();
-  }
 
-  fetchContent() {
-    this.info = this.route.params
+    this.teacherId = this.route.params
       .map((params: Params) => params.id)
-      .switchMap((id:string) => this.teachersService.getTeacherInfo(id))
-      .do(data => console.log("ACACACA: ", data))
-      .catch((error: any) => {
-        this.alert = {type: "danger", message: error.message};
-        return Observable.throw(error)
+      .do((id: string) => this.teachersService.fetchData(id));
+
+    this.info = this.teachersService
+      .teachers
+      .withLatestFrom(this.teacherId)
+      .map(([teachers, id]) => teachers.find((teacher: Teacher) => teacher.id === id))
+      .filter(data => data !== undefined)
+      .switchMap((teacher: Teacher) =>{
+        return Observable.forkJoin(
+          this.teachersService.getProfile(teacher.profile_id),
+          this.teachersService.getTeacherCourses(teacher.id))
+          .map(([profile, courses]) => {
+            teacher.courses = courses.map((course) => course.id);
+            return ({info: teacher, profile: profile});
+          })
       })
+      .do((data) => console.log(data));
   }
 
   delete(data: Teacher) {
@@ -65,7 +76,7 @@ export class SingleTeacherComponente implements OnInit, OnDestroy{
       action: () => {
         this.modalData.isBusy = true;
         this.teachersService
-          .deleteTeacher(data)
+          .deleteData(data)
           .takeWhile(() => this.isAlive)
           .subscribe(
             (alert: ContentAlert) => {
@@ -88,13 +99,13 @@ export class SingleTeacherComponente implements OnInit, OnDestroy{
       action: () => {
         this.modalData.isBusy = true;
         this.teachersService
-          .updateTeacherInfo(data.info, data.profile, coursesToBeRemoved, coursesToBeAdded)
+          .updateData(data.info, data.profile, coursesToBeRemoved, coursesToBeAdded)
           .takeWhile(() => this.isAlive)
           .subscribe(
             (alert: ContentAlert) => {
               this.alert = alert;
               this.modalData.isBusy = false;
-              this.fetchContent();
+              setTimeout(() => this.confirmModal.close(), 1)
             });
       }
     };
@@ -103,7 +114,6 @@ export class SingleTeacherComponente implements OnInit, OnDestroy{
 
   toggleEditMode() {
     this.editMode = !this.editMode;
-    console.log(this.isAdministrator && this.editMode);
   }
 
   ngOnDestroy() {

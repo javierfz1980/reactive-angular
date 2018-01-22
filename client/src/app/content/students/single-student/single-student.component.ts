@@ -56,7 +56,7 @@ export class SingleStudentComponent implements OnInit, OnDestroy {
 
     this.studentId = this.route.params
       .map((params: Params) => params.id)
-      .do((id: string) => this.studentsService.fetchStudent(id));
+      .do((id: string) => this.studentsService.fetchData(id));
 
     this.info = this.studentsService
       .students
@@ -77,7 +77,7 @@ export class SingleStudentComponent implements OnInit, OnDestroy {
       action: () => {
         this.modalData.isBusy = true;
         this.studentsService
-          .deleteStudent(student)
+          .deleteData(student)
           .takeWhile(() => this.isAlive)
           .subscribe(
             (alert: ContentAlert) => {
@@ -101,7 +101,7 @@ export class SingleStudentComponent implements OnInit, OnDestroy {
       action: () => {
         this.modalData.isBusy = true;
         this.studentsService
-          .updateStudent(data.info, data.profile, coursesToBeRemoved, coursesToBeAdded)
+          .updateData(data.info, data.profile, coursesToBeRemoved, coursesToBeAdded)
           .takeWhile(() => this.isAlive)
           .subscribe(
             (alert: ContentAlert) => {

@@ -56,7 +56,7 @@ export class CourseInfoComponent implements OnInit{
     this.isAdministrator = this.authService.isAdministrator();
 
     this.teachersList = this.teachersService
-      .getTeachers();
+      .teachers;
 
     this.type = this.info ? "update" : "create";
     // validate info received or make an empty info for use it as an input form. (new registers)

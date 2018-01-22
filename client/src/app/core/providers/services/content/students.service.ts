@@ -33,38 +33,31 @@ export class StudentsService {
   constructor(private contentService: ContentService) {}
 
   /**
-   * Fetches all students from server, saves the data internally and emits.
+   * Fetches all Students or an individual Student from server, saves the data internally and emits.
    * @returns {Subscription}
    */
-  fetchStudents() {
-    return this.contentService
-      .getContent<Student[]>(this.path)
-      .subscribe((students: Student[]) => {
-        this.data = students;
-        this.studentsSubject.next(this.data.slice());
-      })
-  }
-
-  /**
-   * Fetches a single student from server.
-   * If student already exists in the internal data it updates the student and emit, if not it adds
-   * the student to the internal data and emits
-   * @param {string} id: The id of the Student to be fetched
-   * @returns {Subscription}
-   */
-  fetchStudent(id: string) {
-    return this.contentService
-      .getContent<Student>(`${this.path}/${id}`)
-      .subscribe((student: Student) => {
-        if (this.data.length > 0) {
-          this.data.forEach((studentData, idx) => {
-            if (studentData.id === id) this.data[idx] = student;
-          })
-        } else {
-          this.data.push(student);
-        }
-        this.studentsSubject.next(this.data.slice());
-      })
+  fetchData(id?: string) {
+    if (id) {
+      return this.contentService
+        .getContent<Student>(`${this.path}/${id}`)
+        .subscribe((student: Student) => {
+          if (this.data.length > 0) {
+            this.data.forEach((studentData, idx) => {
+              if (studentData.id === id) this.data[idx] = student;
+            })
+          } else {
+            this.data.push(student);
+          }
+          this.studentsSubject.next(this.data.slice());
+        })
+    } else {
+      return this.contentService
+        .getContent<Student[]>(this.path)
+        .subscribe((students: Student[]) => {
+          this.data = students;
+          this.studentsSubject.next(this.data.slice());
+        })
+    }
   }
 
   /**
@@ -84,7 +77,7 @@ export class StudentsService {
    * @param {string[]} courses: The selected courses for the Student to be registered.
    * @returns {Observable<ContentAlert>}
    */
-  createStudent(student: Student, profile: Profile, courses: string[]): Observable<ContentAlert> {
+  createData(student: Student, profile: Profile, courses: string[]): Observable<ContentAlert> {
     profile.birthday = new Date(profile.birthday).toString();
 
     return Observable.forkJoin(
@@ -97,7 +90,7 @@ export class StudentsService {
             profile_id: newProfile.id,
             courses: student.courses
           })))
-          .do(() => this.fetchStudents())
+          .do(() => this.fetchData())
           .map(() => (<ContentAlert>{
             type: "success",
             message: "Student created",
@@ -118,8 +111,8 @@ export class StudentsService {
    * @param {string[]} coursesToBeAdded: The list of Courses where Student should be added.
    * @returns {Observable<ContentAlert>}
    */
-  updateStudent(student:Student, profile: Profile, coursesToBeRemoved: string[],
-                coursesToBeAdded: string[]): Observable<ContentAlert> {
+  updateData(student:Student, profile: Profile, coursesToBeRemoved: string[],
+             coursesToBeAdded: string[]): Observable<ContentAlert> {
     const infoId: string = student.id;
     const profileId: string = profile.id;
 
@@ -132,7 +125,7 @@ export class StudentsService {
       this.contentService.patchContent<Student>(this.path, infoId, student),
       this.contentService.patchContent<Profile>(this.profilesPath, profileId, profile),
       this.updateStudentsCourses(infoId, coursesToBeRemoved, coursesToBeAdded))
-      .do(() => this.fetchStudents())
+      .do(() => this.fetchData())
       .map(() => (<ContentAlert>{
         type: "success",
         message: "Student info updated",
@@ -149,12 +142,12 @@ export class StudentsService {
    * @param {Student} student: The Student to be deleted
    * @returns {Observable<ContentAlert>}
    */
-  deleteStudent(student: Student): Observable<ContentAlert> {
+  deleteData(student: Student): Observable<ContentAlert> {
     return Observable.forkJoin(
       this.contentService.deleteContent<MessageResponse>(this.profilesPath, student.profile_id),
       this.contentService.deleteContent<MessageResponse>(this.path, student.id),
       this.deleteStudentFromCourses(student.id, student.courses))
-      .do(() => this.fetchStudents())
+      .do(() => this.fetchData())
       .map(([deleteProfile, deleteStudent]) => (<ContentAlert>{
         type: "success",
         message: deleteProfile.message,
@@ -200,7 +193,7 @@ export class StudentsService {
   }
 
   /**
-   * Remoes a Student to a list of Courses.
+   * Removes a Student to a list of Courses.
    * @param {string} studentId: The Student id
    * @param {string[]} courses: The list of Courses where Student should be removed
    * @returns {Observable<Course[]>}

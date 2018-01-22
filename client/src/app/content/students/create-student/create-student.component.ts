@@ -37,11 +37,11 @@ export class CreateStudentComponent implements OnDestroy {
     this.modalData = {
       type: "confirm",
       title: "Create",
-      text: "Are you sure you want to create this new Student ?",
+      text: "Are you sure you want to createData this new Student ?",
       action: () => {
         this.modalData.isBusy = true;
         this.studentsService
-          .createStudent(data.info, data.profile, this.studentCourses.getSelectedCourses())
+          .createData(data.info, data.profile, this.studentCourses.getSelectedCourses())
           .takeWhile(() => this.isAlive)
           .subscribe(
             (alert: ContentAlert) => {

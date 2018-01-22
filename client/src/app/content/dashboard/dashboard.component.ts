@@ -41,14 +41,15 @@ export class DashboardComponent implements OnInit {
       .map((courses: Course[]) => courses.length);
 
     this.totalTeachers = this.teachersService
-      .getTeachers()
+      .teachers
       .map((teachers: Teacher[]) => teachers.length);
 
     this.totalStudents = this.studentsService
       .students
       .map((students: Student[]) => students.length);
 
-    this.studentsService.fetchStudents();
+    this.studentsService.fetchData();
+    this.teachersService.fetchData();
   }
 
   navigateTo(destination: string) {
