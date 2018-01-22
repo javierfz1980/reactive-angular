@@ -1,5 +1,5 @@
 <clr-modal #modal
-           [clrModalClosable]="data && data.type !== 'response'">
+           [clrModalClosable]="(data && data.type !== 'response' && !data.isBusy)">
   <h3 class="modal-title">
     {{(data) ? data.title : ""}}
     <span *ngIf="data && data.isBusy" class="spinner spinner-sm"></span>
