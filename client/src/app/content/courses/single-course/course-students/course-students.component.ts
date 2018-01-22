@@ -36,7 +36,7 @@ export class CourseStudentsComponent {
 
   fetchContent() {
     this.students = this.studentsService
-      .getStudents()
+      .students
       .map((students: Student[]) => {
         this.selectedStudents = students
           .filter((student: Student) => this.markedStudents && this.markedStudents
@@ -52,6 +52,8 @@ export class CourseStudentsComponent {
           return students
         }
       });
+
+    this.studentsService.fetchStudents();
   }
 
   gotoStudent(id: string) {

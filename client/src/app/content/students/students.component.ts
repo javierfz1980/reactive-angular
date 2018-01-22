@@ -9,7 +9,9 @@ import {
 import {ContentAlert} from "../commons/alert/content-alert.component";
 import {ActivatedRoute, Router} from "@angular/router";
 import {appRoutePaths} from "../../app-routing.module";
-import {StudentsService} from "../../core/providers/services/content/students.service";
+import {
+  StudentsService
+} from "../../core/providers/services/content/students.service";
 import {EmailFilter, NameLastnameFilter} from "../../models/filters/generic-string-filter";
 import 'rxjs/add/operator/takeWhile';
 
@@ -37,17 +39,15 @@ export class StudentsComponent implements OnInit, OnDestroy {
               private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.fetchContent();
     this.isAdministrator = this.authService.isAdministrator();
-  }
-
-  private fetchContent() {
     this.students = this.studentsService
-      .getStudents()
+      .students
       .catch(error => {
         this.alert = {type: "danger", message: error.message};
         return Observable.throw(error)
       });
+
+    this.studentsService.fetchStudents();
   }
 
   delete(student: Student) {
@@ -64,7 +64,7 @@ export class StudentsComponent implements OnInit, OnDestroy {
             (alert: ContentAlert) => {
               this.alert = alert;
               this.modalData.isBusy = false;
-              this.fetchContent();
+              setTimeout(() => this.confirmModal.close(), 1);
             });
       }
     };

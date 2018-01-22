@@ -7,7 +7,9 @@ import {Observable} from "rxjs/Observable";
 import {Course} from "../../models/content/course";
 import {CoursesService} from "../../core/providers/services/content/courses.service";
 import {TeachersService} from "../../core/providers/services/content/teachers.service";
-import {StudentsService} from "../../core/providers/services/content/students.service";
+import {
+  StudentsService
+} from "../../core/providers/services/content/students.service";
 import {Student} from "../../models/content/student";
 import {Teacher} from "../../models/content/teacher";
 
@@ -40,11 +42,13 @@ export class DashboardComponent implements OnInit {
 
     this.totalTeachers = this.teachersService
       .getTeachers()
-      .map((courses: Teacher[]) => courses.length);
+      .map((teachers: Teacher[]) => teachers.length);
 
     this.totalStudents = this.studentsService
-      .getStudents()
-      .map((courses: Student[]) => courses.length);
+      .students
+      .map((students: Student[]) => students.length);
+
+    this.studentsService.fetchStudents();
   }
 
   navigateTo(destination: string) {

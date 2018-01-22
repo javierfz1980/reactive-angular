@@ -51,9 +51,7 @@ export class CreateStudentComponent implements OnDestroy {
                   type: "response",
                   title: "Student successfully created",
                   text: "You will be redirected to Students list when you click ok.",
-                  action: () => {
-                    this.router.navigate([appRoutePaths.students.path])
-                  }
+                  action: () => this.router.navigate([appRoutePaths.students.path])
                 }
               } else {
                 this.alert = alert;

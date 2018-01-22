@@ -1,12 +1,15 @@
 import {Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {Student} from "../../../models/content/student";
+import {Profile} from "../../../models/content/profile";
 import {Observable} from "rxjs/Observable";
 import {
   ContentAlert
 } from "../../commons/alert/content-alert.component";
 import {AuthService} from "../../../core/providers/services/auth.service";
-import {StudentsService} from "../../../core/providers/services/content/students.service";
+import {
+  StudentsService
+} from "../../../core/providers/services/content/students.service";
 import 'rxjs/add/observable/throw';
 import {InfoProfileData} from "../../commons/info-form/info-form.component";
 import {
@@ -17,6 +20,8 @@ import {appRoutePaths} from "../../../app-routing.module";
 import {CoursesFormComponent} from "../../commons/courses-form/courses-form.component";
 import {getDifferencesBetween} from "../../../helpers/helpers";
 import 'rxjs/add/operator/takeWhile';
+import 'rxjs/add/operator/withLatestFrom';
+import 'rxjs/add/operator/filter';
 
 @Component({
   selector: "gl-single-student",
@@ -32,6 +37,8 @@ export class SingleStudentComponent implements OnInit, OnDestroy {
 
   alert: ContentAlert;
   info: Observable<InfoProfileData>;
+  studentId: Observable<string>;
+
   isAdministrator: boolean;
   editMode: boolean = false;
   modalData: ConfirmationData;
@@ -46,16 +53,19 @@ export class SingleStudentComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.editMode = this.route.queryParams["value"]["edit"];
     this.isAdministrator = this.authService.isAdministrator();
-    this.fetchContent();
-  }
 
-  fetchContent() {
-    this.info = this.route.params
+    this.studentId = this.route.params
       .map((params: Params) => params.id)
-      .switchMap((id:string) => this.studentsService.getStudentInfo(id))
-      .catch((error: any) => {
-        this.alert = {type: "danger", message: error.message};
-        return Observable.throw(error)
+      .do((id: string) => this.studentsService.fetchStudent(id));
+
+    this.info = this.studentsService
+      .students
+      .withLatestFrom(this.studentId)
+      .map(([students, id]) => students.find((student: Student) => student.id === id))
+      .filter(data => data !== undefined)
+      .switchMap((student: Student) => {
+        return this.studentsService.getProfile(student.profile_id)
+          .map((profile: Profile) => ({info: student, profile: profile}))
       })
   }
 
@@ -91,13 +101,13 @@ export class SingleStudentComponent implements OnInit, OnDestroy {
       action: () => {
         this.modalData.isBusy = true;
         this.studentsService
-          .updateStudentInfo(data.info, data.profile, coursesToBeRemoved, coursesToBeAdded)
+          .updateStudent(data.info, data.profile, coursesToBeRemoved, coursesToBeAdded)
           .takeWhile(() => this.isAlive)
           .subscribe(
             (alert: ContentAlert) => {
               this.alert = alert;
               this.modalData.isBusy = false;
-              this.fetchContent();
+              setTimeout(() => this.confirmModal.close(), 1);
             });
       }
     };
