@@ -34,17 +34,16 @@ export class CoursesComponent implements OnInit, OnDestroy {
               private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.fetchContent();
     this.isAdministrator = this.authService.isAdministrator();
-  }
 
-  private fetchContent() {
     this.courses = this.coursesService
-      .getCourses()
+      .courses
       .catch(error => {
         this.alert = {type: "danger", message: error.message};
         return Observable.throw(error)
       });
+
+    this.coursesService.fetchData();
   }
 
   delete(course: Course) {
@@ -55,13 +54,13 @@ export class CoursesComponent implements OnInit, OnDestroy {
       action: () => {
         this.modalData.isBusy = true;
           this.coursesService
-            .deleteCourse(course)
+            .deleteData(course)
             .takeWhile(() => this.isAlive)
             .subscribe(
               (alert: ContentAlert) => {
                 this.alert = alert;
                 this.modalData.isBusy = false;
-                this.fetchContent();
+                setTimeout(() => this.confirmModal.close(), 1)
               })
         }
     };
@@ -76,13 +75,13 @@ export class CoursesComponent implements OnInit, OnDestroy {
       action: () => {
         this.modalData.isBusy = true;
           this.coursesService
-            .updateCourse(course.id, {active: !course.active})
+            .changeCourseStatus(course.id, !course.active)
             .takeWhile(() => this.isAlive)
             .subscribe(
               (alert: ContentAlert) => {
                 this.alert = alert;
                 this.modalData.isBusy = false;
-                this.fetchContent();
+                setTimeout(() => this.confirmModal.close(), 1)
               })
         }
     };

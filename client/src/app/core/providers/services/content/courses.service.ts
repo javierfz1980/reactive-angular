@@ -7,6 +7,7 @@ import {MessageResponse} from "../../../../models/api/message-response";
 import {ContentAlert} from "../../../../content/commons/alert/content-alert.component";
 import {Teacher} from "../../../../models/content/teacher";
 import {Student} from "../../../../models/content/student";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 @Injectable()
 export class CoursesService {
@@ -14,38 +15,114 @@ export class CoursesService {
   private path: string = globalProperties.coursesPath;
   private studentsPath: string = globalProperties.studentsPath;
 
+  /**
+   * Internal service data
+   */
+  private data: Course[] = [];
+
+  /**
+   * Internal service data emitter
+   */
+  private readonly coursesSubject: BehaviorSubject<Course[]> = new BehaviorSubject(this.data);
+  courses: Observable<Course[]> = this.coursesSubject.asObservable();
+
+
   constructor(private contentService: ContentService) {}
 
-  getCourses(): Observable<Course[]> {
-    return this.contentService
-      .getContent<Course[]>(this.path);
+  /**
+   * Fetches all Courses or an individual Course from server, saves the data internally and emits.
+   */
+  fetchData(id?: string) {
+    if (id) {
+      return this.contentService
+        .getContent<Course>(`${this.path}/${id}`)
+        .subscribe((course: Course) => {
+          if (this.data.length > 0) {
+            this.data.forEach((courseData, idx) => {
+              if (courseData.id === id) this.data[idx] = course;
+            })
+          } else {
+            this.data.push(course);
+          }
+          this.coursesSubject.next(this.data.slice());
+        })
+    } else {
+      return this.contentService
+        .getContent<Course[]>(this.path)
+        .subscribe((courses: Course[]) => {
+          this.data = courses;
+          this.coursesSubject.next(this.data.slice());
+        })
+    }
   }
 
-  getCoursesWithTeachers(): Observable<Course[]> {
-    return this.getCourses()
-      .switchMap((courses: Course[]) => {
-        return Observable.from(courses)
-          .mergeMap((course: Course) => {
-            if (!course.teacher) return Observable.of(course);
-            return this.contentService
-              .getContent<Teacher>(`${globalProperties.teachersPath}/${course.teacher}`)
-              .map((teacher: Teacher) => {
-                course.teacherInfo = teacher;
-                return course;
-              })
-          })
+  createData(course: Course, students: string[]): Observable<ContentAlert> {
+    return this.contentService.postContent<Course>(this.path, course)
+      .switchMap((createdCourse: Course) => {
+        return this.contentService
+          .patchContent<Course>(this.path, createdCourse.id, {teacher: course.teacher, students: students})
       })
-      .toArray();
+      .switchMap((createdCourse: Course) => {
+        return this.addCurseToStudents(createdCourse.id, students)
+      })
+      .do(() => this.fetchData())
+      .map(() => (<ContentAlert>{
+        type: "success",
+        message: "Teacher created",
+        time: 3000
+      }))
+      .catch((error: any) => Observable.of(<ContentAlert>{
+        type: "danger",
+        message: `Error creating teacher: ${error.message}`
+      }));
   }
 
-  getCourse(id: string): Observable<Course> {
-    return this.contentService
-      .getContent<Course>(`${this.path}/${id}`);
+  updateData(course: Course, studentsToBeRemoved: string[], studentsToBeAdded: string[]): Observable<ContentAlert> {
+    const courseId: string = course.id;
+    delete course.id;
+
+    return Observable.forkJoin(
+      this.updateCourseForStudents(courseId, studentsToBeRemoved, studentsToBeAdded),
+      this.contentService.patchContent<Course>(this.path, courseId, course))
+      .do(() => this.fetchData())
+      .map(() => (<ContentAlert>{
+        type: "success",
+        message: "The selected course was updated",
+        time: 3000
+      }))
+      .catch((error: any) => Observable.of(<ContentAlert>{
+        type: "danger",
+        message: error.message,
+        time: 3000
+      }))
   }
 
-  updateCourse(id: string, data: {[key: string]: any}): Observable<ContentAlert> {
+  deleteData(course: Course): Observable<ContentAlert> {
+    return Observable.forkJoin(
+      this.deleteCurseFromStudents(course.id, course.students),
+      this.contentService.deleteContent<MessageResponse>(this.path, course.id))
+      .do(() => this.fetchData())
+      .map(([students, course]) => (<ContentAlert>{
+        type: "success",
+        message: course.message,
+        time: 3000
+      }))
+      .catch((error: any) => Observable.of(<ContentAlert>{
+        type: "danger",
+        message: error.message,
+        time: 3000
+      }))
+  }
+
+  getCourseTeacher(id: string): Observable<Teacher> {
     return this.contentService
-      .patchContent<Course>(this.path, id, data)
+      .getContent<Teacher>(`${globalProperties.teachersPath}/${id}`);
+  }
+
+  changeCourseStatus(id: string, data: boolean): Observable<ContentAlert> {
+    return this.contentService
+      .patchContent<Course>(this.path, id, {active: data})
+      .do(() => this.fetchData())
       .map((course: Course) => (<ContentAlert>{
         type: "success",
         message: "The selected course status was updated",
@@ -58,52 +135,12 @@ export class CoursesService {
       }))
   }
 
-  updateCourseInfo(course: Course, studentsToBeRemoved: string[], studentsToBeAdded: string[]): Observable<ContentAlert> {
-    const courseId: string = course.id;
-    delete course.id;
-
-    return Observable.forkJoin(
-      this.updateCourseForStudents(courseId, studentsToBeRemoved, studentsToBeAdded),
-      this.updateCourse(courseId, course)
-    )
-    .map(() => (<ContentAlert>{
-      type: "success",
-      message: "The selected course was updated",
-      time: 3000
-    }))
-    .catch((error: any) => Observable.of(<ContentAlert>{
-      type: "danger",
-      message: error.message,
-      time: 3000
-    }))
-  }
-
-  updateCourseForStudents(courseId: string, studentsToBeRemoved: string[], studentsToBeAdded: string[]): Observable<Student[]> {
+  private updateCourseForStudents(courseId: string, studentsToBeRemoved: string[], studentsToBeAdded: string[]): Observable<Student[]> {
     return this.deleteCurseFromStudents(courseId, studentsToBeRemoved)
       .switchMap(() => this.addCurseToStudents(courseId, studentsToBeAdded))
   }
 
-  createCourse(course: Course, students: string[]): Observable<ContentAlert> {
-    return this.contentService.postContent<Course>(this.path, course)
-      .switchMap((createdCourse: Course) => {
-        return this.contentService
-          .patchContent<Course>(this.path, createdCourse.id, {teacher: course.teacher, students: students})
-      })
-      .switchMap((createdCourse: Course) => {
-        return this.addCurseToStudents(createdCourse.id, students)
-      })
-      .map(() => (<ContentAlert>{
-        type: "success",
-        message: "Teacher created",
-        time: 3000
-      }))
-      .catch((error: any) => Observable.of(<ContentAlert>{
-        type: "danger",
-        message: `Error creating teacher: ${error.message}`
-      }));
-  }
-
-  addCurseToStudents(courseId: string, students: string[]): Observable<Student[]> {
+  private addCurseToStudents(courseId: string, students: string[]): Observable<Student[]> {
     if (students.length === 0) return Observable.of([]);
     return Observable.from(students)
       .mergeMap((studentId: string) => {
@@ -118,8 +155,8 @@ export class CoursesService {
       .toArray()
   }
 
-  deleteCurseFromStudents(courseId: string, students: string[]): Observable<Student[]> {
-    if (students.length === 0) return Observable.of([]);
+  private deleteCurseFromStudents(courseId: string, students: string[]): Observable<Student[]> {
+    if (!students || students.length === 0) return Observable.of([]);
     return Observable.from(students)
       .mergeMap((studentId: string) => {
         return this.contentService
@@ -131,22 +168,5 @@ export class CoursesService {
           })
       })
       .toArray();
-  }
-
-  deleteCourse(course: Course): Observable<ContentAlert> {
-    return Observable.forkJoin(
-      this.deleteCurseFromStudents(course.id, course.students),
-      this.contentService.deleteContent<MessageResponse>(this.path, course.id)
-    )
-    .map(([students, course]) => (<ContentAlert>{
-      type: "success",
-      message: course.message,
-      time: 3000
-    }))
-    .catch((error: any) => Observable.of(<ContentAlert>{
-      type: "danger",
-      message: error.message,
-      time: 3000
-    }))
   }
 }

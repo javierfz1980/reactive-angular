@@ -58,13 +58,13 @@
       <div *ngIf="teachersList | async as teachers" class="select">
         <select id="teacher"
                 [ngClass]="{'invalid-select': !form.controls['teacher'].valid  &&
-                  form.controls['teacher'].touched}"
+                  form.controls['teacher'].touched && editMode}"
                 formControlName="teacher"
                 placeholder="Enter the teacher">
           <option *ngFor="let teacher of teachers"
-                  [selected]="teacher.id === form.controls['teacher'].value"
+                  [selected]="info.teacher === teacher.id"
                   [value]="teacher.id">
-            {{teacher.first_name}} {{teacher.last_name}}
+            {{teacher.first_name}} - {{teacher.last_name}}
           </option>
         </select>
       </div>

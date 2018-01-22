@@ -18,7 +18,7 @@ export class CourseStudentsComponent {
   @Input()
   set isReadOnly(value: boolean) {
     this._isReadOnly = value;
-    this.fetchContent();
+    this.studentsService.fetchData();
   }
 
   students: Observable<Student[]>;
@@ -31,10 +31,6 @@ export class CourseStudentsComponent {
               private router: Router) {}
 
   ngOnInit() {
-    this.fetchContent();
-  }
-
-  fetchContent() {
     this.students = this.studentsService
       .students
       .map((students: Student[]) => {
@@ -52,8 +48,6 @@ export class CourseStudentsComponent {
           return students
         }
       });
-
-    this.studentsService.fetchData();
   }
 
   gotoStudent(id: string) {

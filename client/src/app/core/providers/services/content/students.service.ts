@@ -34,7 +34,7 @@ export class StudentsService {
 
   /**
    * Fetches all Students or an individual Student from server, saves the data internally and emits.
-   * @returns {Subscription}
+   * @param {string} id: The id of the Student to be fetched
    */
   fetchData(id?: string) {
     if (id) {
@@ -58,16 +58,6 @@ export class StudentsService {
           this.studentsSubject.next(this.data.slice());
         })
     }
-  }
-
-  /**
-   * Fetches and returns a Student Profile from server.
-   * @param {string} id: The id of the profile to be fetched
-   * @returns {Observable<Profile>}
-   */
-  getProfile(id: string): Observable<Profile> {
-    return this.contentService
-      .getContent<Profile>(`${this.profilesPath}/${id}`)
   }
 
   /**
@@ -158,6 +148,16 @@ export class StudentsService {
         message: `Error deleting student: ${error.message}`,
         time: 3000
       }))
+  }
+
+  /**
+   * Fetches and returns a Student Profile from server.
+   * @param {string} id: The id of the profile to be fetched
+   * @returns {Observable<Profile>}
+   */
+  getProfile(id: string): Observable<Profile> {
+    return this.contentService
+      .getContent<Profile>(`${this.profilesPath}/${id}`)
   }
 
   /**

@@ -56,12 +56,13 @@ export class CourseInfoComponent implements OnInit{
     this.isAdministrator = this.authService.isAdministrator();
 
     this.teachersList = this.teachersService
-      .teachers;
+      .teachers
+      .merge(Observable.of([]));
 
     this.type = this.info ? "update" : "create";
     // validate info received or make an empty info for use it as an input form. (new registers)
     this.info = this.validateInfo();
-
+    console.log("aca: ", this.info.teacher);
     this.form = this.fb.group({
       id: [this.info.id ],
       title: [this.info.title, Validators.required ],
@@ -71,6 +72,8 @@ export class CourseInfoComponent implements OnInit{
       teacher: [{value: this.info.teacher, disabled: this._isReadOnly}, Validators.required ],
       students: [this.info.students ]
     });
+
+    this.teachersService.fetchData();
   }
 
   private validateInfo(): Course {

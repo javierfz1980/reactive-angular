@@ -67,6 +67,7 @@ export class SingleStudentComponent implements OnInit, OnDestroy {
         return this.studentsService.getProfile(student.profile_id)
           .map((profile: Profile) => ({info: student, profile: profile}))
       })
+      .do(data =>  console.log(data));
   }
 
   delete(student: Student) {

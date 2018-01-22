@@ -37,7 +37,7 @@ export class DashboardComponent implements OnInit {
     this.isAdministrator = this.authService.isAdministrator();
 
     this.totalCourses = this.coursesService
-      .getCourses()
+      .courses
       .map((courses: Course[]) => courses.length);
 
     this.totalTeachers = this.teachersService
@@ -48,6 +48,7 @@ export class DashboardComponent implements OnInit {
       .students
       .map((students: Student[]) => students.length);
 
+    this.coursesService.fetchData();
     this.studentsService.fetchData();
     this.teachersService.fetchData();
   }

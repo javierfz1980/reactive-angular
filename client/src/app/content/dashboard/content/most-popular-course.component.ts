@@ -19,14 +19,17 @@ export class MostPopularCourseComponent implements OnInit {
 
   ngOnInit() {
     this.course = this.coursesService
-      .getCourses()
+      .courses
       .map((courses: Course[]) => courses.filter((course: Course) => course.active))
+      .filter((courses: Course[]) => courses.length > 0)
       .map((courses: Course[]) => {
         return courses.reduce((previous: Course, current: Course) => {
           return (current.students && current.students.length >
             (previous.students ? previous.students.length : 0)) ? current : previous;
         })
       })
+
+    this.coursesService.fetchData();
   }
 
   gotoCourse(id: string) {

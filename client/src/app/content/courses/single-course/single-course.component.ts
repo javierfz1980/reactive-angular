@@ -13,6 +13,8 @@ import {appRoutePaths} from "../../../app-routing.module";
 import {CourseStudentsComponent} from "./course-students/course-students.component";
 import {getDifferencesBetween} from "../../../helpers/helpers";
 import 'rxjs/add/operator/takeWhile';
+import {Profile} from "../../../models/content/profile";
+import {Student} from "../../../models/content/student";
 
 @Component({
   selector: "gl-single-course",
@@ -28,6 +30,7 @@ export class SingleCourseComponent implements OnInit, OnDestroy{
 
   alert: ContentAlert;
   info: Observable<any>;
+  courseId: Observable<string>;
   isAdministrator: boolean;
   editMode: boolean = false;
   modalData: ConfirmationData;
@@ -42,17 +45,16 @@ export class SingleCourseComponent implements OnInit, OnDestroy{
   ngOnInit() {
     this.editMode = this.route.queryParams["value"]["edit"];
     this.isAdministrator = this.authService.isAdministrator();
-    this.fetchContent();
-  }
 
-  fetchContent() {
-    this.info = this.route.params
+    this.courseId = this.route.params
       .map((params: Params) => params.id)
-      .switchMap((id:string) => this.coursesService.getCourse(id))
-      .catch((error: any) => {
-        this.alert = {type: "danger", message: error.message};
-        return Observable.throw(error)
-      })
+      .do((id: string) => this.coursesService.fetchData(id));
+
+    this.info = this.coursesService
+      .courses
+      .withLatestFrom(this.courseId)
+      .map(([courses, id]) => courses.find((courseData: Course) => courseData.id === id))
+      .filter(data => data !== undefined)
   }
 
   delete(course: Course) {
@@ -63,7 +65,7 @@ export class SingleCourseComponent implements OnInit, OnDestroy{
       action: () => {
         this.modalData.isBusy = true;
         this.coursesService
-          .deleteCourse(course)
+          .deleteData(course)
           .takeWhile(() => this.isAlive)
           .subscribe(
             (alert: ContentAlert) => {
@@ -87,13 +89,13 @@ export class SingleCourseComponent implements OnInit, OnDestroy{
       action: () => {
         this.modalData.isBusy = true;
         this.coursesService
-          .updateCourseInfo(data, studentsToBeRemoved, studentsToBeAdded)
+          .updateData(data, studentsToBeRemoved, studentsToBeAdded)
           .takeWhile(() => this.isAlive)
           .subscribe(
             (alert: ContentAlert) => {
               this.alert = alert;
               this.modalData.isBusy = false;
-              this.fetchContent();
+              setTimeout(() => this.confirmModal.close(), 1)
             });
       }
     };

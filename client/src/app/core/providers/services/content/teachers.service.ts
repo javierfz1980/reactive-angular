@@ -32,7 +32,7 @@ export class TeachersService {
 
   /**
    * Fetches all Teachers or an individual Teacher from server, saves the data internally and emits.
-   * @returns {Subscription}
+   * @param {string} id: The id of the Student to be fetched
    */
   fetchData(id?: string) {
     if (id) {
@@ -56,26 +56,6 @@ export class TeachersService {
           this.studentsSubject.next(this.data.slice());
         })
     }
-  }
-
-  /**
-   * Fetches and returns a Student Profile from server.
-   * @param {string} id: The id of the profile to be fetched
-   * @returns {Observable<Profile>}
-   */
-  getProfile(id: string): Observable<Profile> {
-    return this.contentService
-      .getContent<Profile>(`${this.profilesPath}/${id}`)
-  }
-
-  /**
-   * Fetches and returns all the Courses assigned to a Teacher
-   * @param {string} teacherId: The id of the teacher to fetch Courses
-   * @returns {Observable<Course[]>}
-   */
-  getTeacherCourses(teacherId: string): Observable<Course[]> {
-    return this.contentService.getContent<Course[]>(this.coursesPath)
-      .map((courses: Course[]) => courses.filter((course: Course) => course.teacher === teacherId));
   }
 
   /**
@@ -165,6 +145,27 @@ export class TeachersService {
         time: 3000
       }))
   }
+
+  /**
+   * Fetches and returns a Student Profile from server.
+   * @param {string} id: The id of the profile to be fetched
+   * @returns {Observable<Profile>}
+   */
+  getProfile(id: string): Observable<Profile> {
+    return this.contentService
+      .getContent<Profile>(`${this.profilesPath}/${id}`)
+  }
+
+  /**
+   * Fetches and returns all the Courses assigned to a Teacher
+   * @param {string} teacherId: The id of the teacher to fetch Courses
+   * @returns {Observable<Course[]>}
+   */
+  getTeacherCourses(teacherId: string): Observable<Course[]> {
+    return this.contentService.getContent<Course[]>(this.coursesPath)
+      .map((courses: Course[]) => courses.filter((course: Course) => course.teacher === teacherId));
+  }
+
 
   /**
    * Updates the Courses where an Teacher is registered or not.
