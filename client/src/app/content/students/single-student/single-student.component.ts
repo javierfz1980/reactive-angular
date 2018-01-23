@@ -89,9 +89,9 @@ export class SingleStudentComponent implements OnInit, OnDestroy {
   }
 
   update(data: InfoProfileData) {
-    const coursesToBeRemoved = getDifferencesBetween<string>((<Student>data.info).courses, this.studentCourses.getSelectedCourses());
-    const coursesToBeAdded = getDifferencesBetween<string>(this.studentCourses.getSelectedCourses(), (<Student>data.info).courses);
-    (<Student>data.info).courses = this.studentCourses.getSelectedCourses();
+    const coursesToBeRemoved = getDifferencesBetween<string>(data.info.courses, this.studentCourses.getSelectedCourses());
+    const coursesToBeAdded = getDifferencesBetween<string>(this.studentCourses.getSelectedCourses(), data.info.courses);
+    data.info.courses = this.studentCourses.getSelectedCourses();
     this.modalData = {
       type: "confirm",
       title: "Update",

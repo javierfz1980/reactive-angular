@@ -33,7 +33,7 @@ export class CreateStudentComponent implements OnDestroy {
               private router: Router) {}
 
   create(data: InfoProfileData) {
-    (<Student>data.info).courses = this.studentCourses.getSelectedCourses();
+    data.info.courses = this.studentCourses.getSelectedCourses();
     this.modalData = {
       type: "confirm",
       title: "Create",

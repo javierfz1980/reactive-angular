@@ -1,13 +1,12 @@
 import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
-import {Teacher} from "../../../models/content/teacher";
-import {Student} from "../../../models/content/student";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Profile} from "../../../models/content/profile";
+import {BasicInfo} from "../../../models/content/basic-info";
 
 export type InfoProfileType = "create" | "update";
 
 export interface InfoProfileData {
-  info: Student | Teacher;
+  info: BasicInfo;
   profile: Profile;
   courses?: string[];
 }
