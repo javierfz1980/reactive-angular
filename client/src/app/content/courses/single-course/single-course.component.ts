@@ -8,13 +8,11 @@ import {
   ConfirmationModalComponent
 } from "../../commons/confirmation-modal/confirmation-modal.component";
 import {Course} from "../../../models/content/course";
-import {CoursesService} from "../../../core/providers/services/content/courses.service";
 import {appRoutePaths} from "../../../app-routing.module";
 import {CourseStudentsComponent} from "./course-students/course-students.component";
 import {getDifferencesBetween} from "../../../helpers/helpers";
+import {ContentService} from "../../../core/providers/services/content/content.service";
 import 'rxjs/add/operator/takeWhile';
-import {Profile} from "../../../models/content/profile";
-import {Student} from "../../../models/content/student";
 
 @Component({
   selector: "gl-single-course",
@@ -40,7 +38,7 @@ export class SingleCourseComponent implements OnInit, OnDestroy{
   constructor(private router: Router,
               private route: ActivatedRoute,
               private authService: AuthService,
-              private coursesService: CoursesService) {}
+              private contentService: ContentService) {}
 
   ngOnInit() {
     this.editMode = this.route.queryParams["value"]["edit"];
@@ -48,10 +46,10 @@ export class SingleCourseComponent implements OnInit, OnDestroy{
 
     this.courseId = this.route.params
       .map((params: Params) => params.id)
-      .do((id: string) => this.coursesService.fetchData(id));
+      .do((id: string) => this.contentService.fetchCourses(id));
 
-    this.info = this.coursesService
-      .courses
+    this.info = this.contentService
+      .getCourses()
       .withLatestFrom(this.courseId)
       .map(([courses, id]) => courses.find((courseData: Course) => courseData.id === id))
       .filter(data => data !== undefined)
@@ -64,8 +62,8 @@ export class SingleCourseComponent implements OnInit, OnDestroy{
       text: "Are you sure you want to delete this Course ?",
       action: () => {
         this.modalData.isBusy = true;
-        this.coursesService
-          .deleteData(course)
+        this.contentService
+          .deleteCourse(course)
           .takeWhile(() => this.isAlive)
           .subscribe(
             (alert: ContentAlert) => {
@@ -88,8 +86,8 @@ export class SingleCourseComponent implements OnInit, OnDestroy{
       text: "Are you sure you want to update this Course ?",
       action: () => {
         this.modalData.isBusy = true;
-        this.coursesService
-          .updateData(data, studentsToBeRemoved, studentsToBeAdded)
+        this.contentService
+          .updateCourse(data, studentsToBeRemoved, studentsToBeAdded)
           .takeWhile(() => this.isAlive)
           .subscribe(
             (alert: ContentAlert) => {

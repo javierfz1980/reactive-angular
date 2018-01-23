@@ -1,9 +1,9 @@
 import {Component, OnInit} from "@angular/core";
-import {CoursesService} from "../../../core/providers/services/content/courses.service";
 import {Observable} from "rxjs/Observable";
 import {Course} from "../../../models/content/course";
 import {Router} from "@angular/router";
 import {appRoutePaths} from "../../../app-routing.module";
+import {ContentService} from "../../../core/providers/services/content/content.service";
 
 @Component({
   selector: "gl-most-popular-course",
@@ -14,12 +14,12 @@ export class MostPopularCourseComponent implements OnInit {
 
   course: Observable<Course>;
 
-  constructor(private coursesService: CoursesService,
+  constructor(private contentService: ContentService,
               private router: Router) {}
 
   ngOnInit() {
-    this.course = this.coursesService
-      .courses
+    this.course = this.contentService
+      .getCourses()
       .map((courses: Course[]) => courses.filter((course: Course) => course.active))
       .filter((courses: Course[]) => courses.length > 0)
       .map((courses: Course[]) => {
@@ -29,7 +29,7 @@ export class MostPopularCourseComponent implements OnInit {
         })
       })
 
-    this.coursesService.fetchData();
+    this.contentService.fetchCourses();
   }
 
   gotoCourse(id: string) {

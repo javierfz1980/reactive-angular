@@ -7,9 +7,9 @@ import {
   ConfirmationData,
   ConfirmationModalComponent
 } from "../../commons/confirmation-modal/confirmation-modal.component";
-import {StudentsService} from "../../../core/providers/services/content/students.service";
 import {Router} from "@angular/router";
 import {appRoutePaths} from "../../../app-routing.module";
+import {ContentService} from "../../../core/providers/services/content/content.service";
 
 @Component({
   selector: "gl-create-student",
@@ -29,7 +29,7 @@ export class CreateStudentComponent implements OnDestroy {
 
   private isAlive: boolean = true;
 
-  constructor(private studentsService: StudentsService,
+  constructor(private contentService: ContentService,
               private router: Router) {}
 
   create(data: InfoProfileData) {
@@ -40,8 +40,8 @@ export class CreateStudentComponent implements OnDestroy {
       text: "Are you sure you want to createData this new Student ?",
       action: () => {
         this.modalData.isBusy = true;
-        this.studentsService
-          .createData(data.info, data.profile, this.studentCourses.getSelectedCourses())
+        this.contentService
+          .createStudent(data.info, data.profile, this.studentCourses.getSelectedCourses())
           .takeWhile(() => this.isAlive)
           .subscribe(
             (alert: ContentAlert) => {

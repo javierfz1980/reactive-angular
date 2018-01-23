@@ -1,9 +1,9 @@
 import {Component, Input} from "@angular/core";
 import {Observable} from "rxjs/Observable";
 import {Student} from "../../../../models/content/student";
-import {StudentsService} from "../../../../core/providers/services/content/students.service";
 import {Router} from "@angular/router";
 import {appRoutePaths} from "../../../../app-routing.module";
+import {ContentService} from "../../../../core/providers/services/content/content.service";
 
 @Component({
   selector: "gl-course-students",
@@ -18,7 +18,7 @@ export class CourseStudentsComponent {
   @Input()
   set isReadOnly(value: boolean) {
     this._isReadOnly = value;
-    this.studentsService.fetchData();
+    this.contentService.fetchStudents();
   }
 
   students: Observable<Student[]>;
@@ -27,12 +27,12 @@ export class CourseStudentsComponent {
   maxSize: number = this.gridSize;
   private _isReadOnly: boolean;
 
-  constructor(private studentsService: StudentsService,
+  constructor(private contentService: ContentService,
               private router: Router) {}
 
   ngOnInit() {
-    this.students = this.studentsService
-      .students
+    this.students = this.contentService
+      .getStudents()
       .map((students: Student[]) => {
         this.selectedStudents = students
           .filter((student: Student) => this.markedStudents && this.markedStudents

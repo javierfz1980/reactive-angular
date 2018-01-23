@@ -8,8 +8,8 @@ import {ContentAlert} from "../../commons/alert/content-alert.component";
 import {appRoutePaths} from "../../../app-routing.module";
 import {Course} from "../../../models/content/course";
 import {CourseStudentsComponent} from "../single-course/course-students/course-students.component";
-import {CoursesService} from "../../../core/providers/services/content/courses.service";
 import {Router} from "@angular/router";
+import {ContentService} from "../../../core/providers/services/content/content.service";
 
 @Component({
   selector: "gl-create-course",
@@ -31,7 +31,7 @@ export class CreateCourseComponent implements OnInit, OnDestroy {
   private isAlive: boolean = true;
 
   constructor(private authService: AuthService,
-              private courseService: CoursesService,
+              private contentService: ContentService,
               private router: Router) {}
 
   ngOnInit() {
@@ -45,8 +45,8 @@ export class CreateCourseComponent implements OnInit, OnDestroy {
       text: "Are you sure you want to create this new Course?",
       action: () => {
         this.modalData.isBusy = true;
-        this.courseService
-          .createData(data, this.students.getSelectedStudents())
+        this.contentService
+          .createCourse(data, this.students.getSelectedStudents())
           .takeWhile(() => this.isAlive)
           .subscribe(
             (alert: ContentAlert) => {

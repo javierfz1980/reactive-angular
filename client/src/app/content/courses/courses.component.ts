@@ -7,10 +7,10 @@ import {
   ConfirmationModalComponent
 } from "../commons/confirmation-modal/confirmation-modal.component";
 import {ContentAlert} from "../commons/alert/content-alert.component";
-import {CoursesService} from "../../core/providers/services/content/courses.service";
 import {appRoutePaths} from "../../app-routing.module";
 import {ActivatedRoute, Router} from "@angular/router";
 import 'rxjs/add/operator/takeWhile';
+import {ContentService} from "../../core/providers/services/content/content.service";
 
 @Component({
   selector: "gl-cursos",
@@ -28,7 +28,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
 
   private isAlive: boolean = true;
 
-  constructor(private coursesService: CoursesService,
+  constructor(private contentService: ContentService,
               private authService: AuthService,
               private router: Router,
               private route: ActivatedRoute) {}
@@ -36,14 +36,14 @@ export class CoursesComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.isAdministrator = this.authService.isAdministrator();
 
-    this.courses = this.coursesService
-      .courses
+    this.courses = this.contentService
+      .getCourses()
       .catch(error => {
         this.alert = {type: "danger", message: error.message};
         return Observable.throw(error)
       });
 
-    this.coursesService.fetchData();
+    this.contentService.fetchCourses();
   }
 
   delete(course: Course) {
@@ -53,8 +53,8 @@ export class CoursesComponent implements OnInit, OnDestroy {
       text: "Are you sure you want to delete the Course ?",
       action: () => {
         this.modalData.isBusy = true;
-          this.coursesService
-            .deleteData(course)
+          this.contentService
+            .deleteCourse(course)
             .takeWhile(() => this.isAlive)
             .subscribe(
               (alert: ContentAlert) => {
@@ -74,8 +74,8 @@ export class CoursesComponent implements OnInit, OnDestroy {
       text: "Are you sure you want to change the Course status ?",
       action: () => {
         this.modalData.isBusy = true;
-          this.coursesService
-            .changeCourseStatus(course.id, !course.active)
+          this.contentService
+            .updateCourseStatus(course.id, !course.active)
             .takeWhile(() => this.isAlive)
             .subscribe(
               (alert: ContentAlert) => {

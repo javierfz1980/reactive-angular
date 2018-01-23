@@ -1,10 +1,10 @@
 import {ChangeDetectionStrategy, Component, Input, OnInit} from "@angular/core";
 import {Course} from "../../../models/content/course";
 import {Observable} from "rxjs/Observable";
-import {CoursesService} from "../../../core/providers/services/content/courses.service";
 import {Router} from "@angular/router";
 import {appRoutePaths} from "../../../app-routing.module";
 import {Teacher} from "../../../models/content/teacher";
+import {ContentService} from "../../../core/providers/services/content/content.service";
 
 @Component({
   selector: "gl-courses-form",
@@ -20,24 +20,24 @@ export class CoursesFormComponent implements OnInit {
   @Input()
   set isReadOnly(value: boolean) {
     this._isReadOnly = value;
-    this.coursesService.fetchData();
+    this.contentService.fetchCourses();
   }
 
   courses: Observable<Course[]>;
   selectedCourses: Course[] = [];
   private _isReadOnly: boolean;
 
-  constructor(private coursesService: CoursesService,
+  constructor(private contentService: ContentService,
               private router: Router) {}
 
   ngOnInit() {
-    this.courses = this.coursesService
-      .courses
+    this.courses = this.contentService
+      .getCourses()
       .switchMap((courses: Course[]) => {
         return Observable.from(courses)
           .mergeMap((course: Course) => {
             if (!course.teacher) return Observable.of(course);
-            return this.coursesService.getCourseTeacher(course.teacher)
+            return this.contentService.getCourseTeacher(course.teacher)
               .map((teacher: Teacher) => {
                 course.teacherInfo = teacher;
                 return course;
@@ -59,7 +59,7 @@ export class CoursesFormComponent implements OnInit {
         }
       });
 
-    this.coursesService.fetchData();
+    this.contentService.fetchCourses();
   }
 
   gotoCourse(id: string) {

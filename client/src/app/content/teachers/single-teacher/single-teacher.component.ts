@@ -9,13 +9,11 @@ import {
   ConfirmationModalComponent
 } from "../../commons/confirmation-modal/confirmation-modal.component";
 import {Teacher} from "../../../models/content/teacher";
-import {TeachersService} from "../../../core/providers/services/content/teachers.service";
 import {InfoProfileData} from "../../commons/info-form/info-form.component";
 import {appRoutePaths} from "../../../app-routing.module";
+import {ContentService} from "../../../core/providers/services/content/content.service";
 import {getDifferencesBetween} from "../../../helpers/helpers";
 import 'rxjs/add/operator/takeWhile';
-import {Profile} from "../../../models/content/profile";
-import {Student} from "../../../models/content/student";
 
 @Component({
   selector: "gl-single-teacher",
@@ -41,7 +39,7 @@ export class SingleTeacherComponent implements OnInit, OnDestroy{
   constructor(private router: Router,
               private route: ActivatedRoute,
               private authService: AuthService,
-              private teachersService: TeachersService) {}
+              private contentService: ContentService) {}
 
   ngOnInit() {
     this.editMode = this.route.queryParams["value"]["edit"];
@@ -49,23 +47,22 @@ export class SingleTeacherComponent implements OnInit, OnDestroy{
 
     this.teacherId = this.route.params
       .map((params: Params) => params.id)
-      .do((id: string) => this.teachersService.fetchData(id));
+      .do((id: string) => this.contentService.fetchTeachers(id));
 
-    this.info = this.teachersService
-      .teachers
+    this.info = this.contentService
+      .getTeachers()
       .withLatestFrom(this.teacherId)
       .map(([teachers, id]) => teachers.find((teacher: Teacher) => teacher.id === id))
       .filter(data => data !== undefined)
       .switchMap((teacher: Teacher) =>{
         return Observable.forkJoin(
-          this.teachersService.getProfile(teacher.profile_id),
-          this.teachersService.getTeacherCourses(teacher.id))
+          this.contentService.getProfile(teacher.profile_id),
+          this.contentService.getAllCoursesOfTeacher(teacher.id))
           .map(([profile, courses]) => {
-            teacher.courses = courses.map((course) => course.id);
+            teacher.courses = courses;
             return ({info: teacher, profile: profile});
           })
       })
-      .do((data) => console.log(data));
   }
 
   delete(data: Teacher) {
@@ -75,8 +72,8 @@ export class SingleTeacherComponent implements OnInit, OnDestroy{
       text: "Are you sure you want to delete this Teacher ?",
       action: () => {
         this.modalData.isBusy = true;
-        this.teachersService
-          .deleteData(data)
+        this.contentService
+          .deleteTeacher(data)
           .takeWhile(() => this.isAlive)
           .subscribe(
             (alert: ContentAlert) => {
@@ -98,8 +95,8 @@ export class SingleTeacherComponent implements OnInit, OnDestroy{
       text: "Are you sure you want to update this Teacher?",
       action: () => {
         this.modalData.isBusy = true;
-        this.teachersService
-          .updateData(data.info, data.profile, coursesToBeRemoved, coursesToBeAdded)
+        this.contentService
+          .updateTeacher(data.info, data.profile, coursesToBeRemoved, coursesToBeAdded)
           .takeWhile(() => this.isAlive)
           .subscribe(
             (alert: ContentAlert) => {

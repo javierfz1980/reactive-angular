@@ -5,13 +5,9 @@ import {appRoutePaths} from "../../app-routing.module";
 import {RouteElement} from "../../models/core/route-element";
 import {Observable} from "rxjs/Observable";
 import {Course} from "../../models/content/course";
-import {CoursesService} from "../../core/providers/services/content/courses.service";
-import {TeachersService} from "../../core/providers/services/content/teachers.service";
-import {
-  StudentsService
-} from "../../core/providers/services/content/students.service";
 import {Student} from "../../models/content/student";
 import {Teacher} from "../../models/content/teacher";
+import {ContentService} from "../../core/providers/services/content/content.service";
 
 @Component({
   selector: "gl-dashboard",
@@ -27,30 +23,28 @@ export class DashboardComponent implements OnInit {
   totalTeachers: Observable<number>;
   totalStudents: Observable<number>;
 
-  constructor(private coursesService: CoursesService,
-              private teachersService: TeachersService,
-              private studentsService: StudentsService,
-              private authService: AuthService,
+  constructor(private authService: AuthService,
+              private contentService: ContentService,
               private router: Router) {}
 
   ngOnInit() {
     this.isAdministrator = this.authService.isAdministrator();
 
-    this.totalCourses = this.coursesService
-      .courses
+    this.totalCourses = this.contentService
+      .getCourses()
       .map((courses: Course[]) => courses.length);
 
-    this.totalTeachers = this.teachersService
-      .teachers
+    this.totalTeachers = this.contentService
+      .getTeachers()
       .map((teachers: Teacher[]) => teachers.length);
 
-    this.totalStudents = this.studentsService
-      .students
+    this.totalStudents = this.contentService
+      .getStudents()
       .map((students: Student[]) => students.length);
 
-    this.coursesService.fetchData();
-    this.studentsService.fetchData();
-    this.teachersService.fetchData();
+    this.contentService.fetchCourses();
+    this.contentService.fetchTeachers();
+    this.contentService.fetchStudents();
   }
 
   navigateTo(destination: string) {

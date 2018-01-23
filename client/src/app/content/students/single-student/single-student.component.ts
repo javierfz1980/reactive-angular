@@ -1,4 +1,5 @@
 import {Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
+import {ContentService} from "../../../core/providers/services/content/content.service";
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {Student} from "../../../models/content/student";
 import {Profile} from "../../../models/content/profile";
@@ -7,9 +8,6 @@ import {
   ContentAlert
 } from "../../commons/alert/content-alert.component";
 import {AuthService} from "../../../core/providers/services/auth.service";
-import {
-  StudentsService
-} from "../../../core/providers/services/content/students.service";
 import 'rxjs/add/observable/throw';
 import {InfoProfileData} from "../../commons/info-form/info-form.component";
 import {
@@ -48,7 +46,7 @@ export class SingleStudentComponent implements OnInit, OnDestroy {
   constructor(private router: Router,
               private route: ActivatedRoute,
               private authService: AuthService,
-              private studentsService: StudentsService) {}
+              private contentService: ContentService) {}
 
   ngOnInit() {
     this.editMode = this.route.queryParams["value"]["edit"];
@@ -56,18 +54,17 @@ export class SingleStudentComponent implements OnInit, OnDestroy {
 
     this.studentId = this.route.params
       .map((params: Params) => params.id)
-      .do((id: string) => this.studentsService.fetchData(id));
+      .do((id: string) => this.contentService.fetchStudents(id));
 
-    this.info = this.studentsService
-      .students
+    this.info = this.contentService
+      .getStudents()
       .withLatestFrom(this.studentId)
       .map(([students, id]) => students.find((student: Student) => student.id === id))
       .filter(data => data !== undefined)
       .switchMap((student: Student) => {
-        return this.studentsService.getProfile(student.profile_id)
+        return this.contentService.getProfile(student.profile_id)
           .map((profile: Profile) => ({info: student, profile: profile}))
-      })
-      .do(data =>  console.log(data));
+      });
   }
 
   delete(student: Student) {
@@ -77,8 +74,8 @@ export class SingleStudentComponent implements OnInit, OnDestroy {
       text: "Are you sure you want to delete this Student ?",
       action: () => {
         this.modalData.isBusy = true;
-        this.studentsService
-          .deleteData(student)
+        this.contentService
+          .deleteStudent(student)
           .takeWhile(() => this.isAlive)
           .subscribe(
             (alert: ContentAlert) => {
@@ -101,8 +98,8 @@ export class SingleStudentComponent implements OnInit, OnDestroy {
       text: "Are you sure you want to update this Student ?",
       action: () => {
         this.modalData.isBusy = true;
-        this.studentsService
-          .updateData(data.info, data.profile, coursesToBeRemoved, coursesToBeAdded)
+        this.contentService
+          .updateStudent(data.info, data.profile, coursesToBeRemoved, coursesToBeAdded)
           .takeWhile(() => this.isAlive)
           .subscribe(
             (alert: ContentAlert) => {

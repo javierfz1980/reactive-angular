@@ -8,7 +8,7 @@ import {
 import {Router} from "@angular/router";
 import {InfoProfileData} from "../../commons/info-form/info-form.component";
 import {appRoutePaths} from "../../../app-routing.module";
-import {TeachersService} from "../../../core/providers/services/content/teachers.service";
+import {ContentService} from "../../../core/providers/services/content/content.service";
 
 @Component({
   selector: "gl-create-teacher",
@@ -28,7 +28,7 @@ export class CreateTeacherComponent implements OnDestroy{
 
   private isAlive: boolean = true;
 
-  constructor(private teachersService: TeachersService,
+  constructor(private contentService: ContentService,
               private router: Router) {}
 
   create(data: InfoProfileData) {
@@ -38,8 +38,8 @@ export class CreateTeacherComponent implements OnDestroy{
       text: "Are you sure you want to create this new Teacher ?",
       action: () => {
         this.modalData.isBusy = true;
-        this.teachersService
-          .createData(data.info, data.profile, this.teacherCourses.getSelectedCourses())
+        this.contentService
+          .createTeacher(data.info, data.profile, this.teacherCourses.getSelectedCourses())
           .takeWhile(() => this.isAlive)
           .subscribe(
             (alert: ContentAlert) => {

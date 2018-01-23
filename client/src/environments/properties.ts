@@ -4,10 +4,10 @@ export const globalProperties = {
   administratorKey: "administrator",
   tokenKey: "gl-token",
   basePath: "http://localhost:3001/",
-  loginPath: "login",
-  coursesPath: "courses",
-  accountPath: "account",
-  studentsPath: "students",
-  teachersPath: "teachers",
-  profilesPath: "profiles"
+  loginPath: "login/",
+  coursesPath: "courses/",
+  accountPath: "account/",
+  studentsPath: "students/",
+  teachersPath: "teachers/",
+  profilesPath: "profiles/"
 }

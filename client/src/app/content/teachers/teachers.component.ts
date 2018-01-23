@@ -7,12 +7,12 @@ import {
   ConfirmationModalComponent
 } from "../commons/confirmation-modal/confirmation-modal.component";
 import {ContentAlert} from "../commons/alert/content-alert.component";
-import {TeachersService} from "../../core/providers/services/content/teachers.service";
 import {EmailFilter, NameLastnameFilter} from "../../models/filters/generic-string-filter";
 import {appRoutePaths} from "../../app-routing.module";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Student} from "../../models/content/student";
 import 'rxjs/add/operator/takeWhile';
+import {ContentService} from "../../core/providers/services/content/content.service";
 
 @Component({
   selector: "gl-profesores",
@@ -33,21 +33,21 @@ export class TeachersComponent implements OnInit, OnDestroy  {
   private isAlive: boolean = true;
 
   constructor(private authService: AuthService,
-              private teachersService: TeachersService,
+              private contentService: ContentService,
               private router: Router,
               private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.isAdministrator = this.authService.isAdministrator();
 
-    this.teachers = this.teachersService
-      .teachers
+    this.teachers = this.contentService
+      .getTeachers()
       .catch(error => {
         this.alert = {type: "danger", message: error.message};
         return Observable.throw(error)
       });
 
-    this.teachersService.fetchData();
+    this.contentService.fetchTeachers();
   }
 
   delete(teacher: Teacher) {
@@ -57,8 +57,8 @@ export class TeachersComponent implements OnInit, OnDestroy  {
       text: "Are you sure you want to delete the Teacher ?",
       action: () => {
         this.modalData.isBusy = true;
-        this.teachersService
-          .deleteData(teacher)
+        this.contentService
+          .deleteTeacher(teacher)
           .takeWhile(() => this.isAlive)
           .subscribe(
             (alert: ContentAlert) => {

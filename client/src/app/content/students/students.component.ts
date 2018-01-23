@@ -9,11 +9,9 @@ import {
 import {ContentAlert} from "../commons/alert/content-alert.component";
 import {ActivatedRoute, Router} from "@angular/router";
 import {appRoutePaths} from "../../app-routing.module";
-import {
-  StudentsService
-} from "../../core/providers/services/content/students.service";
 import {EmailFilter, NameLastnameFilter} from "../../models/filters/generic-string-filter";
 import 'rxjs/add/operator/takeWhile';
+import {ContentService} from "../../core/providers/services/content/content.service";
 
 @Component({
   selector: "gl-alumnos",
@@ -33,21 +31,21 @@ export class StudentsComponent implements OnInit, OnDestroy {
 
   private isAlive: boolean = true;
 
-  constructor(private studentsService: StudentsService,
+  constructor(private contentService: ContentService,
               private authService: AuthService,
               private router: Router,
               private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.isAdministrator = this.authService.isAdministrator();
-    this.students = this.studentsService
-      .students
+    this.students = this.contentService
+      .getStudents()
       .catch(error => {
         this.alert = {type: "danger", message: error.message};
         return Observable.throw(error)
       });
 
-    this.studentsService.fetchData();
+    this.contentService.fetchStudents();
   }
 
   delete(student: Student) {
@@ -57,8 +55,8 @@ export class StudentsComponent implements OnInit, OnDestroy {
       text: "Are you sure you want to delete the Student ?",
       action: () => {
         this.modalData.isBusy = true;
-        this.studentsService
-          .deleteData(student)
+        this.contentService
+          .deleteStudent(student)
           .takeWhile(() => this.isAlive)
           .subscribe(
             (alert: ContentAlert) => {
