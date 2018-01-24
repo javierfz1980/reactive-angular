@@ -1,6 +1,4 @@
 import {Component, OnDestroy, ViewChild} from "@angular/core";
-import {Student} from "../../../models/content/student";
-import {ContentAlert} from "../../commons/alert/content-alert.component";
 import {InfoProfileData} from "../../commons/info-form/info-form.component";
 import {CoursesFormComponent} from "../../commons/courses-form/courses-form.component";
 import {
@@ -10,6 +8,7 @@ import {
 import {Router} from "@angular/router";
 import {appRoutePaths} from "../../../app-routing.module";
 import {ContentService} from "../../../core/providers/services/content/content.service";
+import {Alert} from "../../../models/core/alert";
 
 @Component({
   selector: "gl-create-student",
@@ -25,7 +24,6 @@ export class CreateStudentComponent implements OnDestroy {
 
   title: string = "Add new Student";
   modalData: ConfirmationData;
-  alert: ContentAlert;
 
   private isAlive: boolean = true;
 
@@ -44,20 +42,10 @@ export class CreateStudentComponent implements OnDestroy {
           .createStudent(data.info, data.profile, this.studentCourses.getSelectedCourses())
           .takeWhile(() => this.isAlive)
           .subscribe(
-            (alert: ContentAlert) => {
-              if (alert.type === "success") {
-                this.alert = alert;
-                this.modalData = {
-                  type: "response",
-                  title: "Student successfully created",
-                  text: "You will be redirected to Students list when you click ok.",
-                  action: () => this.router.navigate([appRoutePaths.students.path])
-                }
-              } else {
-                this.alert = alert;
-                this.modalData.isBusy = false;
-                this.confirmModal.close();
-              }
+            () => {
+              this.modalData.isBusy = false;
+              this.confirmModal.close();
+              this.router.navigate([appRoutePaths.students.path]);
             });
       }
     };

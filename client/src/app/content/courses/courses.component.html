@@ -4,9 +4,6 @@
 </h1>
 <hr>
 
-<!-- content alert -->
-<gl-content-alert *ngIf="alert" [content]="alert"></gl-content-alert>
-
 <!-- content cards -->
 <div *ngIf="courses | async as coursesList; else loading">
   <div class="container-fluid">

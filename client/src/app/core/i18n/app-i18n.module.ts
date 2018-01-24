@@ -6,10 +6,11 @@ import {Http} from "@angular/http";
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: Http) {
   return new TranslateStaticLoader(http, globalProperties.localesPath, '.json');
-};
+}
 
 @NgModule()
 export class AppI18nModule {
+
   static forRoot() {
     return TranslateModule.forRoot({
       provide: TranslateLoader,
@@ -17,4 +18,5 @@ export class AppI18nModule {
       deps: [Http]
     })
   }
+
 }

@@ -6,15 +6,17 @@ import {StudentsService} from "./content/students.service";
 import {TeachersService} from "./content/teachers.service";
 import {CoursesService} from "./content/courses.service";
 import {ProfilesService} from "./content/profiles.service";
+import {AlertService} from "./alert.service";
 
-export const services = [
+const services = [
   AuthService,
   LocalStorageService,
   ContentService,
   StudentsService,
   TeachersService,
   CoursesService,
-  ProfilesService
+  ProfilesService,
+  AlertService
 ];
 
 @NgModule()
@@ -25,6 +27,10 @@ export class ServicesModule {
       ngModule: ServicesModule,
       providers: [...services]
     };
+  }
+
+  static forCore(): any[] {
+    return [...services];
   }
 
 }

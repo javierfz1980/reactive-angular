@@ -6,12 +6,12 @@ import {
   ConfirmationData,
   ConfirmationModalComponent
 } from "../commons/confirmation-modal/confirmation-modal.component";
-import {ContentAlert} from "../commons/alert/content-alert.component";
 import {ActivatedRoute, Router} from "@angular/router";
 import {appRoutePaths} from "../../app-routing.module";
 import {EmailFilter, NameLastnameFilter} from "../../models/filters/generic-string-filter";
 import 'rxjs/add/operator/takeWhile';
 import {ContentService} from "../../core/providers/services/content/content.service";
+import {Alert} from "../../models/core/alert";
 
 @Component({
   selector: "gl-alumnos",
@@ -25,7 +25,6 @@ export class StudentsComponent implements OnInit, OnDestroy {
   students: Observable<Student[]>;
   isAdministrator: boolean;
   modalData: ConfirmationData;
-  alert: ContentAlert;
   nameLastnameFilter = new NameLastnameFilter();
   emailFilter = new EmailFilter();
 
@@ -39,11 +38,7 @@ export class StudentsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.isAdministrator = this.authService.isAdministrator();
     this.students = this.contentService
-      .getStudents()
-      .catch(error => {
-        this.alert = {type: "danger", message: error.message};
-        return Observable.throw(error)
-      });
+      .getStudents();
 
     this.contentService.fetchStudents();
   }
@@ -59,10 +54,9 @@ export class StudentsComponent implements OnInit, OnDestroy {
           .deleteStudent(student)
           .takeWhile(() => this.isAlive)
           .subscribe(
-            (alert: ContentAlert) => {
-              this.alert = alert;
+            () => {
               this.modalData.isBusy = false;
-              setTimeout(() => this.confirmModal.close(), 1);
+              this.confirmModal.close();
             });
       }
     };

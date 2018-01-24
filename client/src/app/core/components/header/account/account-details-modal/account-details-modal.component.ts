@@ -16,9 +16,8 @@ export class AccountDetailsModalComponent {
   @Input()
   set modalData(data: Account) {
     this.data = data;
-    console.log("aca: ",this.data)
-
   }
+
   data: Account;
 
   open() {

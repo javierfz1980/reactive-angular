@@ -4,9 +4,6 @@
 </h1>
 <hr>
 
-<!-- content alert -->
-<gl-content-alert *ngIf="alert" [content]="alert"></gl-content-alert>
-
 <!-- content -->
 <div *ngIf="teachers | async as teachersList; else loading">
   <div class="container-fluid">

@@ -1,6 +1,5 @@
 import {Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {ActivatedRoute, Params, Router} from "@angular/router";
-import {ContentAlert} from "../../commons/alert/content-alert.component";
 import {Observable} from "rxjs/Observable";
 import {AuthService} from "../../../core/providers/services/auth.service";
 import {
@@ -13,6 +12,7 @@ import {CourseStudentsComponent} from "./course-students/course-students.compone
 import {getDifferencesBetween} from "../../../helpers/helpers";
 import {ContentService} from "../../../core/providers/services/content/content.service";
 import 'rxjs/add/operator/takeWhile';
+import {Alert} from "../../../models/core/alert";
 
 @Component({
   selector: "gl-single-course",
@@ -26,7 +26,6 @@ export class SingleCourseComponent implements OnInit, OnDestroy{
   @ViewChild("courseStudents")
   students: CourseStudentsComponent;
 
-  alert: ContentAlert;
   info: Observable<any>;
   courseId: Observable<string>;
   isAdministrator: boolean;
@@ -66,9 +65,9 @@ export class SingleCourseComponent implements OnInit, OnDestroy{
           .deleteCourse(course)
           .takeWhile(() => this.isAlive)
           .subscribe(
-            (alert: ContentAlert) => {
-              this.alert = alert;
+            () => {
               this.modalData.isBusy = false;
+              this.confirmModal.close();
               this.router.navigate([appRoutePaths.courses.path]);
             });
       }
@@ -90,10 +89,9 @@ export class SingleCourseComponent implements OnInit, OnDestroy{
           .updateCourse(data, studentsToBeRemoved, studentsToBeAdded)
           .takeWhile(() => this.isAlive)
           .subscribe(
-            (alert: ContentAlert) => {
-              this.alert = alert;
+            () => {
               this.modalData.isBusy = false;
-              setTimeout(() => this.confirmModal.close(), 1)
+              this.confirmModal.close();
             });
       }
     };

@@ -1,7 +1,6 @@
 import {Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {CoursesFormComponent} from "../../commons/courses-form/courses-form.component";
-import {ContentAlert} from "../../commons/alert/content-alert.component";
 import {AuthService} from "../../../core/providers/services/auth.service";
 import {Observable} from "rxjs/Observable";
 import {
@@ -14,6 +13,7 @@ import {appRoutePaths} from "../../../app-routing.module";
 import {ContentService} from "../../../core/providers/services/content/content.service";
 import {getDifferencesBetween} from "../../../helpers/helpers";
 import 'rxjs/add/operator/takeWhile';
+import {Alert} from "../../../models/core/alert";
 
 @Component({
   selector: "gl-single-teacher",
@@ -27,7 +27,6 @@ export class SingleTeacherComponent implements OnInit, OnDestroy{
   @ViewChild("courses")
   courses: CoursesFormComponent;
 
-  alert: ContentAlert;
   info: Observable<InfoProfileData>;
   teacherId: Observable<string>;
   isAdministrator: boolean;
@@ -76,9 +75,9 @@ export class SingleTeacherComponent implements OnInit, OnDestroy{
           .deleteTeacher(data)
           .takeWhile(() => this.isAlive)
           .subscribe(
-            (alert: ContentAlert) => {
-              this.alert = alert;
+            () => {
               this.modalData.isBusy = false;
+              this.confirmModal.close();
               this.router.navigate([appRoutePaths.teachers.path]);
             });
       }
@@ -99,10 +98,9 @@ export class SingleTeacherComponent implements OnInit, OnDestroy{
           .updateTeacher(data.info, data.profile, coursesToBeRemoved, coursesToBeAdded)
           .takeWhile(() => this.isAlive)
           .subscribe(
-            (alert: ContentAlert) => {
-              this.alert = alert;
+            () => {
               this.modalData.isBusy = false;
-              setTimeout(() => this.confirmModal.close(), 1)
+              this.confirmModal.close();
             });
       }
     };

@@ -6,11 +6,11 @@ import {
   ConfirmationData,
   ConfirmationModalComponent
 } from "../commons/confirmation-modal/confirmation-modal.component";
-import {ContentAlert} from "../commons/alert/content-alert.component";
 import {appRoutePaths} from "../../app-routing.module";
 import {ActivatedRoute, Router} from "@angular/router";
 import 'rxjs/add/operator/takeWhile';
 import {ContentService} from "../../core/providers/services/content/content.service";
+import {Alert} from "../../models/core/alert";
 
 @Component({
   selector: "gl-cursos",
@@ -24,7 +24,6 @@ export class CoursesComponent implements OnInit, OnDestroy {
   courses: Observable<Course[]>;
   isAdministrator: boolean;
   modalData: ConfirmationData;
-  alert: ContentAlert;
 
   private isAlive: boolean = true;
 
@@ -37,11 +36,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
     this.isAdministrator = this.authService.isAdministrator();
 
     this.courses = this.contentService
-      .getCourses()
-      .catch(error => {
-        this.alert = {type: "danger", message: error.message};
-        return Observable.throw(error)
-      });
+      .getCourses();
 
     this.contentService.fetchCourses();
   }
@@ -57,10 +52,9 @@ export class CoursesComponent implements OnInit, OnDestroy {
             .deleteCourse(course)
             .takeWhile(() => this.isAlive)
             .subscribe(
-              (alert: ContentAlert) => {
-                this.alert = alert;
+              () => {
                 this.modalData.isBusy = false;
-                setTimeout(() => this.confirmModal.close(), 1)
+                this.confirmModal.close();
               })
         }
     };
@@ -78,10 +72,9 @@ export class CoursesComponent implements OnInit, OnDestroy {
             .updateCourseStatus(course.id, !course.active)
             .takeWhile(() => this.isAlive)
             .subscribe(
-              (alert: ContentAlert) => {
-                this.alert = alert;
+              () => {
                 this.modalData.isBusy = false;
-                setTimeout(() => this.confirmModal.close(), 1)
+                this.confirmModal.close();
               })
         }
     };

@@ -17,12 +17,12 @@ import {DashboardModule} from "./content/dashboard/dashboard.module";
     BrowserAnimationsModule,
     CommonsModule,
     DashboardModule,
-    CoreModule,
+    CoreModule.forRoot(),
     AppRoutingModule,
   ],
   providers: [
-    HttpClient
+    HttpClient,
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

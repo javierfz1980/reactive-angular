@@ -1,9 +1,11 @@
-<clr-alert [clrAlertType]="contentAlert.type"
+<clr-alert *ngIf="alert"
+           [clrAlertSizeSmall]="true"
+           [clrAlertType]="alert.type"
            [(clrAlertClosed)]="closed"
            (clrAlertClosedChange)="onClose()">
   <div class="alert-item">
         <span class="alert-text">
-            {{ contentAlert.message }}
+            {{ alert.message }}
         </span>
   </div>
 </clr-alert>

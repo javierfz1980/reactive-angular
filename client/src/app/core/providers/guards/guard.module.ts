@@ -7,7 +7,9 @@ const guards = [
   RoleGuard
 ];
 
-@NgModule()
+@NgModule({
+  providers: [...guards]
+})
 export class GuardModule {
 
   static forRoot(): ModuleWithProviders {
@@ -15,6 +17,10 @@ export class GuardModule {
       ngModule: GuardModule,
       providers: [...guards]
     };
+  }
+
+  static forCore(): any[] {
+    return [...guards];
   }
 
 }

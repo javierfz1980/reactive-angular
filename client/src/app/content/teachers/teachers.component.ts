@@ -6,13 +6,13 @@ import {
   ConfirmationData,
   ConfirmationModalComponent
 } from "../commons/confirmation-modal/confirmation-modal.component";
-import {ContentAlert} from "../commons/alert/content-alert.component";
 import {EmailFilter, NameLastnameFilter} from "../../models/filters/generic-string-filter";
 import {appRoutePaths} from "../../app-routing.module";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Student} from "../../models/content/student";
 import 'rxjs/add/operator/takeWhile';
 import {ContentService} from "../../core/providers/services/content/content.service";
+import {Alert} from "../../models/core/alert";
 
 @Component({
   selector: "gl-profesores",
@@ -26,7 +26,6 @@ export class TeachersComponent implements OnInit, OnDestroy  {
   teachers: Observable<Teacher[]>;
   isAdministrator: boolean;
   modalData: ConfirmationData;
-  alert: ContentAlert;
   nameLastnameFilter = new NameLastnameFilter();
   emailFilter = new EmailFilter();
 
@@ -41,11 +40,7 @@ export class TeachersComponent implements OnInit, OnDestroy  {
     this.isAdministrator = this.authService.isAdministrator();
 
     this.teachers = this.contentService
-      .getTeachers()
-      .catch(error => {
-        this.alert = {type: "danger", message: error.message};
-        return Observable.throw(error)
-      });
+      .getTeachers();
 
     this.contentService.fetchTeachers();
   }
@@ -61,10 +56,9 @@ export class TeachersComponent implements OnInit, OnDestroy  {
           .deleteTeacher(teacher)
           .takeWhile(() => this.isAlive)
           .subscribe(
-            (alert: ContentAlert) => {
-              this.alert = alert;
+            () => {
               this.modalData.isBusy = false;
-              setTimeout(() => this.confirmModal.close(), 1)
+              this.confirmModal.close();
             });
       }
     };
