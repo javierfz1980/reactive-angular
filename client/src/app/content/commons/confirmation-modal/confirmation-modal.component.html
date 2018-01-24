@@ -1,4 +1,5 @@
 <clr-modal #modal
+           [(clrModalOpen)]="opened"
            [clrModalClosable]="(data && data.type !== 'response' && !data.isBusy)">
   <h3 class="modal-title">
     {{(data) ? data.title : ""}}

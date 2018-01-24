@@ -1,8 +1,5 @@
 <clr-main-container *ngIf="isAuthorized | async; else login">
 
-  <!-- app alert level -->
-  <!--<gl-alerts></gl-alerts>-->
-
   <!-- app header - branding -->
   <gl-header></gl-header>
 
@@ -13,7 +10,7 @@
     <div class="content-area">
 
       <!-- content alert -->
-      <gl-alerts></gl-alerts>
+      <gl-notifications></gl-notifications>
 
       <!-- content -->
       <router-outlet></router-outlet>

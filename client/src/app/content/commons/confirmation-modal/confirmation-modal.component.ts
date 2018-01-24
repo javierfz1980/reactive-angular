@@ -18,8 +18,7 @@ export interface ConfirmationData {
 })
 export class ConfirmationModalComponent {
 
-  @ViewChild("modal") modal: ConfirmationModalComponent;
-
+  opened: boolean = false;
   data: ConfirmationData;
 
   @Input()
@@ -28,11 +27,11 @@ export class ConfirmationModalComponent {
   }
 
   open() {
-    this.modal.open();
+    this.opened = true;
   }
 
   close() {
-    this.modal.close();
+    this.opened = false;
   }
 
   onOkClicked() {

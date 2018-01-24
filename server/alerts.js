@@ -35,13 +35,23 @@ module.exports = function(app) {
       ws.send('you said: ' + message);
     });
 
+    ws.on('error', function () {
+        console.log('error');
+    });
+
     ws.on('close', function () {
+      console.log('close');
       clearInterval(timer);
     });
 
     ws.send(JSON.stringify(createAlerts(5)));
 
-    timer = setInterval(() => ws.send(JSON.stringify(createAlerts(_.random(0,3)))), 10000);
+    timer = setInterval(() => {
+      const alert = JSON.stringify(createAlerts(_.random(0,3)));
+      //console.log('sending: ', alert);
+      //console.log('---------------------');
+      ws.send(alert);
+    }, 10000);
   });
 
   server.listen(3002, function listening() {

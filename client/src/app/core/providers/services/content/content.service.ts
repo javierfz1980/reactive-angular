@@ -8,7 +8,6 @@ import {Profile} from "../../../../models/content/profile";
 import {TeachersService} from "./teachers.service";
 import {Teacher} from "../../../../models/content/teacher";
 import {Course} from "../../../../models/content/course";
-import {Alert, AlertType} from "../../../../models/core/alert";
 import {AlertService} from "../alert.service";
 
 @Injectable()

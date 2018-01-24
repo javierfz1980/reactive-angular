@@ -1,0 +1,36 @@
+.alerts-badge {
+  margin-top: -25px;
+}
+
+button.dropdown-toggle {
+  color: #fff!important;
+}
+
+.alert-from {
+  font-weight: bold;
+}
+
+.no-alerts {
+  color: #000!important;
+  padding-left: 10px!important;
+  padding-right: 20px!important;
+}
+
+.read-alert {
+  color: #ccc;
+}
+
+.mark-alert-as-read {
+  color: cornflowerblue;
+  cursor: pointer;
+}
+
+.delete-alert {
+  color: #c92100;
+  cursor: pointer;
+}
+
+.alerts-action-separator {
+  padding-right: 5px;
+  padding-left: 5px;
+}

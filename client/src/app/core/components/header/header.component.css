@@ -1,5 +1,9 @@
 .account-wrapper {
-  margin-top: 20px!important;
   margin-right: 15px!important;
+}
+
+.account-wrapper,
+.alerts-wrapper {
+  margin-top: 20px!important;
   margin-left: 15px!important;
 }

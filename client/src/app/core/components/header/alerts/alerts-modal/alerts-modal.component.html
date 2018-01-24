@@ -1,0 +1,27 @@
+<clr-modal #modal [(clrModalOpen)]="opened">
+    <div class="modal-title account-title" *ngIf="alert">
+      {{alert.from}}<hr>
+    </div>
+    <div class="modal-body account-body" *ngIf="alert">
+      <div>
+
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button"
+              (click)="close()"
+              class="btn ok-btn btn-primary" >
+        Ok
+      </button>
+    </div>
+</clr-modal>
+
+<!--
+id?: uuid;
+type: AlertType;
+message: String;
+from?: String;
+email?: String;
+date?: String;
+duration?: number;
+read?: boolean;-->

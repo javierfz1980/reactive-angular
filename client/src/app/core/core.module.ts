@@ -1,5 +1,5 @@
 import {ModuleWithProviders, NgModule} from "@angular/core";
-import {AlertsComponent} from "./components/alerts/alerts.component";
+import {NotificationsComponent} from "./components/notifications/notifications.component";
 import {HeaderComponent} from "./components/header/header.component";
 import {LoginComponent} from "./components/login/login.component";
 import {SideNavComponent} from "./components/nav/side-nav/side-nav.component";
@@ -11,18 +11,22 @@ import {GuardModule} from "./providers/guards/guard.module";
 import {AccountComponent} from "./components/header/account/account.component";
 import {AccountDetailsModalComponent} from "./components/header/account/account-details-modal/account-details-modal.component";
 import {SearchComponent} from "./components/header/search/search.component";
-import {AlertComponent} from "./components/alerts/alert/alert.component";
+import {NotificationComponent} from "./components/notifications/notification/notification.component";
+import {AlertsComponent} from "./components/header/alerts/alerts.component";
+import {AlertsModalComponent} from "./components/header/alerts/alerts-modal/alerts-modal.component";
 
 const elements = [
   SideNavComponent,
-  AlertsComponent,
+  NotificationsComponent,
   HeaderComponent,
   LoginComponent,
   AccountComponent,
   AccountDetailsModalComponent,
   SearchComponent,
-  AlertComponent,
+  NotificationComponent,
+  NotificationsComponent,
   AlertsComponent,
+  AlertsModalComponent
 ];
 
 @NgModule({

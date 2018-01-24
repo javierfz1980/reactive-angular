@@ -1,0 +1,44 @@
+<clr-dropdown [clrCloseMenuOnItemClick]="false">
+  <button type="button" clrDropdownTrigger>
+    <clr-icon shape="list" size="24">
+    <span *ngIf="unreadeAlerts | async as totalUnread" class="badge badge-danger alerts-badge">
+      {{totalUnread}}
+    </span>
+    </clr-icon>
+  </button>
+
+  <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
+    <label class="dropdown-header">
+      <span class="mark-alert-as-read alerts-action" (click)="markAllAsRead()">
+        <clr-icon shape="check"></clr-icon> Mark all as read
+      </span>
+      <span class="alerts-action-separator">|</span>
+      <span class="delete-alert alerts-action" (click)="deleteAll()">
+        <clr-icon shape="times"></clr-icon> Delete all
+      </span>
+      <span class="alerts-action-separator">|</span>
+      <span class="delete-alert alerts-action" (click)="deleteRead()">
+        <clr-icon shape="times"></clr-icon> Delete read
+      </span>
+    </label>
+    <div class="dropdown-divider"></div>
+    <div *ngIf="alerts | async as alertsList; else noAlerts">
+      <ng-container *ngIf="alertsList.length > 0; else noAlerts">
+      <button *ngFor="let alert of alertsList; let idx = index"
+              clrDropdownItem
+              type="button"
+              [ngClass]="{'read-alert': alert.read}"
+              (click)="openAlertsModal(alert)">
+        <clr-icon shape="check" *ngIf="alert.read"></clr-icon>
+        {{idx + 1}} - <span class="alert-from">{{alert.from || "system"}}:</span> {{alert.message | truncate : 50 : "..."}}
+      </button>
+      </ng-container>
+    </div>
+    <ng-template #noAlerts>
+      <div class="no-alerts">There are no alerts...</div>
+    </ng-template>
+  </clr-dropdown-menu>
+
+</clr-dropdown>
+<gl-alerts-modal #alertsModal [alert]="modalData"></gl-alerts-modal>
+

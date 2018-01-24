@@ -4,10 +4,10 @@ import {Alert} from "../../../models/core/alert";
 import {AlertService} from "../../providers/services/alert.service";
 
 @Component({
-  selector: "gl-alerts",
-  templateUrl: "./alerts.component.html"
+  selector: "gl-notifications",
+  templateUrl: "./notifications.component.html"
 })
-export class AlertsComponent implements OnInit {
+export class NotificationsComponent implements OnInit {
 
   alerts: Observable<Alert[]>;
 
@@ -18,5 +18,9 @@ export class AlertsComponent implements OnInit {
       .getAlerts()
       .map((alerts: Alert[]) => alerts
         .filter((alert: Alert) => alert.type !== "MESSAGE_RECIEVED" && !alert.read))
+  }
+
+  markAsRead(alert: Alert) {
+    this.alertService.markAsRead(alert);
   }
 }

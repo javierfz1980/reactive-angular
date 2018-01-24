@@ -1,12 +1,15 @@
-import {Component, Input} from "@angular/core";
+import {Component, EventEmitter, Input, Output} from "@angular/core";
 import {Alert} from "../../../../models/core/alert";
 
 
 @Component({
   selector: "gl-alert",
-  templateUrl: "./alert.component.html"
+  templateUrl: "./notification.component.html"
 })
-export class AlertComponent {
+export class NotificationComponent {
+
+  @Output("onRead")
+  readEvent: EventEmitter<Alert> = new EventEmitter<Alert>();
 
   @Input()
   set data(content: Alert) {
@@ -23,7 +26,7 @@ export class AlertComponent {
   alert: Alert;
 
   onClose() {
-    this.alert.read = true;
+    this.readEvent.emit(this.alert);
     this.closed = true;
   }
 }
