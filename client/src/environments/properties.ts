@@ -1,4 +1,6 @@
 export const globalProperties = {
+  localDev: true,
+  maxFakedTime: 1,
   locale: "en",
   localesPath: "/assets/i18n/",
   administratorKey: "administrator",
@@ -11,4 +13,4 @@ export const globalProperties = {
   studentsPath: "students/",
   teachersPath: "teachers/",
   profilesPath: "profiles/"
-}
+};
