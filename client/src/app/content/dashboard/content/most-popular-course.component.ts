@@ -20,7 +20,8 @@ export class MostPopularCourseComponent implements OnInit {
   ngOnInit() {
     this.course = this.contentService
       .getCourses()
-      .map((courses: Course[]) => courses.filter((course: Course) => course.active))
+      .filter(data => data !== undefined)
+      .map((courses: Course[]) => courses && courses.filter((course: Course) => course.active))
       .filter((courses: Course[]) => courses.length > 0)
       .map((courses: Course[]) => {
         return courses.reduce((previous: Course, current: Course) => {

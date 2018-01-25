@@ -1,6 +1,6 @@
-<div class="_db-card" *ngIf="total">
+<div class="_db-card" *ngIf="total | async as totalValue; else loading">
   <div class="total-body">
-    {{total}}
+    {{totalValue}}
   </div>
   <div class="total-header">
     {{title}}

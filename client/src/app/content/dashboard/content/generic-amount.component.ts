@@ -1,4 +1,5 @@
 import {Component, Input} from "@angular/core";
+import {Observable} from "rxjs/Observable";
 
 @Component({
   selector: "gl-generic-amount",
@@ -11,7 +12,7 @@ export class GenericAmountComponent {
   title: number;
 
   @Input()
-  total: number;
+  total: Observable<number>;
 
   @Input()
   link: number;

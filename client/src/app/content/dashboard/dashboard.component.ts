@@ -32,14 +32,17 @@ export class DashboardComponent implements OnInit {
 
     this.totalCourses = this.contentService
       .getCourses()
+      .filter(data => data !== undefined)
       .map((courses: Course[]) => courses.length);
 
     this.totalTeachers = this.contentService
       .getTeachers()
+      .filter(data => data !== undefined)
       .map((teachers: Teacher[]) => teachers.length);
 
     this.totalStudents = this.contentService
       .getStudents()
+      .filter(data => data !== undefined)
       .map((students: Student[]) => students.length);
 
     this.contentService.fetchCourses();
