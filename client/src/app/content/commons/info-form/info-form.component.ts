@@ -23,6 +23,7 @@ export class ContentInfoComponent implements OnInit {
     this.info = data;
     if (this.form) {
       this.form.reset();
+      data.profile.birthday = this.getDateString(data.profile.birthday);
       this.form.controls["info"].patchValue(data.info);
       this.form.controls["profile"].patchValue(data.profile);
     }
