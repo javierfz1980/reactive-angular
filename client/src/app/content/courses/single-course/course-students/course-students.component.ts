@@ -4,6 +4,7 @@ import {Student} from "../../../../models/content/student";
 import {Router} from "@angular/router";
 import {appRoutePaths} from "../../../../app-routing.module";
 import {ContentService} from "../../../../core/providers/services/content/content.service";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 @Component({
   selector: "gl-course-students",
@@ -17,28 +18,31 @@ export class CourseStudentsComponent {
 
   @Input()
   set isReadOnly(value: boolean) {
-    this._isReadOnly = value;
-    this.contentService.fetchStudents();
+    this.readonlyEmitter.next(value);
   }
 
   students: Observable<Student[]>;
   selectedStudents: Student[] = [];
   gridSize: number = 50;
   maxSize: number = this.gridSize;
-  private _isReadOnly: boolean;
+  private readonlyEmitter: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+  private readOnlyValue: Observable<boolean> = this.readonlyEmitter.asObservable();
 
   constructor(private contentService: ContentService,
               private router: Router) {}
 
   ngOnInit() {
-    this.students = this.contentService
-      .getStudents()
-      .map((students: Student[]) => {
+    this.students = this.readOnlyValue
+      .combineLatest(
+        this.contentService
+        .getStudents()
+        .filter(data => data !== undefined))
+      .map(([isReadOnly, students]) => {
         this.selectedStudents = students
           .filter((student: Student) => this.markedStudents && this.markedStudents
             .some((markedStudentId: string) => markedStudentId === student.id)
           );
-        if (this._isReadOnly) {
+        if (isReadOnly) {
           const res: Student[] = this.selectedStudents.slice();
           this.selectedStudents = null;
           this.maxSize = res.length;
@@ -48,6 +52,8 @@ export class CourseStudentsComponent {
           return students
         }
       });
+
+    this.contentService.fetchStudents();
   }
 
   gotoStudent(id: string) {

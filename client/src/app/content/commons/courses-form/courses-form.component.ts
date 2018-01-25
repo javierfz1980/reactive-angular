@@ -5,6 +5,8 @@ import {Router} from "@angular/router";
 import {appRoutePaths} from "../../../app-routing.module";
 import {Teacher} from "../../../models/content/teacher";
 import {ContentService} from "../../../core/providers/services/content/content.service";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import 'rxjs/add/operator/combineLatest';
 
 @Component({
   selector: "gl-courses-form",
@@ -19,38 +21,41 @@ export class CoursesFormComponent implements OnInit {
 
   @Input()
   set isReadOnly(value: boolean) {
-    this._isReadOnly = value;
-    this.contentService.fetchCourses();
+    this.readonlyEmitter.next(value);
   }
 
   courses: Observable<Course[]>;
   selectedCourses: Course[] = [];
-  private _isReadOnly: boolean;
+  private readonlyEmitter: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+  private readOnlyValue: Observable<boolean> = this.readonlyEmitter.asObservable();
 
   constructor(private contentService: ContentService,
               private router: Router) {}
 
   ngOnInit() {
-    this.courses = this.contentService
-      .getCourses()
-      .switchMap((courses: Course[]) => {
-        return Observable.from(courses)
-          .mergeMap((course: Course) => {
-            if (!course.teacher) return Observable.of(course);
-            return this.contentService.getCourseTeacher(course.teacher)
-              .map((teacher: Teacher) => {
-                course.teacherInfo = teacher;
-                return course;
-              })
-          })
-          .toArray()
-      })
-      .map((courses: Course[]) => {
+    this.courses = this.readOnlyValue
+      .combineLatest(
+        this.contentService
+        .getCourses()
+        .filter(data => data !== undefined)
+        .switchMap((courses: Course[]) => {
+          return Observable.from(courses)
+            .mergeMap((course: Course) => {
+              if (!course.teacher) return Observable.of(course);
+              return this.contentService.getCourseTeacher(course.teacher)
+                .map((teacher: Teacher) => {
+                  course.teacherInfo = teacher;
+                  return course;
+                })
+            })
+            .toArray()
+        }))
+      .map(([isReadOnly, courses]) => {
         this.selectedCourses = courses
           .filter((course: Course) => this.markedCourses && this.markedCourses
             .some((idCourses: string) => idCourses === course.id)
           );
-        if (this._isReadOnly) {
+        if (isReadOnly) {
           const res: Course[] = this.selectedCourses.slice();
           this.selectedCourses = null;
           return res
