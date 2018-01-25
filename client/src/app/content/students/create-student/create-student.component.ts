@@ -37,6 +37,7 @@ export class CreateStudentComponent implements OnDestroy {
       title: "Create",
       text: "Are you sure you want to createData this new Student ?",
       action: () => {
+        this.modalData.title = "Creating";
         this.modalData.isBusy = true;
         this.contentService
           .createStudent(data.info, data.profile, this.studentCourses.getSelectedCourses())

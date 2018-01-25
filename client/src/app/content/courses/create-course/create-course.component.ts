@@ -43,6 +43,7 @@ export class CreateCourseComponent implements OnInit, OnDestroy {
       title: "Create",
       text: "Are you sure you want to create this new Course?",
       action: () => {
+        this.modalData.title = "Creating";
         this.modalData.isBusy = true;
         this.contentService
           .createCourse(data, this.students.getSelectedStudents())

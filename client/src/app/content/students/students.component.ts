@@ -38,7 +38,8 @@ export class StudentsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.isAdministrator = this.authService.isAdministrator();
     this.students = this.contentService
-      .getStudents();
+      .getStudents()
+      .filter(students => students !== undefined);
 
     this.contentService.fetchStudents();
   }
@@ -49,6 +50,7 @@ export class StudentsComponent implements OnInit, OnDestroy {
       title: "Delete",
       text: "Are you sure you want to delete the Student ?",
       action: () => {
+        this.modalData.title = "Deleting";
         this.modalData.isBusy = true;
         this.contentService
           .deleteStudent(student)

@@ -50,11 +50,14 @@ export class SingleStudentComponent implements OnInit, OnDestroy {
     this.isAdministrator = this.authService.isAdministrator();
 
     this.studentId = this.route.params
-      .map((params: Params) => params.id)
-      .do((id: string) => this.contentService.fetchStudents(id));
+      .map((params: Params) => {
+        this.contentService.fetchStudents(params.id);
+        return params.id;
+      });
 
     this.info = this.contentService
       .getStudents()
+      .filter(data => data !== undefined)
       .withLatestFrom(this.studentId)
       .map(([students, id]) => students.find((student: Student) => student.id === id))
       .filter(data => data !== undefined)
@@ -70,6 +73,7 @@ export class SingleStudentComponent implements OnInit, OnDestroy {
       title: "Delete",
       text: "Are you sure you want to delete this Student ?",
       action: () => {
+        this.modalData.title = "Deleting";
         this.modalData.isBusy = true;
         this.contentService
           .deleteStudent(student)
@@ -94,6 +98,7 @@ export class SingleStudentComponent implements OnInit, OnDestroy {
       title: "Update",
       text: "Are you sure you want to update this Student ?",
       action: () => {
+        this.modalData.title = "Updating";
         this.modalData.isBusy = true;
         this.contentService
           .updateStudent(data.info, data.profile, coursesToBeRemoved, coursesToBeAdded)

@@ -51,6 +51,7 @@ export class TeachersComponent implements OnInit, OnDestroy  {
       title: "Delete",
       text: "Are you sure you want to delete the Teacher ?",
       action: () => {
+        this.modalData.title = "Deleting";
         this.modalData.isBusy = true;
         this.contentService
           .deleteTeacher(teacher)

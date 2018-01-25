@@ -47,6 +47,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
       title: "Delete",
       text: "Are you sure you want to delete the Course ?",
       action: () => {
+        this.modalData.title = "Deleting";
         this.modalData.isBusy = true;
           this.contentService
             .deleteCourse(course)
@@ -67,6 +68,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
       title: "Change",
       text: "Are you sure you want to change the Course status ?",
       action: () => {
+        this.modalData.title = "Changing";
         this.modalData.isBusy = true;
           this.contentService
             .updateCourseStatus(course.id, !course.active)
