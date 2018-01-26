@@ -8,6 +8,7 @@ import {Course} from "../../models/content/course";
 import {Student} from "../../models/content/student";
 import {Teacher} from "../../models/content/teacher";
 import {ContentService} from "../../core/providers/services/content/content.service";
+import {DashboardAmount} from "./content/generic-amount.component";
 
 @Component({
   selector: "gl-dashboard",
@@ -19,9 +20,9 @@ export class DashboardComponent implements OnInit {
   title: string = "App Dashboard";
   isAdministrator: boolean = false;
   routes:{[key:string]: RouteElement} = appRoutePaths;
-  totalCourses: Observable<number>;
-  totalTeachers: Observable<number>;
-  totalStudents: Observable<number>;
+  totalCourses: Observable<Course[]>;
+  totalTeachers: Observable<Teacher[]>;
+  totalStudents: Observable<Student[]>;
 
   constructor(private authService: AuthService,
               private contentService: ContentService,
@@ -31,19 +32,13 @@ export class DashboardComponent implements OnInit {
     this.isAdministrator = this.authService.isAdministrator();
 
     this.totalCourses = this.contentService
-      .getCourses()
-      .filter(data => data !== undefined)
-      .map((courses: Course[]) => courses.length);
+      .getCourses();
 
     this.totalTeachers = this.contentService
-      .getTeachers()
-      .filter(data => data !== undefined)
-      .map((teachers: Teacher[]) => teachers.length);
+      .getTeachers();
 
     this.totalStudents = this.contentService
-      .getStudents()
-      .filter(data => data !== undefined)
-      .map((students: Student[]) => students.length);
+      .getStudents();
 
     this.contentService.fetchCourses();
     this.contentService.fetchTeachers();

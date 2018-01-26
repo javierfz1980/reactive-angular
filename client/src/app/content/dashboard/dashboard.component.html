@@ -25,7 +25,7 @@
       <div class="db-col-content-container" (click)="navigateTo(routes.courses.path)">
         <div class="content">
           <gl-generic-amount [title]="'Courses'"
-                             [total]="totalCourses"
+                             [data]="totalCourses"
                              [link]=""></gl-generic-amount>
         </div>
       </div>
@@ -38,7 +38,7 @@
       <div class="db-col-content-container" (click)="navigateTo(routes.teachers.path)">
         <div class="content">
           <gl-generic-amount [title]="'Teachers'"
-                             [total]="totalTeachers"></gl-generic-amount>
+                             [data]="totalTeachers"></gl-generic-amount>
         </div>
       </div>
     </div>
@@ -48,7 +48,7 @@
       <div class="db-col-content-container" (click)="navigateTo(routes.students.path)">
         <div class="content">
           <gl-generic-amount [title]="'Students'"
-                             [total]="totalStudents"></gl-generic-amount>
+                             [data]="totalStudents"></gl-generic-amount>
         </div>
       </div>
     </div>
