@@ -12,31 +12,32 @@ import {EmailFilter, NameLastnameFilter} from "../../models/filters/generic-stri
 import 'rxjs/add/operator/takeWhile';
 import {ContentService} from "../../core/providers/services/content/content.service";
 import {Alert} from "../../models/core/alert";
+import {BasicContentDisplayNavigator} from "../commons/abstarct-clases/basic-content-display";
 
 @Component({
   selector: "gl-alumnos",
   templateUrl: "./students.component.html"
 })
-export class StudentsComponent implements OnInit, OnDestroy {
-
-  @ViewChild("confirmModal") confirmModal: ConfirmationModalComponent;
+export class StudentsComponent extends BasicContentDisplayNavigator<Student> implements OnInit, OnDestroy {
 
   title: string = "All Students";
   students: Observable<Student[]>;
-  isAdministrator: boolean;
-  modalData: ConfirmationModalData;
   nameLastnameFilter = new NameLastnameFilter();
   emailFilter = new EmailFilter();
+  isAlive: boolean = true;
 
-  private isAlive: boolean = true;
-
-  constructor(private contentService: ContentService,
-              private authService: AuthService,
-              private router: Router,
-              private route: ActivatedRoute) {}
+  constructor(protected contentService: ContentService,
+              protected authService: AuthService,
+              protected router: Router,
+              protected route: ActivatedRoute) {
+    super(authService, router, route);
+  }
 
   ngOnInit() {
-    this.isAdministrator = this.authService.isAdministrator();
+    console.log("aca: ", this);
+    this.createPath = appRoutePaths.students.childs.create.path;
+    this.editPath = appRoutePaths.students.path;
+
     this.students = this.contentService
       .getStudents()
       .filter(students => students !== undefined);
@@ -44,37 +45,20 @@ export class StudentsComponent implements OnInit, OnDestroy {
     this.contentService.fetchStudents();
   }
 
-  delete(student: Student) {
-    this.modalData = {
-      type: "delete",
-      title: "Delete",
-      text: "Are you sure you want to delete the Student ?",
-      action: () => {
-        this.modalData.title = "Deleting";
-        this.modalData.isBusy = true;
-        this.contentService
-          .deleteStudent(student)
-          .takeWhile(() => this.isAlive)
-          .subscribe(
-            () => {
-              this.modalData.isBusy = false;
-              this.confirmModal.close();
-            });
-      }
+  delete(data: Student) {
+    this.action = () => {
+      this.modalData.title = "Deleting";
+      this.modalData.isBusy = true;
+      this.contentService
+        .deleteStudent(data)
+        .takeWhile(() => this.isAlive)
+        .subscribe(
+          () => {
+            this.modalData.isBusy = false;
+            this.confirmModal.close();
+          });
     };
-    this.confirmModal.open();
-  }
-
-  create() {
-    this.router.navigate([appRoutePaths.students.childs.create.path], {relativeTo: this.route})
-  }
-
-  edit(student: Student) {
-    this.router.navigate([appRoutePaths.students.path, student.id], { queryParams: { edit: true}});
-  }
-
-  details(student: Student) {
-    this.router.navigate([appRoutePaths.students.path, student.id]);
+    this.openDeleteConfirmation();
   }
 
   ngOnDestroy() {

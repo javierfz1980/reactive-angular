@@ -15,6 +15,8 @@ import 'rxjs/add/operator/takeWhile';
 })
 export class SingleCourseComponent extends BasicSingleEditorWithList<Course, StudentsListFormComponent, Student> implements OnInit, OnDestroy{
 
+  isAlive: boolean = true;
+
   constructor(private router: Router,
               private contentService: ContentService,
               protected authService: AuthService,
@@ -25,24 +27,20 @@ export class SingleCourseComponent extends BasicSingleEditorWithList<Course, Stu
   ngOnInit() {
     super.ngOnInit();
 
-    // The id of the current course
     this.id = this.route.params
       .map((params: Params) => {
         this.contentService.fetchCourses(params.id);
         return params.id;
       });
 
-    // The course
     this.source = this.contentService
       .getCourses()
       .withLatestFrom(this.id)
       .map(([courses, id]) => courses.find((courseData: Course) => courseData.id === id));
 
-    // The source for the list component
     this.listFormSource = this.contentService
       .getStudents();
 
-    // The elements that should be marked as selected on the list component
     this.listFormMarked = this.source
       .map((course: Course) => course ? course.students : []);
   }
@@ -61,7 +59,7 @@ export class SingleCourseComponent extends BasicSingleEditorWithList<Course, Stu
             this.router.navigate([appRoutePaths.courses.path]);
           });
     };
-    super.openDeleteModal();
+    super.openDeleteConfirmation();
   }
 
   update(data: Course) {
@@ -79,12 +77,16 @@ export class SingleCourseComponent extends BasicSingleEditorWithList<Course, Stu
             this.confirmModal.close();
           });
     };
-    super.openUpdateModal(originalStudents, this.listForm.getSelecteds());
+    super.openUpdateConfirmation(originalStudents, this.listForm.getSelecteds());
 
   }
 
   toggleEditMode() {
     super.toggleEditMode();
+  }
+
+  ngOnDestroy() {
+    this.isAlive = false;
   }
 
 }

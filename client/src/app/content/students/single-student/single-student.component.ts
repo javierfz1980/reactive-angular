@@ -27,7 +27,9 @@ import {StudentsListFormComponent} from "../../commons/forms/lists/students-list
   selector: "gl-single-student",
   templateUrl: "./single-student.component.html"
 })
-export class SingleStudentComponent extends BasicSingleEditorWithList<InfoProfileData, CoursesListFormComponent, Course>  implements OnInit {
+export class SingleStudentComponent extends BasicSingleEditorWithList<InfoProfileData, CoursesListFormComponent, Course>  implements OnInit, OnDestroy {
+
+  isAlive: boolean = true;
 
   constructor(private router: Router,
               private contentService: ContentService,
@@ -80,7 +82,7 @@ export class SingleStudentComponent extends BasicSingleEditorWithList<InfoProfil
             this.router.navigate([appRoutePaths.students.path]);
           });
     };
-    super.openDeleteModal();
+    super.openDeleteConfirmation();
   }
 
   update(data: InfoProfileData) {
@@ -98,11 +100,15 @@ export class SingleStudentComponent extends BasicSingleEditorWithList<InfoProfil
             this.confirmModal.close();
           });
     }
-    super.openUpdateModal(originalCourses, this.listForm.getSelecteds())
+    super.openUpdateConfirmation(originalCourses, this.listForm.getSelecteds())
   }
 
   toggleEditMode() {
     super.toggleEditMode();
+  }
+
+  ngOnDestroy() {
+    this.isAlive = false;
   }
 
 }
