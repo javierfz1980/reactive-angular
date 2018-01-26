@@ -3,7 +3,7 @@ import {Observable} from "rxjs/Observable";
 import {Course} from "../../models/content/course";
 import {AuthService} from "../../core/providers/services/auth.service";
 import {
-  ConfirmationData,
+  ConfirmationModalData,
   ConfirmationModalComponent
 } from "../commons/confirmation-modal/confirmation-modal.component";
 import {appRoutePaths} from "../../app-routing.module";
@@ -23,7 +23,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
   title = "All Courses";
   courses: Observable<Course[]>;
   isAdministrator: boolean;
-  modalData: ConfirmationData;
+  modalData: ConfirmationModalData;
 
   private isAlive: boolean = true;
 

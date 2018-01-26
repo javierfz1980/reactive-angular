@@ -4,7 +4,7 @@ import {Observable} from "rxjs/Observable";
 import {Router} from "@angular/router";
 import {appRoutePaths} from "../../../../../app-routing.module";
 import {ContentService} from "../../../../../core/providers/services/content/content.service";
-import {BasicListFormComponent} from "../basic-list-form.component";
+import {BasicListFormComponent} from "../../../abstarct-clases/basic-list-form.component";
 
 @Component({
   selector: "gl-courses-list-form",

@@ -1,7 +1,7 @@
 import {Component, OnDestroy, ViewChild} from "@angular/core";
 import {CoursesListFormComponent} from "../../commons/forms/lists/courses-list/courses-list-form.component";
 import {
-  ConfirmationData,
+  ConfirmationModalData,
   ConfirmationModalComponent
 } from "../../commons/confirmation-modal/confirmation-modal.component";
 import {Router} from "@angular/router";
@@ -26,7 +26,7 @@ export class CreateTeacherComponent implements OnDestroy{
   teacherCourses: CoursesListFormComponent;
 
   title: string = "Add new Teacher";
-  modalData: ConfirmationData;
+  modalData: ConfirmationModalData;
   isAdministrator: boolean;
 
   allCourses: Observable<Course[]>;

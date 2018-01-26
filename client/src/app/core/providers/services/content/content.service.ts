@@ -394,7 +394,7 @@ export class ContentService {
    */
   deleteCourse(course: Course): Observable<boolean> {
     return Observable.forkJoin(
-      this.studentsService.removeCurseFromStudents(course.id, course.students),
+      this.studentsService.removeCurseFromStudents(course.id, course.students ? course.students : []),
       this.coursesService.deleteRecord(course.id))
       .switchMap(() => {
         return Observable.forkJoin(

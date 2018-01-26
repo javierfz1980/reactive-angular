@@ -3,12 +3,12 @@ import {Student} from "../../../models/content/student";
 import {Teacher} from "../../../models/content/teacher";
 import {Course} from "../../../models/content/course";
 
-export type ConfirmationType = "delete" | "confirm" | "response";
-export interface ConfirmationData {
+export type ConfirmationModalType = "delete" | "confirm" | "response";
+export interface ConfirmationModalData {
   title: string;
   text: string;
-  action: () => void;
-  type: ConfirmationType;
+  action?: () => void;
+  type: ConfirmationModalType;
   isBusy?: boolean;
 }
 
@@ -19,10 +19,10 @@ export interface ConfirmationData {
 export class ConfirmationModalComponent {
 
   opened: boolean = false;
-  data: ConfirmationData;
+  data: ConfirmationModalData;
 
   @Input()
-  set modalData(data: ConfirmationData) {
+  set modalData(data: ConfirmationModalData) {
     this.data = data;
   }
 

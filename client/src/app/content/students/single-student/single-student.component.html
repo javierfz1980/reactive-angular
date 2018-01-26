@@ -1,5 +1,5 @@
 <!-- content tabs -->
-<div *ngIf="info | async as studentInfo; else loading">
+<div *ngIf="source | async as studentInfo; else loading">
 
   <h1>
     {{studentInfo.info.first_name}} {{studentInfo.info.last_name}}&nbsp;<br>
@@ -33,9 +33,9 @@
     <clr-tab>
       <button clrTabLink>Courses</button>
       <clr-tab-content>
-        <gl-courses-list-form #studentCourses
-                              [sourceList]="allCourses"
-                              [markedList]="markedCourses"
+        <gl-courses-list-form #listForm
+                              [sourceList]="listFormSource"
+                              [markedList]="listFormMarkeds"
                               [editMode]="isEditMode.asObservable()">
         </gl-courses-list-form>
       </clr-tab-content>

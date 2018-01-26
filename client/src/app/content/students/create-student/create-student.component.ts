@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {InfoProfileData} from "../../commons/forms/info/info-profile/info-profile-form.component";
 import {CoursesListFormComponent} from "../../commons/forms/lists/courses-list/courses-list-form.component";
 import {
-  ConfirmationData,
+  ConfirmationModalData,
   ConfirmationModalComponent
 } from "../../commons/confirmation-modal/confirmation-modal.component";
 import {Router} from "@angular/router";
@@ -26,7 +26,7 @@ export class CreateStudentComponent implements OnInit, OnDestroy {
   studentCourses: CoursesListFormComponent;
 
   title: string = "Add new Student";
-  modalData: ConfirmationData;
+  modalData: ConfirmationModalData;
   isAdministrator: boolean;
 
   allCourses: Observable<Course[]>;

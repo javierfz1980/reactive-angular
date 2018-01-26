@@ -3,7 +3,7 @@ import {AuthService} from "../../core/providers/services/auth.service";
 import {Teacher} from "../../models/content/teacher";
 import {Observable} from "rxjs/Observable";
 import {
-  ConfirmationData,
+  ConfirmationModalData,
   ConfirmationModalComponent
 } from "../commons/confirmation-modal/confirmation-modal.component";
 import {EmailFilter, NameLastnameFilter} from "../../models/filters/generic-string-filter";
@@ -25,7 +25,7 @@ export class TeachersComponent implements OnInit, OnDestroy  {
   title: string = "All Teachers";
   teachers: Observable<Teacher[]>;
   isAdministrator: boolean;
-  modalData: ConfirmationData;
+  modalData: ConfirmationModalData;
   nameLastnameFilter = new NameLastnameFilter();
   emailFilter = new EmailFilter();
 

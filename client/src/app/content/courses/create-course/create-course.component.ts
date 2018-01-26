@@ -1,12 +1,12 @@
 import {Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {AuthService} from "../../../core/providers/services/auth.service";
 import {
-  ConfirmationData,
+  ConfirmationModalData,
   ConfirmationModalComponent
 } from "../../commons/confirmation-modal/confirmation-modal.component";
 import {appRoutePaths} from "../../../app-routing.module";
 import {Course} from "../../../models/content/course";
-import {StudentsListForm} from "../../commons/forms/lists/students-list/students-list-form";
+import {StudentsListFormComponent} from "../../commons/forms/lists/students-list/students-list-form.component";
 import {Router} from "@angular/router";
 import {ContentService} from "../../../core/providers/services/content/content.service";
 import {Student} from "../../../models/content/student";
@@ -23,11 +23,11 @@ export class CreateCourseComponent implements OnInit, OnDestroy {
   confirmModal: ConfirmationModalComponent;
 
   @ViewChild("courseStudents")
-  students: StudentsListForm;
+  students: StudentsListFormComponent;
 
   title: string = "Create new Course";
   isAdministrator: boolean;
-  modalData: ConfirmationData;
+  modalData: ConfirmationModalData;
 
   allStudents: Observable<Student[]>;
   markedStudents: Observable<string[]>;

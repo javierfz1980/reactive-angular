@@ -4,14 +4,14 @@ import {Student} from "../../../../../models/content/student";
 import {Router} from "@angular/router";
 import {appRoutePaths} from "../../../../../app-routing.module";
 import {ContentService} from "../../../../../core/providers/services/content/content.service";
-import {BasicListFormComponent} from "../basic-list-form.component";
+import {BasicListFormComponent} from "../../../abstarct-clases/basic-list-form.component";
 
 @Component({
   selector: "gl-students-list-form",
-  templateUrl: "./students-list-form.html",
-  styleUrls: ["./students-list-form.css"]
+  templateUrl: "./students-list-form.component.html",
+  styleUrls: ["./students-list-form.component.css"]
 })
-export class StudentsListForm extends BasicListFormComponent<Student>{
+export class StudentsListFormComponent extends BasicListFormComponent<Student>{
 
   students: Observable<Student[]>;
   gridSize: number = 50;

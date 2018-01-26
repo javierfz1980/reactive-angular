@@ -1,10 +1,10 @@
 <!-- content tabs -->
-<div *ngIf="info | async as teacherInfo; else loading">
+<div *ngIf="source | async as teacherInfo; else loading">
 
   <h1>
     {{teacherInfo.info.first_name}} {{teacherInfo.info.last_name}}&nbsp;<br>
     <!-- content delete -->
-    <div class="btn-group" *ngIf="isAdministrator" >
+    <div class="btn-group" *ngIf="isAdministrator">
       <button class="btn btn-sm" [ngClass]="{'btn-primary': editMode, 'btn-outline': !editMode}" (click)="toggleEditMode()">
         <clr-icon shape="pencil"></clr-icon> Edit
       </button>
@@ -33,9 +33,9 @@
       <button clrTabLink>Courses</button>
       <clr-tab-content>
         <p>Note: If you select a Course which already has a Teacher it will be updated and assigned to you.</p>
-        <gl-courses-list-form #courses
-                              [sourceList]="allCourses"
-                              [markedList]="markedCourses"
+        <gl-courses-list-form #listForm
+                              [sourceList]="listFormSource"
+                              [markedList]="listFormMarkeds"
                               [editMode]="isEditMode.asObservable()">
         </gl-courses-list-form>
       </clr-tab-content>

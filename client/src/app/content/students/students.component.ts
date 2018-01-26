@@ -3,7 +3,7 @@ import {Observable} from "rxjs/Observable";
 import {Student} from "../../models/content/student";
 import {AuthService} from "../../core/providers/services/auth.service";
 import {
-  ConfirmationData,
+  ConfirmationModalData,
   ConfirmationModalComponent
 } from "../commons/confirmation-modal/confirmation-modal.component";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -24,7 +24,7 @@ export class StudentsComponent implements OnInit, OnDestroy {
   title: string = "All Students";
   students: Observable<Student[]>;
   isAdministrator: boolean;
-  modalData: ConfirmationData;
+  modalData: ConfirmationModalData;
   nameLastnameFilter = new NameLastnameFilter();
   emailFilter = new EmailFilter();
 

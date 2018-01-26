@@ -6,7 +6,7 @@ import {CommonsModule} from "../../commons/commons.module";
 import {CoursesRoutingModule} from "./courses-routing.module";
 import {SingleCourseComponent} from "./single-course/single-course.component";
 import {CourseDetailFormComponent} from "../commons/forms/info/course-info/course-detail-form.component";
-import {StudentsListForm} from "../commons/forms/lists/students-list/students-list-form";
+import {StudentsListFormComponent} from "../commons/forms/lists/students-list/students-list-form.component";
 import {CreateCourseComponent} from "./create-course/create-course.component";
 
 const contents = [
@@ -14,7 +14,7 @@ const contents = [
   CourseCardComponent,
   SingleCourseComponent,
   CourseDetailFormComponent,
-  StudentsListForm,
+  StudentsListFormComponent,
   CreateCourseComponent
 ];
 
