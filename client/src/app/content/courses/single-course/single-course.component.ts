@@ -43,7 +43,7 @@ export class SingleCourseComponent extends BasicSingleEditorWithList<Course, Stu
       .getStudents();
 
     // The elements that should be marked as selected on the list component
-    this.listFormMarkeds = this.source
+    this.listFormMarked = this.source
       .map((course: Course) => course ? course.students : []);
   }
 

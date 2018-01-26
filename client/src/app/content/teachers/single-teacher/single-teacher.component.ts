@@ -60,7 +60,7 @@ export class SingleTeacherComponent extends BasicSingleEditorWithList<InfoProfil
     this.listFormSource = this.contentService
       .getCourses();
 
-    this.listFormMarkeds = this.source
+    this.listFormMarked = this.source
       .map((data: InfoProfileData) => data.info)
       .map((teacher: Teacher) => teacher.courses);
   }

@@ -28,7 +28,7 @@ export class BasicSingleEditorWithList<T, G, Z> extends BasicSubscriptor {
   protected source: Observable<T>;
   protected id: Observable<string>;
   protected listFormSource: Observable<Z[]>;
-  protected listFormMarkeds: Observable<string[]>;
+  protected listFormMarked: Observable<string[]>;
   protected isEditMode: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(protected authService: AuthService,
