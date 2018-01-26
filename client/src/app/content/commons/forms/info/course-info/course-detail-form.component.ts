@@ -7,18 +7,18 @@ import {AuthService} from "../../../../../core/providers/services/auth.service";
 import {Router} from "@angular/router";
 import {appRoutePaths} from "../../../../../app-routing.module";
 import {ContentService} from "../../../../../core/providers/services/content/content.service";
-
-export type CourseInfoType = "create" | "update";
+import {BasicInfoForm} from "../../../abstarct-clases/basic-info-form";
+import {InfoProfileData} from "../info-profile/info-profile-form.component";
 
 @Component({
   selector: "gl-course-detail-form",
   templateUrl: "./course-detail-form.component.html",
   styleUrls: ["./course-detail-form.component.css"]
 })
-export class CourseDetailFormComponent implements OnInit{
+export class CourseDetailFormComponent extends BasicInfoForm<Course> implements OnInit{
 
   @Input()
-  info: Course;
+  data: Course;
 
   @Input()
   set isReadOnly(value: boolean) {
@@ -34,50 +34,41 @@ export class CourseDetailFormComponent implements OnInit{
     }
   };
 
-  @Output('update')
-  updateEvent: EventEmitter<Course> = new EventEmitter<Course>();
-
-  @Output('create')
-  createEvent: EventEmitter<Course> = new EventEmitter<Course>();
-
   _isReadOnly: boolean;
   isAdministrator: boolean;
-  form: FormGroup;
   teachersList: Observable<Teacher[]>;
-
-  private type: CourseInfoType;
 
   constructor(private fb: FormBuilder,
               private contentService: ContentService,
               private authService: AuthService,
-              private router: Router) {}
+              private router: Router) {
+    super();
+  }
 
   ngOnInit() {
+    super.ngOnInit();
+    console.log(this.type)
+    this.data = this.validateInfo();
     this.isAdministrator = this.authService.isAdministrator();
-
     this.teachersList = this.contentService
       .getTeachers()
       .merge(Observable.of([]));
 
-    this.type = this.info ? "update" : "create";
-    // validate info received or make an empty info for use it as an input form. (new registers)
-    this.info = this.validateInfo();
-
     this.form = this.fb.group({
-      id: [this.info.id ],
-      title: [this.info.title, Validators.required ],
-      short_description: [this.info.short_description, Validators.required ],
-      detail: [this.info.detail, Validators.required ],
-      active: [{value: this.info.active, disabled: this._isReadOnly}, Validators.required ],
-      teacher: [{value: this.info.teacher, disabled: this._isReadOnly}, Validators.required ],
-      students: [this.info.students ]
+      id: [this.data.id ],
+      title: [this.data.title, Validators.required ],
+      short_description: [this.data.short_description, Validators.required ],
+      detail: [this.data.detail, Validators.required ],
+      active: [{value: this.data.active, disabled: this._isReadOnly}, Validators.required ],
+      teacher: [{value: this.data.teacher, disabled: this._isReadOnly}, Validators.required ],
+      students: [this.data.students ]
     });
 
     this.contentService.fetchTeachers();
   }
 
   private validateInfo(): Course {
-    if (!this.info) {
+    if (!this.data) {
       return {
         id: "",
         title: "",
@@ -88,20 +79,12 @@ export class CourseDetailFormComponent implements OnInit{
         students: []
       }
     }
-    return this.info;
+    return this.data;
   }
 
   gotoTeacher(edit: boolean = false) {
     const queryParams = edit ? {queryParams: { edit: true}} : {};
     this.router.navigate([appRoutePaths.teachers.path, this.form.controls["teacher"].value], queryParams);
-  }
-
-  update() {
-    this.updateEvent.emit(this.form.value);
-  }
-
-  create() {
-    this.createEvent.emit(this.form.value);
   }
 
 }

@@ -1,9 +1,9 @@
-import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
+import {Component, Input, OnInit} from "@angular/core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Profile} from "../../../../../models/content/profile";
 import {BasicInfo} from "../../../../../models/content/basic-info";
-
-export type InfoProfileType = "create" | "update";
+import {BasicInfoForm} from "../../../abstarct-clases/basic-info-form";
+import {getDateString} from "../../../../../helpers/helpers";
 
 export interface InfoProfileData {
   info: BasicInfo;
@@ -16,102 +16,71 @@ export interface InfoProfileData {
   templateUrl: "./info-profile-form.component.html",
   styleUrls: ["./info-profile-form.component.css"]
 })
-export class InfoProfileFormComponent implements OnInit {
+export class InfoProfileFormComponent extends BasicInfoForm<InfoProfileData> implements OnInit {
 
   @Input()
-  set infoProfile(data: InfoProfileData) {
-    this.info = data;
+  set info(data: InfoProfileData) {
+    this.data = data;
     if (this.form) {
       this.form.reset();
-      data.profile.birthday = this.getDateString(data.profile.birthday);
+      data.profile.birthday = getDateString(data.profile.birthday);
       this.form.controls["info"].patchValue(data.info);
       this.form.controls["profile"].patchValue(data.profile);
     }
   };
 
-  info: InfoProfileData;
+  private info_group: FormGroup;
+  private profile_group: FormGroup;
 
-  @Input()
-  isReadOnly: boolean;
-
-  @Output('update')
-  updateEvent: EventEmitter<InfoProfileData> = new EventEmitter<InfoProfileData>();
-
-  @Output('create')
-  createEvent: EventEmitter<InfoProfileData> = new EventEmitter<InfoProfileData>();
-
-  form: FormGroup;
-  info_fg: FormGroup;
-  profile_fg: FormGroup;
-
-  private type: InfoProfileType;
-
-  constructor(private fb: FormBuilder) {}
+  constructor(protected fb: FormBuilder) {
+    super();
+  }
 
   ngOnInit() {
+    super.ngOnInit();
 
-    this.type = this.info ? "update" : "create";
-    // validate info received or make an empty info for use it as an input form. (new registers)
     this.info = this.validateInfo();
 
-    this.info_fg = this.fb.group({
-      id: [this.info.info.id ],
-      first_name: [this.info.info.first_name, Validators.required ],
-      last_name: [this.info.info.last_name, Validators.required ],
-      email: [this.info.info.email, [Validators.required, Validators.email] ],
-      profile_id: [this.info.info.profile_id ],
-      courses: [this.info.info.courses ]
+    this.info_group = this.fb.group({
+      id: [this.data.info.id ],
+      first_name: [this.data.info.first_name, Validators.required ],
+      last_name: [this.data.info.last_name, Validators.required ],
+      email: [this.data.info.email, [Validators.required, Validators.email] ],
+      profile_id: [this.data.info.profile_id ],
+      courses: [this.data.info.courses ]
     });
 
-    this.profile_fg = this.fb.group({
-      id: [this.info.profile.id ],
-      birthday: [this.getDateString(this.info.profile.birthday), Validators.required ],
-      avatar: [this.info.profile.avatar],
-      secondary_email: [this.info.profile.secondary_email],
+    this.profile_group = this.fb.group({
+      id: [this.data.profile.id ],
+      birthday: [getDateString(this.data.profile.birthday), Validators.required ],
+      avatar: [this.data.profile.avatar],
+      secondary_email: [this.data.profile.secondary_email],
       contact: this.fb.group({
-        street: [this.info.profile.contact.street ,Validators.required],
-        state: [this.info.profile.contact.state ,Validators.required],
-        country: [this.info.profile.contact.country ,Validators.required],
-        city: [this.info.profile.contact.city ,Validators.required],
-        zip: [this.info.profile.contact.zip ,Validators.required],
-        phone: [this.info.profile.contact.phone ,Validators.required],
+        street: [this.data.profile.contact.street ,Validators.required],
+        state: [this.data.profile.contact.state ,Validators.required],
+        country: [this.data.profile.contact.country ,Validators.required],
+        city: [this.data.profile.contact.city ,Validators.required],
+        zip: [this.data.profile.contact.zip ,Validators.required],
+        phone: [this.data.profile.contact.phone ,Validators.required],
       }),
     });
 
     this.form = this.fb.group({
-      info: this.info_fg,
-      profile: this.profile_fg
+      info: this.info_group,
+      profile: this.profile_group
     })
   }
 
-  private getDateString(dateString: string): string {
-    return dateString ? new Date(dateString).toISOString().slice(0,10) : "";
-  }
-
   private validateInfo(): InfoProfileData{
-    if (!this.info) {
+    if (!this.data) {
         return {
           info: {id: "", first_name: "", last_name: "", email: "", profile_id: "", courses: []},
-          profile: {id: "", birthday: "", avatar: "", secondary_email: "", contact: {
-              street: "", state: "", country: "", city: "", zip: "", phone: ""}
+          profile: {id: "", birthday: "", avatar: "", secondary_email: "", contact:
+              {street: "", state: "", country: "", city: "", zip: "", phone: ""}
         }
       }
     }
-    return this.info;
+    return this.data;
   }
 
-  update() {
-    this.updateEvent.emit(this.getData());
-  }
-
-  create() {
-    this.createEvent.emit(this.getData());
-  }
-
-  private getData(): InfoProfileData {
-    return {
-      info: this.form.controls["info"].value,
-      profile: this.form.controls["profile"].value
-    };
-  }
 }

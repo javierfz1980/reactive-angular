@@ -1,4 +1,4 @@
-<form *ngIf="info" [formGroup]="form">
+<form *ngIf="data" [formGroup]="form">
 
   <!-- basic info -->
   <section class="form-block">
@@ -62,7 +62,7 @@
                 formControlName="teacher"
                 placeholder="Enter the teacher">
           <option *ngFor="let teacher of teachers"
-                  [selected]="info.teacher === teacher.id"
+                  [selected]="data.teacher === teacher.id"
                   [value]="teacher.id">
             {{teacher.first_name}} - {{teacher.last_name}}
           </option>

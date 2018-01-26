@@ -22,7 +22,7 @@
     <clr-tab>
       <button clrTabLink id="link1">Profile</button>
       <clr-tab-content>
-        <gl-info-profile-form [infoProfile]="{info: studentInfo.info, profile: studentInfo.profile}"
+        <gl-info-profile-form [info]="{info: studentInfo.info, profile: studentInfo.profile}"
                               [isReadOnly]="!(isAdministrator && editMode)"
                               (update)="update($event)">
         </gl-info-profile-form>

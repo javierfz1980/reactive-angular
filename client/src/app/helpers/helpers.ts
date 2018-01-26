@@ -16,3 +16,7 @@ export function getFakedDelay(): number {
   return globalProperties.localDev ? randomBetween(0, globalProperties.maxFakedTime) * 1000 : 0;
 }
 
+export function getDateString(dateString: string): string {
+  return dateString ? new Date(dateString).toISOString().slice(0,10) : "";
+}
+
