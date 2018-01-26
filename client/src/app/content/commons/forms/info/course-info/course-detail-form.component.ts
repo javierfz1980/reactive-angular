@@ -1,21 +1,21 @@
 import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Course} from "../../../../models/content/course";
+import {Course} from "../../../../../models/content/course";
 import {Observable} from "rxjs/Observable";
-import {Teacher} from "../../../../models/content/teacher";
-import {AuthService} from "../../../../core/providers/services/auth.service";
+import {Teacher} from "../../../../../models/content/teacher";
+import {AuthService} from "../../../../../core/providers/services/auth.service";
 import {Router} from "@angular/router";
-import {appRoutePaths} from "../../../../app-routing.module";
-import {ContentService} from "../../../../core/providers/services/content/content.service";
+import {appRoutePaths} from "../../../../../app-routing.module";
+import {ContentService} from "../../../../../core/providers/services/content/content.service";
 
 export type CourseInfoType = "create" | "update";
 
 @Component({
-  selector: "gl-course-info",
-  templateUrl: "./course-info.component.html",
-  styleUrls: ["./course-info.component.css"]
+  selector: "gl-course-detail-form",
+  templateUrl: "./course-detail-form.component.html",
+  styleUrls: ["./course-detail-form.component.css"]
 })
-export class CourseInfoComponent implements OnInit{
+export class CourseDetailFormComponent implements OnInit{
 
   @Input()
   info: Course;

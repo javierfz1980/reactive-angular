@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Profile} from "../../../models/content/profile";
-import {BasicInfo} from "../../../models/content/basic-info";
+import {Profile} from "../../../../../models/content/profile";
+import {BasicInfo} from "../../../../../models/content/basic-info";
 
 export type InfoProfileType = "create" | "update";
 
@@ -12,11 +12,11 @@ export interface InfoProfileData {
 }
 
 @Component({
-  selector: "gl-info-form",
-  templateUrl: "./info-form.component.html",
-  styleUrls: ["./info-form.component.css"]
+  selector: "gl-info-profile-form",
+  templateUrl: "./info-profile-form.component.html",
+  styleUrls: ["./info-profile-form.component.css"]
 })
-export class ContentInfoComponent implements OnInit {
+export class InfoProfileFormComponent implements OnInit {
 
   @Input()
   set infoProfile(data: InfoProfileData) {

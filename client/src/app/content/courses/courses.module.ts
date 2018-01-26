@@ -5,16 +5,16 @@ import {ContentCommonsModule} from "../commons/content-commons-module";
 import {CommonsModule} from "../../commons/commons.module";
 import {CoursesRoutingModule} from "./courses-routing.module";
 import {SingleCourseComponent} from "./single-course/single-course.component";
-import {CourseInfoComponent} from "./single-course/course-info/course-info.component";
-import {CourseStudentsComponent} from "./single-course/course-students/course-students.component";
+import {CourseDetailFormComponent} from "../commons/forms/info/course-info/course-detail-form.component";
+import {StudentsListForm} from "../commons/forms/lists/students-list/students-list-form";
 import {CreateCourseComponent} from "./create-course/create-course.component";
 
 const contents = [
   CoursesComponent,
   CourseCardComponent,
   SingleCourseComponent,
-  CourseInfoComponent,
-  CourseStudentsComponent,
+  CourseDetailFormComponent,
+  StudentsListForm,
   CreateCourseComponent
 ];
 

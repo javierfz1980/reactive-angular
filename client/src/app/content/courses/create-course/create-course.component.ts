@@ -6,10 +6,12 @@ import {
 } from "../../commons/confirmation-modal/confirmation-modal.component";
 import {appRoutePaths} from "../../../app-routing.module";
 import {Course} from "../../../models/content/course";
-import {CourseStudentsComponent} from "../single-course/course-students/course-students.component";
+import {StudentsListForm} from "../../commons/forms/lists/students-list/students-list-form";
 import {Router} from "@angular/router";
 import {ContentService} from "../../../core/providers/services/content/content.service";
-import {Alert} from "../../../models/core/alert";
+import {Student} from "../../../models/content/student";
+import {Observable} from "rxjs/Observable";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 @Component({
   selector: "gl-create-course",
@@ -21,11 +23,15 @@ export class CreateCourseComponent implements OnInit, OnDestroy {
   confirmModal: ConfirmationModalComponent;
 
   @ViewChild("courseStudents")
-  students: CourseStudentsComponent;
+  students: StudentsListForm;
 
   title: string = "Create new Course";
   isAdministrator: boolean;
   modalData: ConfirmationData;
+
+  allStudents: Observable<Student[]>;
+  markedStudents: Observable<string[]>;
+  isEditMode: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
   private isAlive: boolean = true;
 
@@ -35,6 +41,10 @@ export class CreateCourseComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.isAdministrator = this.authService.isAdministrator();
+
+    this.allStudents = this.contentService.getStudents();
+    this.markedStudents = Observable.of([]);
+    this.isEditMode.next((this.isAdministrator && true));
   }
 
   create(data: Course) {
@@ -46,7 +56,7 @@ export class CreateCourseComponent implements OnInit, OnDestroy {
         this.modalData.title = "Creating";
         this.modalData.isBusy = true;
         this.contentService
-          .createCourse(data, this.students.getSelectedStudents())
+          .createCourse(data, this.students.getSelecteds())
           .takeWhile(() => this.isAlive)
           .subscribe(
             () => {

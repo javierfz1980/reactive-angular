@@ -6,7 +6,7 @@
 </div>
 <div *ngIf="students | async as studentsList; else loading">
   <div class="container-fluid">
-    <clr-datagrid class="_content-datagrid" [(clrDgSelected)]="selectedStudents">
+    <clr-datagrid class="_content-datagrid" [(clrDgSelected)]="selection">
       <clr-dg-column>Name</clr-dg-column>
 
       <clr-dg-row *clrDgItems="let student of studentsList" [clrDgItem]="student">

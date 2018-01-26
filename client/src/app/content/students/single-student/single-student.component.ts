@@ -6,18 +6,20 @@ import {Profile} from "../../../models/content/profile";
 import {Observable} from "rxjs/Observable";
 import {AuthService} from "../../../core/providers/services/auth.service";
 import 'rxjs/add/observable/throw';
-import {InfoProfileData} from "../../commons/info-form/info-form.component";
+import {InfoProfileData} from "../../commons/forms/info/info-profile/info-profile-form.component";
 import {
   ConfirmationData,
   ConfirmationModalComponent
 } from "../../commons/confirmation-modal/confirmation-modal.component";
 import {appRoutePaths} from "../../../app-routing.module";
-import {CoursesFormComponent} from "../../commons/courses-form/courses-form.component";
+import {CoursesListFormComponent} from "../../commons/forms/lists/courses-list/courses-list-form.component";
 import {getDifferencesBetween} from "../../../helpers/helpers";
 import 'rxjs/add/operator/takeWhile';
 import 'rxjs/add/operator/withLatestFrom';
 import 'rxjs/add/operator/filter';
 import {Alert} from "../../../models/core/alert";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {Course} from "../../../models/content/course";
 
 @Component({
   selector: "gl-single-student",
@@ -29,14 +31,16 @@ export class SingleStudentComponent implements OnInit, OnDestroy {
   confirmModal: ConfirmationModalComponent;
 
   @ViewChild("studentCourses")
-  studentCourses: CoursesFormComponent;
-
-  info: Observable<InfoProfileData>;
-  studentId: Observable<string>;
+  studentCourses: CoursesListFormComponent;
 
   isAdministrator: boolean;
   editMode: boolean = false;
   modalData: ConfirmationData;
+  info: Observable<InfoProfileData>;
+  studentId: Observable<string>;
+  allCourses: Observable<Course[]>;
+  markedCourses: Observable<string[]>;
+  isEditMode: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   private isAlive: boolean = true;
 
@@ -57,7 +61,6 @@ export class SingleStudentComponent implements OnInit, OnDestroy {
 
     this.info = this.contentService
       .getStudents()
-      .filter(data => data !== undefined)
       .withLatestFrom(this.studentId)
       .map(([students, id]) => students.find((student: Student) => student.id === id))
       .filter(data => data !== undefined)
@@ -65,6 +68,15 @@ export class SingleStudentComponent implements OnInit, OnDestroy {
         return this.contentService.getProfile(student.profile_id)
           .map((profile: Profile) => ({info: student, profile: profile}))
       });
+
+    this.allCourses = this.contentService
+      .getCourses();
+
+    this.markedCourses = this.info
+      .map((data: InfoProfileData) => data.info)
+      .map((student: Student) => student.courses);
+
+    this.isEditMode.next((this.isAdministrator && this.editMode));
   }
 
   delete(student: Student) {
@@ -90,9 +102,9 @@ export class SingleStudentComponent implements OnInit, OnDestroy {
   }
 
   update(data: InfoProfileData) {
-    const coursesToBeRemoved = getDifferencesBetween<string>(data.info.courses, this.studentCourses.getSelectedCourses());
-    const coursesToBeAdded = getDifferencesBetween<string>(this.studentCourses.getSelectedCourses(), data.info.courses);
-    data.info.courses = this.studentCourses.getSelectedCourses();
+    const coursesToBeRemoved = getDifferencesBetween<string>(data.info.courses, this.studentCourses.getSelecteds());
+    const coursesToBeAdded = getDifferencesBetween<string>(this.studentCourses.getSelecteds(), data.info.courses);
+    data.info.courses = this.studentCourses.getSelecteds();
     this.modalData = {
       type: "confirm",
       title: "Update",
@@ -115,6 +127,7 @@ export class SingleStudentComponent implements OnInit, OnDestroy {
 
   toggleEditMode() {
     this.editMode = !this.editMode;
+    this.isEditMode.next((this.isAdministrator && this.editMode));
   }
 
   ngOnDestroy() {

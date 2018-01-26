@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {ActivatedRoute, Params, Router} from "@angular/router";
-import {CoursesFormComponent} from "../../commons/courses-form/courses-form.component";
+import {CoursesListFormComponent} from "../../commons/forms/lists/courses-list/courses-list-form.component";
 import {AuthService} from "../../../core/providers/services/auth.service";
 import {Observable} from "rxjs/Observable";
 import {
@@ -8,12 +8,15 @@ import {
   ConfirmationModalComponent
 } from "../../commons/confirmation-modal/confirmation-modal.component";
 import {Teacher} from "../../../models/content/teacher";
-import {InfoProfileData} from "../../commons/info-form/info-form.component";
+import {InfoProfileData} from "../../commons/forms/info/info-profile/info-profile-form.component";
 import {appRoutePaths} from "../../../app-routing.module";
 import {ContentService} from "../../../core/providers/services/content/content.service";
 import {getDifferencesBetween} from "../../../helpers/helpers";
 import 'rxjs/add/operator/takeWhile';
 import {Alert} from "../../../models/core/alert";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {Course} from "../../../models/content/course";
+import {Student} from "../../../models/content/student";
 
 @Component({
   selector: "gl-single-teacher",
@@ -25,13 +28,17 @@ export class SingleTeacherComponent implements OnInit, OnDestroy{
   confirmModal: ConfirmationModalComponent;
 
   @ViewChild("courses")
-  courses: CoursesFormComponent;
+  courses: CoursesListFormComponent;
 
-  info: Observable<InfoProfileData>;
   teacherId: Observable<string>;
   isAdministrator: boolean;
   editMode: boolean = false;
   modalData: ConfirmationData;
+  info: Observable<InfoProfileData>;
+  allCourses: Observable<Course[]>;
+  markedCourses: Observable<string[]>;
+  isEditMode: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
 
   private isAlive: boolean = true;
 
@@ -52,19 +59,28 @@ export class SingleTeacherComponent implements OnInit, OnDestroy{
 
     this.info = this.contentService
       .getTeachers()
-      .filter(data => data !== undefined)
       .withLatestFrom(this.teacherId)
       .map(([teachers, id]) => teachers.find((teacher: Teacher) => teacher.id === id))
       .filter(data => data !== undefined)
       .switchMap((teacher: Teacher) =>{
         return Observable.forkJoin(
           this.contentService.getProfile(teacher.profile_id),
-          this.contentService.getAllCoursesOfTeacher(teacher.id))
-          .map(([profile, courses]) => {
-            teacher.courses = courses;
-            return ({info: teacher, profile: profile});
-          })
+          this.contentService.getAllCoursesOfTeacher(teacher.id),
+          Observable.of(teacher))//Observable.of([]))//
       })
+      .map(([profile, courses, teacher]) => {
+        teacher.courses = courses;
+        return ({info: teacher, profile: profile});
+      });
+
+    this.allCourses = this.contentService
+      .getCourses();
+
+    this.markedCourses = this.info
+      .map((data: InfoProfileData) => data.info)
+      .map((teacher: Teacher) => teacher.courses);
+
+    this.isEditMode.next((this.isAdministrator && this.editMode));
   }
 
   delete(data: Teacher) {
@@ -90,8 +106,8 @@ export class SingleTeacherComponent implements OnInit, OnDestroy{
   }
 
   update(data: InfoProfileData) {
-    const coursesToBeRemoved = getDifferencesBetween<string>(data.info.courses, this.courses.getSelectedCourses());
-    const coursesToBeAdded = getDifferencesBetween<string>(this.courses.getSelectedCourses(), data.info.courses);
+    const coursesToBeRemoved = getDifferencesBetween<string>(data.info.courses, this.courses.getSelecteds());
+    const coursesToBeAdded = getDifferencesBetween<string>(this.courses.getSelecteds(), data.info.courses);
     this.modalData = {
       type: "confirm",
       title: "Update",
@@ -114,6 +130,7 @@ export class SingleTeacherComponent implements OnInit, OnDestroy{
 
   toggleEditMode() {
     this.editMode = !this.editMode;
+    this.isEditMode.next((this.isAdministrator && this.editMode));
   }
 
   ngOnDestroy() {

@@ -10,8 +10,8 @@
     <clr-tab>
       <button clrTabLink id="link1">Info</button>
       <clr-tab-content>
-        <gl-course-info [isReadOnly]="!(isAdministrator)"
-                        (create)="create($event)"></gl-course-info>
+        <gl-course-detail-form [isReadOnly]="!(isAdministrator)"
+                        (create)="create($event)"></gl-course-detail-form>
       </clr-tab-content>
     </clr-tab>
 
@@ -19,8 +19,10 @@
     <clr-tab>
       <button clrTabLink>Students</button>
       <clr-tab-content>
-        <gl-course-students #courseStudents
-                            [isReadOnly]="!(isAdministrator)"></gl-course-students>
+        <gl-students-list-form #courseStudents
+                            [markedList]="markedStudents"
+                            [sourceList]="allStudents"
+                            [editMode]="isEditMode.asObservable()"></gl-students-list-form>
       </clr-tab-content>
     </clr-tab>
 

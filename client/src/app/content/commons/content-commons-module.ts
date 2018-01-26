@@ -2,14 +2,14 @@ import {ContentLoaderComponent} from "./loader/content-loader.component";
 import {NgModule} from "@angular/core";
 import {ConfirmationModalComponent} from "./confirmation-modal/confirmation-modal.component";
 import {CommonsModule} from "../../commons/commons.module";
-import {ContentInfoComponent} from "./info-form/info-form.component";
-import {CoursesFormComponent} from "./courses-form/courses-form.component";
+import {CoursesListFormComponent} from "./forms/lists/courses-list/courses-list-form.component";
+import {InfoProfileFormComponent} from "./forms/info/info-profile/info-profile-form.component";
 
 const contents = [
   ContentLoaderComponent,
   ConfirmationModalComponent,
-  ContentInfoComponent,
-  CoursesFormComponent
+  InfoProfileFormComponent,
+  CoursesListFormComponent
 ];
 
 @NgModule({

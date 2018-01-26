@@ -1,6 +1,6 @@
-import {Component, OnDestroy, ViewChild} from "@angular/core";
-import {InfoProfileData} from "../../commons/info-form/info-form.component";
-import {CoursesFormComponent} from "../../commons/courses-form/courses-form.component";
+import {Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
+import {InfoProfileData} from "../../commons/forms/info/info-profile/info-profile-form.component";
+import {CoursesListFormComponent} from "../../commons/forms/lists/courses-list/courses-list-form.component";
 import {
   ConfirmationData,
   ConfirmationModalComponent
@@ -8,30 +8,47 @@ import {
 import {Router} from "@angular/router";
 import {appRoutePaths} from "../../../app-routing.module";
 import {ContentService} from "../../../core/providers/services/content/content.service";
-import {Alert} from "../../../models/core/alert";
+import {Observable} from "rxjs/Observable";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {Course} from "../../../models/content/course";
+import {AuthService} from "../../../core/providers/services/auth.service";
 
 @Component({
   selector: "gl-create-student",
   templateUrl: "./create-student.component.html"
 })
-export class CreateStudentComponent implements OnDestroy {
+export class CreateStudentComponent implements OnInit, OnDestroy {
 
   @ViewChild("confirmModal")
   confirmModal: ConfirmationModalComponent;
 
   @ViewChild("studentCourses")
-  studentCourses: CoursesFormComponent;
+  studentCourses: CoursesListFormComponent;
 
   title: string = "Add new Student";
   modalData: ConfirmationData;
+  isAdministrator: boolean;
+
+  allCourses: Observable<Course[]>;
+  markedCourses: Observable<string[]>;
+  isEditMode: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
   private isAlive: boolean = true;
 
   constructor(private contentService: ContentService,
+              private authService: AuthService,
               private router: Router) {}
 
+  ngOnInit() {
+    this.isAdministrator = this.authService.isAdministrator();
+
+    this.allCourses = this.contentService.getCourses();
+    this.markedCourses = Observable.of([]);
+    this.isEditMode.next((this.isAdministrator && true));
+  }
+
   create(data: InfoProfileData) {
-    data.info.courses = this.studentCourses.getSelectedCourses();
+    data.info.courses = this.studentCourses.getSelecteds();
     this.modalData = {
       type: "confirm",
       title: "Create",
@@ -40,7 +57,7 @@ export class CreateStudentComponent implements OnDestroy {
         this.modalData.title = "Creating";
         this.modalData.isBusy = true;
         this.contentService
-          .createStudent(data.info, data.profile, this.studentCourses.getSelectedCourses())
+          .createStudent(data.info, data.profile, this.studentCourses.getSelecteds())
           .takeWhile(() => this.isAlive)
           .subscribe(
             () => {

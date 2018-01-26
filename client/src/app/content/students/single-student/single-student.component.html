@@ -22,9 +22,10 @@
     <clr-tab>
       <button clrTabLink id="link1">Profile</button>
       <clr-tab-content>
-        <gl-info-form [infoProfile]="{info: studentInfo.info, profile: studentInfo.profile}"
-                      [isReadOnly]="!(isAdministrator && editMode)"
-                      (update)="update($event)"></gl-info-form>
+        <gl-info-profile-form [infoProfile]="{info: studentInfo.info, profile: studentInfo.profile}"
+                              [isReadOnly]="!(isAdministrator && editMode)"
+                              (update)="update($event)">
+        </gl-info-profile-form>
       </clr-tab-content>
     </clr-tab>
 
@@ -32,9 +33,11 @@
     <clr-tab>
       <button clrTabLink>Courses</button>
       <clr-tab-content>
-        <gl-courses-form #studentCourses
-                         [markedCourses]="studentInfo.info.courses"
-                         [isReadOnly]="!(isAdministrator && editMode)"></gl-courses-form>
+        <gl-courses-list-form #studentCourses
+                              [sourceList]="allCourses"
+                              [markedList]="markedCourses"
+                              [editMode]="isEditMode.asObservable()">
+        </gl-courses-list-form>
       </clr-tab-content>
     </clr-tab>
 

@@ -1,13 +1,17 @@
 import {Component, OnDestroy, ViewChild} from "@angular/core";
-import {CoursesFormComponent} from "../../commons/courses-form/courses-form.component";
+import {CoursesListFormComponent} from "../../commons/forms/lists/courses-list/courses-list-form.component";
 import {
   ConfirmationData,
   ConfirmationModalComponent
 } from "../../commons/confirmation-modal/confirmation-modal.component";
 import {Router} from "@angular/router";
-import {InfoProfileData} from "../../commons/info-form/info-form.component";
+import {InfoProfileData} from "../../commons/forms/info/info-profile/info-profile-form.component";
 import {appRoutePaths} from "../../../app-routing.module";
 import {ContentService} from "../../../core/providers/services/content/content.service";
+import {Observable} from "rxjs/Observable";
+import {AuthService} from "../../../core/providers/services/auth.service";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {Course} from "../../../models/content/course";
 
 @Component({
   selector: "gl-create-teacher",
@@ -18,16 +22,28 @@ export class CreateTeacherComponent implements OnDestroy{
   @ViewChild("confirmModal")
   confirmModal: ConfirmationModalComponent;
 
-  @ViewChild("teacherCourses")
-  teacherCourses: CoursesFormComponent;
+  @ViewChild("courses")
+  teacherCourses: CoursesListFormComponent;
 
   title: string = "Add new Teacher";
   modalData: ConfirmationData;
+  isAdministrator: boolean;
+
+  allCourses: Observable<Course[]>;
+  markedCourses: Observable<string[]>;
+  isEditMode: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
   private isAlive: boolean = true;
 
   constructor(private contentService: ContentService,
-              private router: Router) {}
+              private authService: AuthService,
+              private router: Router) {
+    this.isAdministrator = this.authService.isAdministrator();
+
+    this.allCourses = this.contentService.getCourses();
+    this.markedCourses = Observable.of([]);
+    this.isEditMode.next((this.isAdministrator && true));
+  }
 
   create(data: InfoProfileData) {
     this.modalData = {
@@ -38,7 +54,7 @@ export class CreateTeacherComponent implements OnDestroy{
         this.modalData.title = "Creating";
         this.modalData.isBusy = true;
         this.contentService
-          .createTeacher(data.info, data.profile, this.teacherCourses.getSelectedCourses())
+          .createTeacher(data.info, data.profile, this.teacherCourses.getSelecteds())
           .takeWhile(() => this.isAlive)
           .subscribe(
             () => {

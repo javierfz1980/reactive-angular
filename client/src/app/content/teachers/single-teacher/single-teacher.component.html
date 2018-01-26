@@ -22,9 +22,9 @@
     <clr-tab>
       <button clrTabLink id="link1">Profile</button>
       <clr-tab-content>
-        <gl-info-form [infoProfile]="{info: teacherInfo.info, profile: teacherInfo.profile}"
-                      [isReadOnly]="!(isAdministrator && editMode)"
-                      (update)="update($event)"></gl-info-form>
+        <gl-info-profile-form [infoProfile]="{info: teacherInfo.info, profile: teacherInfo.profile}"
+                              [isReadOnly]="!(isAdministrator && editMode)"
+                              (update)="update($event)"></gl-info-profile-form>
       </clr-tab-content>
     </clr-tab>
 
@@ -33,9 +33,11 @@
       <button clrTabLink>Courses</button>
       <clr-tab-content>
         <p>Note: If you select a Course which already has a Teacher it will be updated and assigned to you.</p>
-        <gl-courses-form #courses
-                         [markedCourses]="teacherInfo.info.courses"
-                         [isReadOnly]="!(isAdministrator && editMode)"></gl-courses-form>
+        <gl-courses-list-form #courses
+                              [sourceList]="allCourses"
+                              [markedList]="markedCourses"
+                              [editMode]="isEditMode.asObservable()">
+        </gl-courses-list-form>
       </clr-tab-content>
     </clr-tab>
 

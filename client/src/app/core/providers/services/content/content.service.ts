@@ -35,20 +35,23 @@ export class ContentService {
 
   // getters ---------------------
 
-  getProfile(id: string): Observable<Profile> {
-    return this.profilesService.getRecord(id);
-  }
-
   getStudents(): Observable<Student[]> {
-    return this.studentsService.students;
+    return this.studentsService.students
+      .filter(data => data !== undefined);
   }
 
   getTeachers(): Observable<Teacher[]> {
-    return this.teachersService.teachers;
+    return this.teachersService.teachers
+      .filter(data => data !== undefined);
   }
 
   getCourses(): Observable<Course[]> {
-    return this.coursesService.courses;
+    return this.coursesService.courses
+      .filter(data => data !== undefined);
+  }
+
+  getProfile(id: string): Observable<Profile> {
+    return this.profilesService.getRecord(id);
   }
 
   getAllCoursesOfTeacher(id: string): Observable<string[]> {
@@ -81,17 +84,25 @@ export class ContentService {
             profile_id: newProfile.id,
             courses: student.courses
           })))
+      })
+      .switchMap(() => {
+        return Observable.forkJoin(
+          this.profilesService.getRecords(),
+          this.studentsService.getRecords(),
+          this.coursesService.getRecords())
           .map(() => {
             this.alertService.pushAlert(
               {type: "success", message: "Student created", duration: 3000});
+            this.profilesService.emit();
+            this.studentsService.emit();
+            this.coursesService.emit();
             return true;
           })
-          .catch((error: any) => {
-            this.alertService.pushAlert(
-              {type: "danger", message: `Error creating Student: ${error.message}`});
-            return Observable.of(false);
-          })
-          .do(() => this.fetchStudents());
+      })
+      .catch((error: any) => {
+        this.alertService.pushAlert(
+          {type: "danger", message: `Error creating Student: ${error.message}`});
+        return Observable.of(false);
       })
   }
 
@@ -112,18 +123,26 @@ export class ContentService {
         return Observable.forkJoin(
           this.teachersService.updateRecord(newTeacher.id,  {profile_id: newProfile.id}),
           this.coursesService.addTeacherToCourses(newTeacher.id, courses))
+      })
+      .switchMap(() => {
+        return Observable.forkJoin(
+          this.profilesService.getRecords(),
+          this.teachersService.getRecords(),
+          this.coursesService.getRecords())
           .map(() => {
             this.alertService.pushAlert(
               {type: "success", message: "Teacher created", duration: 3000});
+            this.profilesService.emit();
+            this.teachersService.emit();
+            this.coursesService.emit();
             return true;
           })
-          .catch((error: any) => {
-            this.alertService.pushAlert(
-              {type: "danger", message: `Error creating Teacher: ${error.message}`});
-            return Observable.of(false);
-          })
       })
-      .do(() => this.fetchTeachers())
+      .catch((error: any) => {
+        this.alertService.pushAlert(
+          {type: "danger", message: `Error creating Teacher: ${error.message}`});
+        return Observable.of(false);
+      })
   }
 
   /**
@@ -138,17 +157,23 @@ export class ContentService {
         .updateRecord(createdCourse.id, {teacher: course.teacher, students: students}))
       .switchMap((createdCourse: Course) => this.studentsService
         .addCurseToStudents(createdCourse.id, students))
-      .map(() => {
-        this.alertService.pushAlert(
-          {type: "success", message: "Course created", duration: 3000});
-        return true;
+      .switchMap(() => {
+        return Observable.forkJoin(
+          this.coursesService.getRecords(),
+          this.studentsService.getRecords())
+          .map(() => {
+            this.alertService.pushAlert(
+              {type: "success", message: "Course created", duration: 3000});
+            this.coursesService.emit();
+            this.studentsService.emit();
+            return true;
+          })
       })
       .catch((error: any) => {
         this.alertService.pushAlert(
           {type: "danger", message: `Error creating Course: ${error.message}`});
         return Observable.of(false);
       })
-      .do(() => this.fetchCourses())
   }
 
   // updates ---------------------
@@ -163,30 +188,38 @@ export class ContentService {
    */
   updateStudent(student:Student, profile: Profile, coursesToBeRemoved: string[],
                 coursesToBeAdded: string[]): Observable<boolean> {
-    const infoId: string = student.id;
-    const profileId: string = profile.id;
 
-    delete student.id;
-    delete profile.id;
+    const studentData: Student = Object.assign({}, student);
+    const profileData: Profile = Object.assign({}, profile);
+    delete studentData.id;
+    delete profileData.id;
 
     profile.birthday = new Date(profile.birthday).toString();
 
     return Observable.forkJoin(
-      this.studentsService.updateRecord(infoId, student),
-      this.profilesService.updateRecord(profileId, profile),
-      this.coursesService.deleteStudentFromCourses(infoId, coursesToBeRemoved)
-        .switchMap(() => this.coursesService.addStudentToCourses(infoId, coursesToBeAdded)))
-      .map(() => {
-        this.alertService.pushAlert(
-          {type: "success", message: "Student info updated", duration: 3000});
-        return true;
+      this.studentsService.updateRecord(student.id, studentData),
+      this.profilesService.updateRecord(profile.id, profileData),
+      this.coursesService.deleteStudentFromCourses(student.id, coursesToBeRemoved)
+        .switchMap(() => this.coursesService.addStudentToCourses(student.id, coursesToBeAdded)))
+      .switchMap(() => {
+        return Observable.forkJoin(
+          this.studentsService.getRecord(student.id),
+          this.profilesService.getRecord(profile.id),
+          this.coursesService.getRecords())
+          .map(() => {
+            this.alertService.pushAlert(
+              {type: "success", message: "Student info updated", duration: 3000});
+            this.studentsService.emit();
+            this.profilesService.emit();
+            this.coursesService.emit();
+            return true;
+          })
       })
       .catch((error: any) => {
         this.alertService.pushAlert(
           {type: "danger", message: `Error updating Student: ${error.message}`});
         return Observable.of(false);
       })
-      .do(() => this.fetchStudents())
   }
 
   /**
@@ -199,30 +232,38 @@ export class ContentService {
    */
   updateTeacher(teacher: Teacher, profile: Profile, coursesToBeRemoved: string[],
                 coursesToBeAdded: string[]): Observable<boolean> {
-    const teacherId: string = teacher.id;
-    const profileId: string = profile.id;
 
-    delete teacher.id;
-    delete profile.id;
+    const teacherData: Teacher = Object.assign({}, teacher);
+    const profileData: Profile = Object.assign({}, profile);
+    delete teacherData.id;
+    delete profileData.id;
 
     profile.birthday = new Date(profile.birthday).toString();
 
     return Observable.forkJoin(
-      this.teachersService.updateRecord(teacherId, teacher),
-      this.profilesService.updateRecord(profileId, profile),
-      this.coursesService.deleteTeacherFromCourses(teacherId, coursesToBeRemoved)
-        .switchMap(() => this.coursesService.addTeacherToCourses(teacherId, coursesToBeAdded)))
-      .map(() => {
-        this.alertService.pushAlert(
-          {type: "success", message: "Teacher info updated", duration: 3000});
-        return true;
+      this.teachersService.updateRecord(teacher.id, teacherData),
+      this.profilesService.updateRecord(profile.id, profileData),
+      this.coursesService.deleteTeacherFromCourses(teacher.id, coursesToBeRemoved)
+        .switchMap(() => this.coursesService.addTeacherToCourses(teacher.id, coursesToBeAdded)))
+      .switchMap(() => {
+        return Observable.forkJoin(
+          this.teachersService.getRecord(teacher.id),
+          this.profilesService.getRecord(profile.id),
+          this.coursesService.getRecords())
+          .map(() => {
+            this.alertService.pushAlert(
+              {type: "success", message: "Teacher info updated", duration: 3000});
+            this.teachersService.emit();
+            this.profilesService.emit();
+            this.coursesService.emit();
+            return true;
+          })
       })
       .catch((error: any) => {
         this.alertService.pushAlert(
           {type: "danger", message: `Error updating Teacher: ${error.message}`});
         return Observable.of(false);
       })
-      .do(() => this.fetchTeachers())
   }
 
   /**
@@ -233,24 +274,30 @@ export class ContentService {
    * @returns {Observable<boolean>}
    */
   updateCourse(course: Course, studentsToBeRemoved: string[], studentsToBeAdded: string[]): Observable<boolean> {
-    const courseId: string = course.id;
-    delete course.id;
+    const courseData: Course = Object.assign({}, course);
+    delete courseData.id;
 
     return Observable.forkJoin(
-      this.coursesService.updateRecord(courseId, course),
-      this.studentsService.removeCurseFromStudents(courseId, studentsToBeRemoved)
-        .switchMap(() => this.studentsService.addCurseToStudents(courseId, studentsToBeAdded)))
-      .map(() => {
-        this.alertService.pushAlert(
-          {type: "success", message: "The selected course was updated", duration: 3000});
-        return true;
+      this.coursesService.updateRecord(course.id, courseData),
+      this.studentsService.removeCurseFromStudents(course.id, studentsToBeRemoved)
+        .switchMap(() => this.studentsService.addCurseToStudents(course.id, studentsToBeAdded)))
+      .switchMap(() => {
+        return Observable.forkJoin(
+          this.coursesService.getRecords(),
+          this.studentsService.getRecords())
+          .map(() => {
+            this.alertService.pushAlert(
+              {type: "success", message: "The selected course was updated", duration: 3000});
+            this.coursesService.emit();
+            this.studentsService.emit();
+            return true;
+          })
       })
       .catch((error: any) => {
         this.alertService.pushAlert(
           {type: "danger", message: `Error updating Course: ${error.message}`});
         return Observable.of(false);
       })
-      .do(() => this.fetchCourses())
   }
 
   /**
@@ -261,9 +308,11 @@ export class ContentService {
    */
   updateCourseStatus(id: string, data: boolean): Observable<boolean> {
     return this.coursesService.updateRecord(id, {active: data})
-      .map((course: Course) => {
+      .switchMap((course: Course) => this.coursesService.getRecord(course.id))
+      .map(() => {
         this.alertService.pushAlert(
           {type: "success", message: "The selected course status was updated", duration: 3000});
+        this.coursesService.emit();
         return true;
       })
       .catch((error: any) => {
@@ -271,7 +320,6 @@ export class ContentService {
           {type: "danger", message: `Error updating Course Status: ${error.message}`});
         return Observable.of(false);
       })
-      .do(() => this.fetchCourses())
   }
 
   // deletes ---------------------
@@ -284,19 +332,27 @@ export class ContentService {
   deleteStudent(student: Student): Observable<boolean> {
     return Observable.forkJoin(
       this.profilesService.deleteRecord(student.profile_id),
-      this.studentsService.deleteRecord(student.id),
-      this.coursesService.deleteStudentFromCourses(student.id, student.courses))
-      .map(([deleteProfile, deleteStudent]) => {
-        this.alertService.pushAlert(
-          {type: "success", message: `${student.id}: ${deleteProfile.message}`, duration: 3000});
-        return true;
+      this.coursesService.deleteStudentFromCourses(student.id, student.courses),
+      this.studentsService.deleteRecord(student.id))
+      .switchMap(() => {
+        return Observable.forkJoin(
+          this.profilesService.getRecords(),
+          this.coursesService.getRecords(),
+          this.studentsService.getRecords())
+          .map(() => {
+            this.alertService.pushAlert(
+              {type: "success", message: `${student.id}: The resource was deleted`, duration: 3000});
+            this.profilesService.emit();
+            this.coursesService.emit();
+            this.studentsService.emit();
+            return true;
+          })
       })
       .catch((error: any) => {
         this.alertService.pushAlert(
           {type: "danger", message: `Error deleting student: ${error.message}`});
         return Observable.of(false);
       })
-      .do(() => this.fetchStudents());
   }
 
   /**
@@ -310,17 +366,25 @@ export class ContentService {
       this.teachersService.deleteRecord(teacher.id),
       this.coursesService.getAllCoursesOfTeacher(teacher.id)
         .switchMap((courses: string[]) => this.coursesService.deleteTeacherFromCourses(teacher.id, courses)))
-      .map(([deleteProfile, deleteTeacher, deleteTeacherCourses]) => {
-        this.alertService.pushAlert(
-          {type: "success", message: `${teacher.id}: ${deleteProfile.message}`, duration: 3000});
-        return true;
+      .switchMap(() => {
+        return Observable.forkJoin(
+          this.profilesService.getRecords(),
+          this.teachersService.getRecords(),
+          this.coursesService.getRecords())
+          .map(() => {
+            this.alertService.pushAlert(
+              {type: "success", message: `${teacher.id}: The resource was deleted`, duration: 3000});
+            this.profilesService.emit();
+            this.teachersService.emit();
+            this.coursesService.emit();
+            return true;
+          })
       })
       .catch((error: any) => {
         this.alertService.pushAlert(
           {type: "danger", message: `Error deleting teacher: ${error.message}`});
         return Observable.of(false);
       })
-      .do(() => this.fetchTeachers())
   }
 
   /**
@@ -332,17 +396,23 @@ export class ContentService {
     return Observable.forkJoin(
       this.studentsService.removeCurseFromStudents(course.id, course.students),
       this.coursesService.deleteRecord(course.id))
-      .map(([students, courseDeleted]) => {
-        this.alertService.pushAlert(
-          {type: "success", message: `${course.id}: ${courseDeleted.message}`, duration: 3000});
-        return true;
+      .switchMap(() => {
+        return Observable.forkJoin(
+          this.studentsService.getRecords(),
+          this.coursesService.getRecords())
+          .map(() => {
+            this.alertService.pushAlert(
+              {type: "success", message: `${course.id}: The resource was deleted`, duration: 3000});
+            this.studentsService.emit();
+            this.coursesService.emit();
+            return true;
+          })
       })
       .catch((error: any) => {
         this.alertService.pushAlert(
           {type: "danger", message: `Error deleting course: ${error.message}`});
         return Observable.of(false);
       })
-      .do(() => this.fetchCourses())
   }
 
 }
