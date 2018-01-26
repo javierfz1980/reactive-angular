@@ -5,7 +5,7 @@ import {Observable} from "rxjs/Observable";
 import {
   ConfirmationModalData,
   ConfirmationModalComponent
-} from "../commons/confirmation-modal/confirmation-modal.component";
+} from "../../commons/confirmation-modal/confirmation-modal.component";
 import {EmailFilter, NameLastnameFilter} from "../../models/filters/generic-string-filter";
 import {appRoutePaths} from "../../app-routing.module";
 import {ActivatedRoute, Router} from "@angular/router";

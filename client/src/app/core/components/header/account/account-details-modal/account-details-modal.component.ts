@@ -1,7 +1,7 @@
 import {Component, Input, ViewChild} from "@angular/core";
 import {
   ConfirmationModalComponent
-} from "../../../../../content/commons/confirmation-modal/confirmation-modal.component";
+} from "../../../../../commons/confirmation-modal/confirmation-modal.component";
 import {Account} from "../../../../../models/core/account";
 
 @Component({

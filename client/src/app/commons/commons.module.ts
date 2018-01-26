@@ -6,27 +6,35 @@ import {HttpClientModule} from "@angular/common/http";
 import {CommonModule} from "@angular/common";
 import {RouterModule} from "@angular/router";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {ConfirmationModalComponent} from "./confirmation-modal/confirmation-modal.component";
 
-const contents = [
+const modules = [
   CommonModule,
   HttpClientModule,
   ReactiveFormsModule,
   RouterModule,
   ClarityModule,
-  PipesModule
+  PipesModule,
 ];
+
+const declarations = [
+  ConfirmationModalComponent
+]
 
 /**
  * This module will include the common functionalities to be used all across the app in order to
  * have them centralized in one module that can be imported on any other module.
  */
 @NgModule({
-  declarations: [],
+  declarations: [
+    ...declarations
+  ],
   imports: [
-    ...contents
+    ...modules
   ],
   exports: [
-    ...contents
+    ...modules,
+    ...declarations
   ]
 })
 export class CommonsModule {}

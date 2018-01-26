@@ -3,7 +3,7 @@ import {AuthService} from "../../../core/providers/services/auth.service";
 import {
   ConfirmationModalData,
   ConfirmationModalComponent
-} from "../../commons/confirmation-modal/confirmation-modal.component";
+} from "../../../commons/confirmation-modal/confirmation-modal.component";
 import {appRoutePaths} from "../../../app-routing.module";
 import {Course} from "../../../models/content/course";
 import {StudentsListFormComponent} from "../../commons/forms/lists/students-list/students-list-form.component";

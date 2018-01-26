@@ -4,7 +4,7 @@ import {CoursesListFormComponent} from "../../commons/forms/lists/courses-list/c
 import {
   ConfirmationModalData,
   ConfirmationModalComponent
-} from "../../commons/confirmation-modal/confirmation-modal.component";
+} from "../../../commons/confirmation-modal/confirmation-modal.component";
 import {Router} from "@angular/router";
 import {appRoutePaths} from "../../../app-routing.module";
 import {ContentService} from "../../../core/providers/services/content/content.service";

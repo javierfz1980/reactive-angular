@@ -1,12 +1,12 @@
 import {Observable} from "rxjs/Observable";
 import {AuthService} from "../../../core/providers/services/auth.service";
 import {ActivatedRoute} from "@angular/router";
-import {BasicSubscriptor} from "./basic-subscriptor";
+import {BasicSubscriptor} from "../../../commons/abstract-classes/basic-subscriptor";
 import {ViewChild} from "@angular/core";
 import {
   ConfirmationModalComponent,
   ConfirmationModalData
-} from "../confirmation-modal/confirmation-modal.component";
+} from "../../../commons/confirmation-modal/confirmation-modal.component";
 import {getDifferencesBetween} from "../../../helpers/helpers";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 

@@ -10,7 +10,7 @@ import {InfoProfileData} from "../../commons/forms/info/info-profile/info-profil
 import {
   ConfirmationModalData,
   ConfirmationModalComponent
-} from "../../commons/confirmation-modal/confirmation-modal.component";
+} from "../../../commons/confirmation-modal/confirmation-modal.component";
 import {appRoutePaths} from "../../../app-routing.module";
 import {CoursesListFormComponent} from "../../commons/forms/lists/courses-list/courses-list-form.component";
 import {getDifferencesBetween} from "../../../helpers/helpers";

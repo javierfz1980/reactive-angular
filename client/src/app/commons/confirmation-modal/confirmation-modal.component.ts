@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output, ViewChild} from "@angular/core";
-import {Student} from "../../../models/content/student";
-import {Teacher} from "../../../models/content/teacher";
-import {Course} from "../../../models/content/course";
+import {Student} from "../../models/content/student";
+import {Teacher} from "../../models/content/teacher";
+import {Course} from "../../models/content/course";
 
 export type ConfirmationModalType = "delete" | "confirm" | "response";
 export interface ConfirmationModalData {

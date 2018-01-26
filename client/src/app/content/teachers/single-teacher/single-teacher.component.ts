@@ -6,7 +6,7 @@ import {Observable} from "rxjs/Observable";
 import {
   ConfirmationModalData,
   ConfirmationModalComponent
-} from "../../commons/confirmation-modal/confirmation-modal.component";
+} from "../../../commons/confirmation-modal/confirmation-modal.component";
 import {Teacher} from "../../../models/content/teacher";
 import {InfoProfileData} from "../../commons/forms/info/info-profile/info-profile-form.component";
 import {appRoutePaths} from "../../../app-routing.module";

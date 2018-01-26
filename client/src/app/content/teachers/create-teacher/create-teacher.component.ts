@@ -3,7 +3,7 @@ import {CoursesListFormComponent} from "../../commons/forms/lists/courses-list/c
 import {
   ConfirmationModalData,
   ConfirmationModalComponent
-} from "../../commons/confirmation-modal/confirmation-modal.component";
+} from "../../../commons/confirmation-modal/confirmation-modal.component";
 import {Router} from "@angular/router";
 import {InfoProfileData} from "../../commons/forms/info/info-profile/info-profile-form.component";
 import {appRoutePaths} from "../../../app-routing.module";

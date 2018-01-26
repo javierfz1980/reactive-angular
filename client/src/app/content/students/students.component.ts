@@ -5,7 +5,7 @@ import {AuthService} from "../../core/providers/services/auth.service";
 import {
   ConfirmationModalData,
   ConfirmationModalComponent
-} from "../commons/confirmation-modal/confirmation-modal.component";
+} from "../../commons/confirmation-modal/confirmation-modal.component";
 import {ActivatedRoute, Router} from "@angular/router";
 import {appRoutePaths} from "../../app-routing.module";
 import {EmailFilter, NameLastnameFilter} from "../../models/filters/generic-string-filter";
