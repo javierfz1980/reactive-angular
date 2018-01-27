@@ -7,6 +7,7 @@ import {
 } from "../../../commons/confirmation-modal/confirmation-modal.component";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {BasicModalConfirmActions} from "./basic-modal-confirm-actions";
+import {StoreData} from "../../../core/providers/services/content/basic-content.service";
 
 export abstract class BasicSingleEditorWithList<T, G, Z> extends BasicModalConfirmActions {
 
@@ -17,7 +18,7 @@ export abstract class BasicSingleEditorWithList<T, G, Z> extends BasicModalConfi
   protected action: () => void;
   protected source: Observable<T>;
   protected id: Observable<string>;
-  protected listFormSource: Observable<Z[]>;
+  protected listFormSource: Observable<StoreData<Z>>;
   protected listFormMarked: Observable<string[]>;
   protected isAdministrator: boolean;
   protected editMode: boolean = false;

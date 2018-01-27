@@ -5,6 +5,7 @@ import {Router} from "@angular/router";
 import {appRoutePaths} from "../../../../../app-routing.module";
 import {ContentService} from "../../../../../core/providers/services/content/content.service";
 import {BasicListFormComponent} from "../../../abstarct-clases/basic-list-form.component";
+import {StoreData} from "../../../../../core/providers/services/content/basic-content.service";
 
 @Component({
   selector: "gl-courses-list-form",
@@ -14,7 +15,7 @@ import {BasicListFormComponent} from "../../../abstarct-clases/basic-list-form.c
 })
 export class CoursesListFormComponent extends BasicListFormComponent<Course> implements OnInit {
 
-  courses: Observable<Course[]>;
+  dataSource: Observable<StoreData<Course>>;
 
   constructor(private contentService: ContentService,
               private router: Router) {
@@ -23,16 +24,17 @@ export class CoursesListFormComponent extends BasicListFormComponent<Course> imp
 
   ngOnInit() {
     super.ngOnInit();
-    this.courses = this.stream
-      .map(([courses, marked, editMode]) => {
-        this.selection = courses
+    this.dataSource = this.stream
+      .map(([storeData, marked, editMode]) => {
+        if (!storeData.data) storeData.data = [];
+        this.selection = storeData.data
           .filter((course: Course) => marked && marked
             .some((idCourses: string) => idCourses === course.id)
           );
-        if (editMode) return courses
+        if (editMode) return storeData;
         const res: Course[] = this.selection.slice();
         this.selection = null;
-        return res;
+        return {data: res, loading: storeData.loading};
       });
 
     this.contentService.fetchCourses();

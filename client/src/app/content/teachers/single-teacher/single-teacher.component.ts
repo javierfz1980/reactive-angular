@@ -53,9 +53,10 @@ export class SingleTeacherComponent extends BasicSingleEditorWithList<InfoProfil
 
     this.source = this.contentService
       .getTeachers()
+      .filter(storeData => Boolean(storeData.data))
       .withLatestFrom(this.id)
-      .map(([teachers, id]) => teachers.find((teacher: Teacher) => teacher.id === id))
-      .filter(data => data !== undefined)
+      .map(([storeData, id]) => storeData.data.find((teacher: Teacher) => teacher.id === id))
+      .filter((teacher: Teacher) => Boolean(teacher))
       .switchMap((teacher: Teacher) =>{
         return Observable.forkJoin(
           this.contentService.getProfile(teacher.profile_id),

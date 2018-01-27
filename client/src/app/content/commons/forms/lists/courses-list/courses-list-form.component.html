@@ -1,12 +1,12 @@
 <!-- content -->
-<div *ngIf="courses | async as coursesList; else loading">
+<div *ngIf="dataSource | async as storeData; else loading">
   <div class="container-fluid">
-    <clr-datagrid class="_content-datagrid" [(clrDgSelected)]="selection">
+    <clr-datagrid class="_content-datagrid" [(clrDgSelected)]="selection" [clrDgLoading]="storeData.loading">
       <clr-dg-column>Course</clr-dg-column>
       <clr-dg-column>Teacher</clr-dg-column>
       <clr-dg-column>Students</clr-dg-column>
 
-      <clr-dg-row *clrDgItems="let course of coursesList; trackBy: trackByItem" [clrDgItem]="course">
+      <clr-dg-row *clrDgItems="let course of storeData.data; trackBy: trackByItem" [clrDgItem]="course">
         <clr-dg-cell class="title">
           <a class="_pointer-mouse" (click)="gotoCourse(course.id)">{{course.title}}</a>
         </clr-dg-cell>

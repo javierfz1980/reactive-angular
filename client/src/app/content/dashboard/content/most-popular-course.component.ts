@@ -4,6 +4,7 @@ import {Course} from "../../../models/content/course";
 import {Router} from "@angular/router";
 import {appRoutePaths} from "../../../app-routing.module";
 import {ContentService} from "../../../core/providers/services/content/content.service";
+import {StoreData} from "../../../core/providers/services/content/basic-content.service";
 
 @Component({
   selector: "gl-most-popular-course",
@@ -20,7 +21,8 @@ export class MostPopularCourseComponent implements OnInit {
   ngOnInit() {
     this.course = this.contentService
       .getCourses()
-      .filter(data => data !== undefined)
+      .filter(data => Boolean(data.data))
+      .map((storeData: StoreData<Course>) => storeData.data)
       .map((courses: Course[]) => courses && courses.filter((course: Course) => course.active))
       .filter((courses: Course[]) => courses.length > 0)
       .map((courses: Course[]) => {

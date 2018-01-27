@@ -9,6 +9,7 @@ import {TeachersService} from "./teachers.service";
 import {Teacher} from "../../../../models/content/teacher";
 import {Course} from "../../../../models/content/course";
 import {AlertService} from "../alert.service";
+import {StoreData} from "./basic-content.service";
 
 @Injectable()
 export class ContentService {
@@ -35,17 +36,17 @@ export class ContentService {
 
   // getters ---------------------
 
-  getStudents(): Observable<Student[]> {
+  getStudents(): Observable<StoreData<Student>> {
     return this.studentsService.source
       .filter(data => data !== undefined);
   }
 
-  getTeachers(): Observable<Teacher[]> {
+  getTeachers(): Observable<StoreData<Teacher>> {
     return this.teachersService.source
       .filter(data => data !== undefined);
   }
 
-  getCourses(): Observable<Course[]> {
+  getCourses(): Observable<StoreData<Course>> {
     return this.coursesService.source
       .filter(data => data !== undefined);
   }
@@ -351,6 +352,7 @@ export class ContentService {
       .catch((error: any) => {
         this.alertService.pushAlert(
           {type: "danger", message: `Error deleting student: ${error.message}`});
+        console.log(error)
         return Observable.of(false);
       })
   }

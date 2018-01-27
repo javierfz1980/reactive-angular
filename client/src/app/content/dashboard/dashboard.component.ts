@@ -9,6 +9,7 @@ import {Student} from "../../models/content/student";
 import {Teacher} from "../../models/content/teacher";
 import {ContentService} from "../../core/providers/services/content/content.service";
 import {DashboardAmount} from "./content/generic-amount.component";
+import {StoreData} from "../../core/providers/services/content/basic-content.service";
 
 @Component({
   selector: "gl-dashboard",
@@ -32,13 +33,16 @@ export class DashboardComponent implements OnInit {
     this.isAdministrator = this.authService.isAdministrator();
 
     this.totalCourses = this.contentService
-      .getCourses();
+      .getCourses()
+      .map((data: StoreData<Course>) => data.data);
 
     this.totalTeachers = this.contentService
-      .getTeachers();
+      .getTeachers()
+      .map((data: StoreData<Teacher>) => data.data);
 
     this.totalStudents = this.contentService
-      .getStudents();
+      .getStudents()
+      .map((data: StoreData<Student>) => data.data);
 
     this.contentService.fetchCourses();
     this.contentService.fetchTeachers();

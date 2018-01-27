@@ -6,16 +6,20 @@ import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {getFakedDelay} from "../../../../helpers/helpers";
 import 'rxjs/add/operator/delay';
 
+export interface StoreData<T> {
+  data: T[];
+  loading: boolean;
+}
 /**
  * Basic generic abstract class with basic api actions that should be extended by any entity service.
- * This implementation has an internal data list and a Behavior subject that emits every time that
- * the internal data change. Every component subscribed to this subject will receive a stream with
- * the new data on every change.
+ * This implementation has an internal data store with a list and a loading boolean. It also have a
+ * Behavior subject that emits every time that the internal data is refreshed.
+ * Every component subscribed to this subject will receive a stream with the new data on every change.
  * Every service class that extends from this one should expose the internal subject as observable to allow
  * components to subscribe to the internal data changes. Ex:
  *
  * - public data = this.dataSubject.asObservable();
- * - this.dataSubject.next([]);
+ * - this.dataSubject.next(storeData);
  * -
  * - data.subscribe();
  *
@@ -24,9 +28,9 @@ import 'rxjs/add/operator/delay';
 export abstract class BasicContentService<T> {
 
   abstract path: string;
-  private data: T[];
-  private readonly dataSubject: BehaviorSubject<T[]> = new BehaviorSubject(this.data);
-  source: Observable<T[]> = this.dataSubject.asObservable();
+  private store: StoreData<T> = {data: null, loading: false};
+  private readonly dataSubject: BehaviorSubject<StoreData<T>> = new BehaviorSubject(this.store);
+  source: Observable<StoreData<T>> = this.dataSubject.asObservable();
 
   constructor(protected httpClient: HttpClient) {}
 
@@ -36,6 +40,8 @@ export abstract class BasicContentService<T> {
    * @returns {Observable<T[]>}
    */
   fetchData(id?: string) {
+    this.emit(true);
+
     if (id) {
       this.getRecord(id).subscribe(() => this.emit());
     } else {
@@ -52,7 +58,7 @@ export abstract class BasicContentService<T> {
       .get<T[]>(this.path)
       .delay(getFakedDelay())
       .map((stream: T[]) => {
-        this.data = stream;
+        this.store.data = stream;
         return stream;
       });
   }
@@ -67,17 +73,17 @@ export abstract class BasicContentService<T> {
       .get<T>(`${this.path}${id}`)
       .delay(getFakedDelay())
       .map((stream: T) => {
-        if (this.data && this.data.length > 0) {
+        if (this.store.data && this.store.data.length > 0) {
           let patched: boolean = false;
-          this.data.forEach((internalData: T, idx) => {
+          this.store.data.forEach((internalData: T, idx) => {
             if (internalData["id"] === id) {
-              this.data[idx] = stream;
+              this.store.data[idx] = stream;
               patched = true;
             }
           });
-          if (!patched) this.data.push(stream);
+          if (!patched) this.store.data.push(stream);
         } else {
-          this.data = [stream];
+          this.store.data = [stream];
         }
         return stream;
       });
@@ -120,9 +126,10 @@ export abstract class BasicContentService<T> {
   /**
    * Emits an stream with a copy of the internal data.
    */
-  emit() {
-    console.log(`${this.constructor.name}: has emitted...`);
-    this.dataSubject.next(this.data ? this.data.slice() : null);
+  emit(isLoading?: boolean) {
+    this.store.loading = isLoading ? isLoading : false;
+    console.log(`${this.constructor.name}: has emitted... <${this.store.loading}`);
+    this.dataSubject.next(Object.assign({}, this.store));
   }
 
 }

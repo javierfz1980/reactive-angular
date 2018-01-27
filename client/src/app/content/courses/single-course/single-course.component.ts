@@ -44,8 +44,9 @@ export class SingleCourseComponent extends BasicSingleEditorWithList<Course, Stu
 
     this.source = this.contentService
       .getCourses()
+      .filter(storeData => Boolean(storeData.data))
       .withLatestFrom(this.id)
-      .map(([courses, id]) => courses.find((courseData: Course) => courseData.id === id));
+      .map(([storeData, id]) => storeData.data.find((courseData: Course) => courseData.id === id));
 
     this.listFormSource = this.contentService
       .getStudents();

@@ -5,6 +5,7 @@ import {Router} from "@angular/router";
 import {appRoutePaths} from "../../../../../app-routing.module";
 import {ContentService} from "../../../../../core/providers/services/content/content.service";
 import {BasicListFormComponent} from "../../../abstarct-clases/basic-list-form.component";
+import {StoreData} from "../../../../../core/providers/services/content/basic-content.service";
 
 @Component({
   selector: "gl-students-list-form",
@@ -13,7 +14,7 @@ import {BasicListFormComponent} from "../../../abstarct-clases/basic-list-form.c
 })
 export class StudentsListFormComponent extends BasicListFormComponent<Student>{
 
-  students: Observable<Student[]>;
+  dataSource: Observable<StoreData<Student>>;
   gridSize: number = 50;
   maxSize: number = this.gridSize;
 
@@ -25,21 +26,23 @@ export class StudentsListFormComponent extends BasicListFormComponent<Student>{
   ngOnInit() {
     super.ngOnInit();
 
-    this.students = this.stream
-      .map(([source, marked, edit]) => {
-        this.selection = source
+    this.dataSource = this.stream
+      .map(([storeData, marked, editMode]) => {
+        if (!storeData.data) storeData.data = [];
+        this.selection = storeData.data
           .filter((student: Student) => marked && marked
             .some((markedStudentId: string) => markedStudentId === student.id)
           );
-        if (edit) {
-          this.maxSize = source.length;
-          return source;
+        if (editMode) {
+          this.maxSize = storeData.data.length;
+          return storeData;
         }
         const res: Student[] = this.selection.slice();
         this.selection = null;
         this.maxSize = res.length;
-        return res;
-      });
+        return {data: res, loading: storeData.loading};
+      })
+      .do(data => console.log("aca: ", data));
 
     this.contentService.fetchStudents();
   }

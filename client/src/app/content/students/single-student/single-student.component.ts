@@ -46,9 +46,11 @@ export class SingleStudentComponent extends BasicSingleEditorWithList<InfoProfil
 
     this.source = this.contentService
       .getStudents()
+      .filter(storeData => Boolean(storeData.data))
+      .do(data => console.log(data))
       .withLatestFrom(this.id)
-      .map(([students, id]) => students.find((student: Student) => student.id === id))
-      .filter(data => data !== undefined)
+      .map(([storeData, id]) => storeData.data.find((student: Student) => student.id === id))
+      .filter((student: Student) => Boolean(student))
       .switchMap((student: Student) => {
         return this.contentService.getProfile(student.profile_id)
           .map((profile: Profile) => ({info: student, profile: profile}))

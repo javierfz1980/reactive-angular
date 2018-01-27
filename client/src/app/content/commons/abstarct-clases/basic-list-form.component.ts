@@ -1,22 +1,23 @@
 import {Input, OnInit} from "@angular/core";
 import {Observable} from "rxjs/Observable";
 import 'rxjs/add/operator/combineLatest';
+import {StoreData} from "../../../core/providers/services/content/basic-content.service";
 
 export abstract class BasicListFormComponent<T> implements OnInit {
 
   @Input()
   protected set markedList(data: Observable<string[]>) {
-   this._markedList = data ? data : Observable.of([]);
+   this._markedList = data;
   }
 
   @Input()
   protected set editMode(data: Observable<boolean>) {
-    this._editMode = data ? data : Observable.of(false);
+    this._editMode = data;
   }
 
   @Input()
-  protected set sourceList(data: Observable<T[]>) {
-    this._sourceList = data ? data : Observable.of([]);
+  protected set sourceList(data: Observable<StoreData<T>>) {
+    this._sourceList = data;
   }
 
   protected stream: Observable<any>;
@@ -24,7 +25,7 @@ export abstract class BasicListFormComponent<T> implements OnInit {
 
   private _markedList: Observable<string[]>;
   private _editMode: Observable<boolean>;
-  private _sourceList: Observable<T[]>;
+  private _sourceList: Observable<StoreData<T>>;
 
   ngOnInit() {
     this.stream = this._sourceList

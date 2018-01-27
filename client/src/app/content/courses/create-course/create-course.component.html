@@ -20,8 +20,8 @@
       <button clrTabLink>Students</button>
       <clr-tab-content>
         <gl-students-list-form #courseStudents
-                            [markedList]="markedStudents"
-                            [sourceList]="allStudents"
+                            [markedList]="listFormMarked"
+                            [sourceList]="listFormSource"
                             [editMode]="isEditMode.asObservable()"></gl-students-list-form>
       </clr-tab-content>
     </clr-tab>

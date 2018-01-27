@@ -9,6 +9,7 @@ import {appRoutePaths} from "../../../../../app-routing.module";
 import {ContentService} from "../../../../../core/providers/services/content/content.service";
 import {BasicInfoForm} from "../../../abstarct-clases/basic-info-form";
 import {InfoProfileData} from "../info-profile/info-profile-form.component";
+import {StoreData} from "../../../../../core/providers/services/content/basic-content.service";
 
 @Component({
   selector: "gl-course-detail-form",
@@ -36,7 +37,7 @@ export class CourseDetailFormComponent extends BasicInfoForm<Course> implements 
 
   _isReadOnly: boolean;
   isAdministrator: boolean;
-  teachersList: Observable<Teacher[]>;
+  teachersDataSource: Observable<StoreData<Teacher>>;
 
   constructor(private fb: FormBuilder,
               private contentService: ContentService,
@@ -50,9 +51,9 @@ export class CourseDetailFormComponent extends BasicInfoForm<Course> implements 
     console.log(this.type)
     this.data = this.validateInfo();
     this.isAdministrator = this.authService.isAdministrator();
-    this.teachersList = this.contentService
+    this.teachersDataSource = this.contentService
       .getTeachers()
-      .merge(Observable.of([]));
+      .merge(Observable.of({data:[], loading: true}));
 
     this.form = this.fb.group({
       id: [this.data.id ],

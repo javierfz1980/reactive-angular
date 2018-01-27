@@ -55,27 +55,35 @@
     </div>
     <div class="form-group" *ngIf="form.controls['active'].value || isAdministrator">
       <label class="required"> Teacher: </label>
-      <div *ngIf="teachersList | async as teachers" class="select">
-        <select id="teacher"
-                [ngClass]="{'invalid-select': !form.controls['teacher'].valid  &&
-                  form.controls['teacher'].touched && editMode}"
-                formControlName="teacher"
-                placeholder="Enter the teacher">
-          <option *ngFor="let teacher of teachers"
-                  [selected]="data.teacher === teacher.id"
-                  [value]="teacher.id">
-            {{teacher.first_name}} - {{teacher.last_name}}
-          </option>
-        </select>
-      </div>
-      <label *ngIf="form.controls['teacher'].value">
-        <a class="_pointer-mouse" (click)="gotoTeacher()">
-          <clr-icon shape="user"></clr-icon>
-        </a>
-        <a *ngIf="isAdministrator" class="_pointer-mouse" (click)="gotoTeacher(true)">
-          <clr-icon shape="edit"></clr-icon>
-        </a>
-      </label>
+      <ng-container *ngIf="teachersDataSource | async as storeData;">
+        <ng-container *ngIf="!storeData.loading; else loadingTeahers">
+          <div class="select">
+            <select id="teacher"
+                    [ngClass]="{'invalid-select': !form.controls['teacher'].valid  &&
+                      form.controls['teacher'].touched && editMode}"
+                    formControlName="teacher"
+                    placeholder="Enter the teacher">
+              <option *ngFor="let teacher of storeData.data"
+                      [selected]="data.teacher === teacher.id"
+                      [value]="teacher.id">
+                {{teacher.first_name}} - {{teacher.last_name}}
+              </option>
+            </select>
+          </div>
+          <label *ngIf="form.controls['teacher'].value">
+            <a class="_pointer-mouse" (click)="gotoTeacher()">
+              <clr-icon shape="user"></clr-icon>
+            </a>
+            <a *ngIf="isAdministrator" class="_pointer-mouse" (click)="gotoTeacher(true)">
+              <clr-icon shape="edit"></clr-icon>
+            </a>
+          </label>
+        </ng-container>
+      </ng-container>
+      <ng-template #loadingTeahers>
+        <div class="spinner spinner-sm"></div>
+      </ng-template>
+
     </div>
 
   </section>

@@ -3,13 +3,14 @@ import {AuthService} from "../../../core/providers/services/auth.service";
 import {BasicModalConfirmActions} from "./basic-modal-confirm-actions";
 import {Observable} from "rxjs/Observable";
 import 'rxjs/add/operator/takeWhile';
+import {StoreData} from "../../../core/providers/services/content/basic-content.service";
 
 export abstract class BasicContentDisplay<T> extends BasicModalConfirmActions {
 
   abstract createPath: string;
   abstract editPath: string;
 
-  protected dataSource: Observable<T[]>;
+  protected dataSource: Observable<StoreData<T>>;
   protected isAdministrator: boolean;
 
   constructor(protected authService: AuthService,

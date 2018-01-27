@@ -12,6 +12,7 @@ import {Observable} from "rxjs/Observable";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {Course} from "../../../models/content/course";
 import {AuthService} from "../../../core/providers/services/auth.service";
+import {StoreData} from "../../../core/providers/services/content/basic-content.service";
 
 @Component({
   selector: "gl-create-student",
@@ -29,8 +30,8 @@ export class CreateStudentComponent implements OnInit, OnDestroy {
   modalData: ConfirmationModalData;
   isAdministrator: boolean;
 
-  allCourses: Observable<Course[]>;
-  markedCourses: Observable<string[]>;
+  listFormSource: Observable<StoreData<Course>>;
+  listFormMarked: Observable<string[]>;
   isEditMode: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
   private isAlive: boolean = true;
@@ -42,8 +43,8 @@ export class CreateStudentComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.isAdministrator = this.authService.isAdministrator();
 
-    this.allCourses = this.contentService.getCourses();
-    this.markedCourses = Observable.of([]);
+    this.listFormSource = this.contentService.getCourses();
+    this.listFormMarked = Observable.of([]);
     this.isEditMode.next((this.isAdministrator && true));
   }
 

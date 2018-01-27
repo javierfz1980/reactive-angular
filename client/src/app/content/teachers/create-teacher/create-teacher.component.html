@@ -22,8 +22,8 @@
       <button clrTabLink>Courses</button>
       <clr-tab-content>
         <gl-courses-list-form #courses
-                              [sourceList]="allCourses"
-                              [markedList]="markedCourses"
+                              [sourceList]="listFormSource"
+                              [markedList]="listFormMarked"
                               [editMode]="isEditMode.asObservable()">
         </gl-courses-list-form>
       </clr-tab-content>

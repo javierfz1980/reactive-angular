@@ -1,15 +1,16 @@
-<h1>
-  {{ title }}
-  <button *ngIf="isAdministrator" class="btn btn-sm btn-primary" (click)="create()">New Course</button>
-</h1>
-<hr>
+<div *ngIf="dataSource | async as storeData; else loading">
+  <h1>
+    {{ title }}
+    <button *ngIf="isAdministrator" class="btn btn-sm btn-primary" (click)="create()">New Course</button>
+    <div *ngIf="storeData.loading" class="spinner spinner-sm"></div>
+  </h1>
+  <hr>
 
 <!-- content cards -->
-<div *ngIf="dataSource | async as courses; else loading">
   <div class="container-fluid">
     <div class="row">
       <div class="card-columns">
-        <gl-course-card *ngFor="let course of courses; trackBy: trackByItem;"
+        <gl-course-card *ngFor="let course of storeData.data; trackBy: trackByItem;"
                         [course]="course"
                         [isAdministrator]="isAdministrator"
                         (onDelete)="delete($event)"

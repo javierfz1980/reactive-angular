@@ -4,12 +4,12 @@
   <span class="qty-span" (click)="changeGridSize(50)"><clr-icon shape="view-list"></clr-icon>show 50</span>
   <span class="qty-span" (click)="changeGridSize(25)"><clr-icon shape="view-list"></clr-icon>show 25</span>
 </div>
-<div *ngIf="students | async as studentsList; else loading">
+<div *ngIf="dataSource | async as storeData; else loading">
   <div class="container-fluid">
-    <clr-datagrid class="_content-datagrid" [(clrDgSelected)]="selection">
+    <clr-datagrid class="_content-datagrid" [(clrDgSelected)]="selection" [clrDgLoading]="storeData.loading">
       <clr-dg-column>Name</clr-dg-column>
 
-      <clr-dg-row *clrDgItems="let student of studentsList; trackBy: trackByItem" [clrDgItem]="student">
+      <clr-dg-row *clrDgItems="let student of storeData.data; trackBy: trackByItem" [clrDgItem]="student">
         <clr-dg-cell class="title">
           <a class="_pointer-mouse" (click)="gotoStudent(student.id)">
             {{student.first_name}} {{student.last_name}}
