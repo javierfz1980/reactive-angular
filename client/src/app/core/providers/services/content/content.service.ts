@@ -36,17 +36,17 @@ export class ContentService {
   // getters ---------------------
 
   getStudents(): Observable<Student[]> {
-    return this.studentsService.students
+    return this.studentsService.source
       .filter(data => data !== undefined);
   }
 
   getTeachers(): Observable<Teacher[]> {
-    return this.teachersService.teachers
+    return this.teachersService.source
       .filter(data => data !== undefined);
   }
 
   getCourses(): Observable<Course[]> {
-    return this.coursesService.courses
+    return this.coursesService.source
       .filter(data => data !== undefined);
   }
 

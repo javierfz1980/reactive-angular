@@ -1,30 +1,32 @@
 import {Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
-import {Observable} from "rxjs/Observable";
 import {Student} from "../../models/content/student";
 import {AuthService} from "../../core/providers/services/auth.service";
 import {
-  ConfirmationModalData,
   ConfirmationModalComponent
 } from "../../commons/confirmation-modal/confirmation-modal.component";
 import {ActivatedRoute, Router} from "@angular/router";
 import {appRoutePaths} from "../../app-routing.module";
 import {EmailFilter, NameLastnameFilter} from "../../models/filters/generic-string-filter";
-import 'rxjs/add/operator/takeWhile';
 import {ContentService} from "../../core/providers/services/content/content.service";
-import {Alert} from "../../models/core/alert";
-import {BasicContentDisplayNavigator} from "../commons/abstarct-clases/basic-content-display";
+import {BasicContentDisplay} from "../commons/abstarct-clases/basic-content-display";
+import 'rxjs/add/operator/takeWhile';
 
 @Component({
   selector: "gl-alumnos",
   templateUrl: "./students.component.html"
 })
-export class StudentsComponent extends BasicContentDisplayNavigator<Student> implements OnInit, OnDestroy {
+export class StudentsComponent extends BasicContentDisplay<Student> implements OnInit, OnDestroy {
+
+  @ViewChild("confirmModal")
+  confirmModal: ConfirmationModalComponent;
 
   title: string = "All Students";
-  students: Observable<Student[]>;
   nameLastnameFilter = new NameLastnameFilter();
   emailFilter = new EmailFilter();
   isAlive: boolean = true;
+
+  createPath: string = appRoutePaths.students.childs.create.path;
+  editPath:string = appRoutePaths.students.path;
 
   constructor(protected contentService: ContentService,
               protected authService: AuthService,
@@ -34,11 +36,7 @@ export class StudentsComponent extends BasicContentDisplayNavigator<Student> imp
   }
 
   ngOnInit() {
-    console.log("aca: ", this);
-    this.createPath = appRoutePaths.students.childs.create.path;
-    this.editPath = appRoutePaths.students.path;
-
-    this.students = this.contentService
+    this.dataSource = this.contentService
       .getStudents()
       .filter(students => students !== undefined);
 

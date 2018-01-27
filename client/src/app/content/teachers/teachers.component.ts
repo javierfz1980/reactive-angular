@@ -1,31 +1,32 @@
 import {Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {AuthService} from "../../core/providers/services/auth.service";
 import {Teacher} from "../../models/content/teacher";
-import {Observable} from "rxjs/Observable";
 import {
-  ConfirmationModalData,
   ConfirmationModalComponent
 } from "../../commons/confirmation-modal/confirmation-modal.component";
 import {EmailFilter, NameLastnameFilter} from "../../models/filters/generic-string-filter";
 import {appRoutePaths} from "../../app-routing.module";
 import {ActivatedRoute, Router} from "@angular/router";
-import {Student} from "../../models/content/student";
-import 'rxjs/add/operator/takeWhile';
 import {ContentService} from "../../core/providers/services/content/content.service";
-import {Alert} from "../../models/core/alert";
-import {BasicContentDisplayNavigator} from "../commons/abstarct-clases/basic-content-display";
+import {BasicContentDisplay} from "../commons/abstarct-clases/basic-content-display";
+import 'rxjs/add/operator/takeWhile';
 
 @Component({
   selector: "gl-profesores",
   templateUrl: "./teachers.component.html"
 })
-export class TeachersComponent extends BasicContentDisplayNavigator<Teacher> implements OnInit, OnDestroy  {
+export class TeachersComponent extends BasicContentDisplay<Teacher> implements OnInit, OnDestroy  {
+
+  @ViewChild("confirmModal")
+  confirmModal: ConfirmationModalComponent;
 
   title: string = "All Teachers";
-  teachers: Observable<Teacher[]>;
   nameLastnameFilter = new NameLastnameFilter();
   emailFilter = new EmailFilter();
   isAlive: boolean = true;
+
+  createPath: string = appRoutePaths.teachers.childs.create.path;
+  editPath:string = appRoutePaths.teachers.path;
 
   constructor(protected authService: AuthService,
               protected contentService: ContentService,
@@ -35,10 +36,7 @@ export class TeachersComponent extends BasicContentDisplayNavigator<Teacher> imp
   }
 
   ngOnInit() {
-    this.createPath = appRoutePaths.teachers.childs.create.path;
-    this.editPath = appRoutePaths.teachers.path;
-
-    this.teachers = this.contentService
+    this.dataSource = this.contentService
       .getTeachers();
 
     this.contentService.fetchTeachers();
@@ -56,7 +54,7 @@ export class TeachersComponent extends BasicContentDisplayNavigator<Teacher> imp
             this.modalData.isBusy = false;
             this.confirmModal.close();
           });
-    }
+    };
     super.openDeleteConfirmation();
   }
 

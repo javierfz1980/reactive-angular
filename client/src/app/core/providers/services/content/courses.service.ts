@@ -8,8 +8,7 @@ import {BasicContentService} from "./basic-content.service";
 export class CoursesService extends BasicContentService<Course> {
 
   private basePath: string = globalProperties.basePath;
-  protected path: string = `${this.basePath}${globalProperties.coursesPath}`;
-  courses: Observable<Course[]> = this.dataSubject.asObservable();
+  path: string = `${this.basePath}${globalProperties.coursesPath}`;
 
   /**
    * Removes a Student from a list of Courses.

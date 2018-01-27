@@ -2,18 +2,16 @@ import {
   ConfirmationModalComponent,
   ConfirmationModalData
 } from "../../../commons/confirmation-modal/confirmation-modal.component";
-import {ViewChild} from "@angular/core";
 import {getDifferencesBetween} from "../../../helpers/helpers";
 
-export class BasicModalConfirmActions {
+export abstract class BasicModalConfirmActions {
 
-  @ViewChild("confirmModal")
-  protected confirmModal: ConfirmationModalComponent;
+  abstract confirmModal: ConfirmationModalComponent;
 
-  protected elementsTobeRemoved: string[];
-  protected elementsTobeAdded: string[];
   protected modalData: ConfirmationModalData;
   protected action: () => void;
+  protected elementsTobeRemoved: string[];
+  protected elementsTobeAdded: string[];
 
   protected openDeleteConfirmation() {
     this.modalData = {

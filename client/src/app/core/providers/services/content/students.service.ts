@@ -11,8 +11,7 @@ import 'rxjs/add/observable/from';
 export class StudentsService extends BasicContentService<Student> {
 
   private basePath: string = globalProperties.basePath;
-  protected path: string = `${this.basePath}${globalProperties.studentsPath}`;
-  students: Observable<Student[]> = this.dataSubject.asObservable();
+  path: string = `${this.basePath}${globalProperties.studentsPath}`;
 
   /**
    * Removes a Course from a list of Students

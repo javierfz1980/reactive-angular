@@ -5,7 +5,7 @@
 <hr>
 
 <!-- content -->
-<div *ngIf="teachers | async as teachersList; else loading">
+<div *ngIf="dataSource | async as teachers; else loading">
   <div class="container-fluid">
     <clr-datagrid class="_content-datagrid" [clDgRowSelection]="true">
       <clr-dg-column>
@@ -17,7 +17,7 @@
         <clr-dg-string-filter [clrDgStringFilter]="emailFilter"></clr-dg-string-filter>
       </clr-dg-column>
 
-      <clr-dg-row *clrDgItems="let teacher of teachersList">
+      <clr-dg-row *clrDgItems="let teacher of teachers">
         <clr-dg-action-overflow *ngIf="isAdministrator">
           <button class="action-item" (click)="edit(teacher)"><clr-icon shape="edit"></clr-icon> Edit Details</button>
           <button class="action-item" (click)="delete(teacher)"><clr-icon shape="trash"></clr-icon> Delete</button>

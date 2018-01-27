@@ -23,9 +23,10 @@ import 'rxjs/add/operator/delay';
 @Injectable()
 export abstract class BasicContentService<T> {
 
-  protected path: string;
-  protected data: T[];
-  protected readonly dataSubject: BehaviorSubject<T[]> = new BehaviorSubject(this.data);
+  abstract path: string;
+  private data: T[];
+  private readonly dataSubject: BehaviorSubject<T[]> = new BehaviorSubject(this.data);
+  source: Observable<T[]> = this.dataSubject.asObservable();
 
   constructor(protected httpClient: HttpClient) {}
 

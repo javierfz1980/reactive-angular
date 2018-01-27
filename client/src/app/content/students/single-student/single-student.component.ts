@@ -3,31 +3,29 @@ import {ContentService} from "../../../core/providers/services/content/content.s
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {Student} from "../../../models/content/student";
 import {Profile} from "../../../models/content/profile";
-import {Observable} from "rxjs/Observable";
 import {AuthService} from "../../../core/providers/services/auth.service";
-import 'rxjs/add/observable/throw';
 import {InfoProfileData} from "../../commons/forms/info/info-profile/info-profile-form.component";
-import {
-  ConfirmationModalData,
-  ConfirmationModalComponent
-} from "../../../commons/confirmation-modal/confirmation-modal.component";
 import {appRoutePaths} from "../../../app-routing.module";
 import {CoursesListFormComponent} from "../../commons/forms/lists/courses-list/courses-list-form.component";
-import {getDifferencesBetween} from "../../../helpers/helpers";
+import {Course} from "../../../models/content/course";
+import {BasicSingleEditorWithList} from "../../commons/abstarct-clases/basic-single-editor-with-list";
+import {ConfirmationModalComponent} from "../../../commons/confirmation-modal/confirmation-modal.component";
 import 'rxjs/add/operator/takeWhile';
 import 'rxjs/add/operator/withLatestFrom';
 import 'rxjs/add/operator/filter';
-import {Alert} from "../../../models/core/alert";
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
-import {Course} from "../../../models/content/course";
-import {BasicSingleEditorWithList} from "../../commons/abstarct-clases/basic-single-editor-with-list";
-import {StudentsListFormComponent} from "../../commons/forms/lists/students-list/students-list-form.component";
 
 @Component({
   selector: "gl-single-student",
   templateUrl: "./single-student.component.html"
 })
-export class SingleStudentComponent extends BasicSingleEditorWithList<InfoProfileData, CoursesListFormComponent, Course>  implements OnInit, OnDestroy {
+export class SingleStudentComponent extends BasicSingleEditorWithList<InfoProfileData, CoursesListFormComponent, Course>
+                                    implements OnInit, OnDestroy {
+
+  @ViewChild("confirmModal")
+  confirmModal: ConfirmationModalComponent;
+
+  @ViewChild("listForm")
+  listForm: CoursesListFormComponent;
 
   isAlive: boolean = true;
 
@@ -39,9 +37,7 @@ export class SingleStudentComponent extends BasicSingleEditorWithList<InfoProfil
   }
 
   ngOnInit() {
-    this.editMode = this.route.queryParams["value"]["edit"];
-    this.isAdministrator = this.authService.isAdministrator();
-
+    super.ngOnInit();
     this.id = this.route.params
       .map((params: Params) => {
         this.contentService.fetchStudents(params.id);
@@ -64,8 +60,6 @@ export class SingleStudentComponent extends BasicSingleEditorWithList<InfoProfil
     this.listFormMarked = this.source
       .map((data: InfoProfileData) => data.info)
       .map((student: Student) => student.courses);
-
-    this.isEditMode.next((this.isAdministrator && this.editMode));
   }
 
   delete(data: Student) {
@@ -99,12 +93,8 @@ export class SingleStudentComponent extends BasicSingleEditorWithList<InfoProfil
             this.modalData.isBusy = false;
             this.confirmModal.close();
           });
-    }
+    };
     super.openUpdateConfirmation(originalCourses, this.listForm.getSelecteds())
-  }
-
-  toggleEditMode() {
-    super.toggleEditMode();
   }
 
   ngOnDestroy() {

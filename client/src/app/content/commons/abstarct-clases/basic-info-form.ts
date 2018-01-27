@@ -3,16 +3,16 @@ import {EventEmitter, Input, Output} from "@angular/core";
 
 export type FormType = "create" | "update";
 
-export class BasicInfoForm<T> {
+export abstract class BasicInfoForm<T> {
 
   @Output('update')
-  updateEvent: EventEmitter<T> = new EventEmitter<T>();
+  protected updateEvent: EventEmitter<T> = new EventEmitter<T>();
 
   @Output('create')
-  createEvent: EventEmitter<T> = new EventEmitter<T>();
+  protected createEvent: EventEmitter<T> = new EventEmitter<T>();
 
   @Input()
-  isReadOnly: boolean;
+  protected isReadOnly: boolean;
 
   protected data: T;
   protected form: FormGroup;

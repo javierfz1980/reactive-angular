@@ -5,11 +5,11 @@
 <hr>
 
 <!-- content cards -->
-<div *ngIf="courses | async as coursesList; else loading">
+<div *ngIf="dataSource | async as courses; else loading">
   <div class="container-fluid">
     <div class="row">
       <div class="card-columns">
-        <gl-course-card *ngFor="let course of coursesList"
+        <gl-course-card *ngFor="let course of courses"
                         [course]="course"
                         [isAdministrator]="isAdministrator"
                         (onDelete)="delete($event)"

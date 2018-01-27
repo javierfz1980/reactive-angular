@@ -24,7 +24,14 @@ import {StudentsListFormComponent} from "../../commons/forms/lists/students-list
   selector: "gl-single-teacher",
   templateUrl: "./single-teacher.component.html"
 })
-export class SingleTeacherComponent extends BasicSingleEditorWithList<InfoProfileData, CoursesListFormComponent, Course> implements OnInit, OnDestroy {
+export class SingleTeacherComponent extends BasicSingleEditorWithList<InfoProfileData, CoursesListFormComponent, Course>
+                                    implements OnInit, OnDestroy {
+
+  @ViewChild("confirmModal")
+  confirmModal: ConfirmationModalComponent;
+
+  @ViewChild("listForm")
+  listForm: CoursesListFormComponent;
 
   isAlive: boolean = true;
 
@@ -98,10 +105,6 @@ export class SingleTeacherComponent extends BasicSingleEditorWithList<InfoProfil
           });
     }
     super.openUpdateConfirmation(data.info.courses, this.listForm.getSelecteds())
-  }
-
-  toggleEditMode() {
-    super.toggleEditMode();
   }
 
   ngOnDestroy() {

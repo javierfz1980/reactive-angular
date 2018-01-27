@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from "@angular/core";
+import {Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {AuthService} from "../../../core/providers/services/auth.service";
 import {Course} from "../../../models/content/course";
@@ -7,6 +7,9 @@ import {StudentsListFormComponent} from "../../commons/forms/lists/students-list
 import {ContentService} from "../../../core/providers/services/content/content.service";
 import {Student} from "../../../models/content/student";
 import {BasicSingleEditorWithList} from "../../commons/abstarct-clases/basic-single-editor-with-list";
+import {
+  ConfirmationModalComponent
+} from "../../../commons/confirmation-modal/confirmation-modal.component";
 import 'rxjs/add/operator/takeWhile';
 
 @Component({
@@ -14,6 +17,12 @@ import 'rxjs/add/operator/takeWhile';
   templateUrl: "./single-course.component.html"
 })
 export class SingleCourseComponent extends BasicSingleEditorWithList<Course, StudentsListFormComponent, Student> implements OnInit, OnDestroy{
+
+  @ViewChild("confirmModal")
+  confirmModal: ConfirmationModalComponent;
+
+  @ViewChild("listForm")
+  listForm: StudentsListFormComponent;
 
   isAlive: boolean = true;
 
@@ -79,10 +88,6 @@ export class SingleCourseComponent extends BasicSingleEditorWithList<Course, Stu
     };
     super.openUpdateConfirmation(originalStudents, this.listForm.getSelecteds());
 
-  }
-
-  toggleEditMode() {
-    super.toggleEditMode();
   }
 
   ngOnDestroy() {

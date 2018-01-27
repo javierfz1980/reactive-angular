@@ -1,13 +1,16 @@
 import {ActivatedRoute, Router} from "@angular/router";
 import {AuthService} from "../../../core/providers/services/auth.service";
 import {BasicModalConfirmActions} from "./basic-modal-confirm-actions";
+import {Observable} from "rxjs/Observable";
 import 'rxjs/add/operator/takeWhile';
 
-export class BasicContentDisplayNavigator<T> extends BasicModalConfirmActions {
+export abstract class BasicContentDisplay<T> extends BasicModalConfirmActions {
 
+  abstract createPath: string;
+  abstract editPath: string;
+
+  protected dataSource: Observable<T[]>;
   protected isAdministrator: boolean;
-  protected createPath: string;
-  protected editPath: string;
 
   constructor(protected authService: AuthService,
               protected router: Router,
@@ -23,7 +26,7 @@ export class BasicContentDisplayNavigator<T> extends BasicModalConfirmActions {
 
   edit(data: T) {
     if (this.editPath)
-      this.router.navigate([this.editPath, data["id"]], { queryParams: { edit: true}});
+      this.router.navigate([this.editPath, data["id"]], {queryParams: {edit: true}});
   }
 
   details(data: T) {
