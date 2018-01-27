@@ -38,4 +38,8 @@ export abstract class BasicListFormComponent<T> implements OnInit {
       .map((item: T) => item["id"]);
   }
 
+  protected trackByItem(index: number, item: T): string {
+    return item["id"];
+  }
+
 }

@@ -17,7 +17,7 @@
         <clr-dg-string-filter [clrDgStringFilter]="emailFilter"></clr-dg-string-filter>
       </clr-dg-column>
 
-      <clr-dg-row *clrDgItems="let teacher of teachers">
+      <clr-dg-row *clrDgItems="let teacher of teachers; trackBy: trackByItem">
         <clr-dg-action-overflow *ngIf="isAdministrator">
           <button class="action-item" (click)="edit(teacher)"><clr-icon shape="edit"></clr-icon> Edit Details</button>
           <button class="action-item" (click)="delete(teacher)"><clr-icon shape="trash"></clr-icon> Delete</button>

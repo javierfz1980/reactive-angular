@@ -6,7 +6,7 @@
       <clr-dg-column>Teacher</clr-dg-column>
       <clr-dg-column>Students</clr-dg-column>
 
-      <clr-dg-row *clrDgItems="let course of coursesList" [clrDgItem]="course">
+      <clr-dg-row *clrDgItems="let course of coursesList; trackBy: trackByItem" [clrDgItem]="course">
         <clr-dg-cell class="title">
           <a class="_pointer-mouse" (click)="gotoCourse(course.id)">{{course.title}}</a>
         </clr-dg-cell>

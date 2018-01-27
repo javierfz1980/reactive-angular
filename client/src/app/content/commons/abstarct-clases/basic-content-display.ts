@@ -34,4 +34,8 @@ export abstract class BasicContentDisplay<T> extends BasicModalConfirmActions {
       this.router.navigate([this.editPath, data["id"]]);
   }
 
+  protected trackByItem(index: number, item: T): string {
+    return item["id"];
+  }
+
 }

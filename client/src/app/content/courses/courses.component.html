@@ -9,7 +9,7 @@
   <div class="container-fluid">
     <div class="row">
       <div class="card-columns">
-        <gl-course-card *ngFor="let course of courses"
+        <gl-course-card *ngFor="let course of courses; trackBy: trackByItem;"
                         [course]="course"
                         [isAdministrator]="isAdministrator"
                         (onDelete)="delete($event)"
