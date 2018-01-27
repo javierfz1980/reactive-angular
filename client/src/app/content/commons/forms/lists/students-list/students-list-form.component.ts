@@ -4,7 +4,7 @@ import {Student} from "../../../../../models/content/student";
 import {Router} from "@angular/router";
 import {appRoutePaths} from "../../../../../app-routing.module";
 import {ContentService} from "../../../../../core/providers/services/content/content.service";
-import {BasicListFormComponent} from "../../../abstarct-clases/basic-list-form.component";
+import {BasicListForm} from "../../../abstarct-clases/basic-list-form";
 import {StoreData} from "../../../../../core/providers/services/content/basic-content.service";
 
 @Component({
@@ -12,7 +12,7 @@ import {StoreData} from "../../../../../core/providers/services/content/basic-co
   templateUrl: "./students-list-form.component.html",
   styleUrls: ["./students-list-form.component.css"]
 })
-export class StudentsListFormComponent extends BasicListFormComponent<Student>{
+export class StudentsListFormComponent extends BasicListForm<Student>{
 
   dataSource: Observable<StoreData<Student>>;
   gridSize: number = 50;

@@ -4,7 +4,7 @@ import {Observable} from "rxjs/Observable";
 import {Router} from "@angular/router";
 import {appRoutePaths} from "../../../../../app-routing.module";
 import {ContentService} from "../../../../../core/providers/services/content/content.service";
-import {BasicListFormComponent} from "../../../abstarct-clases/basic-list-form.component";
+import {BasicListForm} from "../../../abstarct-clases/basic-list-form";
 import {StoreData} from "../../../../../core/providers/services/content/basic-content.service";
 
 @Component({
@@ -13,7 +13,7 @@ import {StoreData} from "../../../../../core/providers/services/content/basic-co
   styleUrls: ["./courses-list-form.component.css"],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CoursesListFormComponent extends BasicListFormComponent<Course> implements OnInit {
+export class CoursesListFormComponent extends BasicListForm<Course> implements OnInit {
 
   dataSource: Observable<StoreData<Course>>;
 

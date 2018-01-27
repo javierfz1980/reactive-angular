@@ -3,7 +3,7 @@ import {Observable} from "rxjs/Observable";
 import 'rxjs/add/operator/combineLatest';
 import {StoreData} from "../../../core/providers/services/content/basic-content.service";
 
-export abstract class BasicListFormComponent<T> implements OnInit {
+export abstract class BasicListForm<T> implements OnInit {
 
   @Input()
   protected set markedList(data: Observable<string[]>) {

@@ -6,7 +6,7 @@ import {appRoutePaths} from "../../../app-routing.module";
 import {StudentsListFormComponent} from "../../commons/forms/lists/students-list/students-list-form.component";
 import {ContentService} from "../../../core/providers/services/content/content.service";
 import {Student} from "../../../models/content/student";
-import {BasicSingleEditorWithList} from "../../commons/abstarct-clases/basic-single-editor-with-list";
+import {BasicInfoProfileList} from "../../commons/abstarct-clases/basic-info-profile-list";
 import {
   ConfirmationModalComponent
 } from "../../../commons/confirmation-modal/confirmation-modal.component";
@@ -16,7 +16,7 @@ import 'rxjs/add/operator/takeWhile';
   selector: "gl-single-course",
   templateUrl: "./single-course.component.html"
 })
-export class SingleCourseComponent extends BasicSingleEditorWithList<Course, StudentsListFormComponent, Student> implements OnInit, OnDestroy{
+export class SingleCourseComponent extends BasicInfoProfileList<Course, StudentsListFormComponent, Student> implements OnInit, OnDestroy{
 
   @ViewChild("confirmModal")
   confirmModal: ConfirmationModalComponent;

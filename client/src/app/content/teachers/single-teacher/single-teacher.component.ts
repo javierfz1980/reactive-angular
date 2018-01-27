@@ -17,14 +17,14 @@ import {Alert} from "../../../models/core/alert";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {Course} from "../../../models/content/course";
 import {Student} from "../../../models/content/student";
-import {BasicSingleEditorWithList} from "../../commons/abstarct-clases/basic-single-editor-with-list";
+import {BasicInfoProfileList} from "../../commons/abstarct-clases/basic-info-profile-list";
 import {StudentsListFormComponent} from "../../commons/forms/lists/students-list/students-list-form.component";
 
 @Component({
   selector: "gl-single-teacher",
   templateUrl: "./single-teacher.component.html"
 })
-export class SingleTeacherComponent extends BasicSingleEditorWithList<InfoProfileData, CoursesListFormComponent, Course>
+export class SingleTeacherComponent extends BasicInfoProfileList<InfoProfileData, CoursesListFormComponent, Course>
                                     implements OnInit, OnDestroy {
 
   @ViewChild("confirmModal")

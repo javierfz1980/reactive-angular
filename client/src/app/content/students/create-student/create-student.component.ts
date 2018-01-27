@@ -10,13 +10,13 @@ import {ContentService} from "../../../core/providers/services/content/content.s
 import {Observable} from "rxjs/Observable";
 import {Course} from "../../../models/content/course";
 import {AuthService} from "../../../core/providers/services/auth.service";
-import {BasicSingleEditorWithList} from "../../commons/abstarct-clases/basic-single-editor-with-list";
+import {BasicInfoProfileList} from "../../commons/abstarct-clases/basic-info-profile-list";
 
 @Component({
   selector: "gl-create-student",
   templateUrl: "./create-student.component.html"
 })
-export class CreateStudentComponent extends BasicSingleEditorWithList<InfoProfileData, CoursesListFormComponent, Course> implements OnInit, OnDestroy {
+export class CreateStudentComponent extends BasicInfoProfileList<InfoProfileData, CoursesListFormComponent, Course> implements OnInit, OnDestroy {
 
   @ViewChild("confirmModal")
   confirmModal: ConfirmationModalComponent;
