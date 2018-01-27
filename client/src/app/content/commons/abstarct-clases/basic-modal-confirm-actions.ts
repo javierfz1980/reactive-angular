@@ -13,6 +13,16 @@ export abstract class BasicModalConfirmActions {
   protected elementsTobeRemoved: string[];
   protected elementsTobeAdded: string[];
 
+  protected openCreateConfirmation() {
+    this.modalData = {
+      type: "confirm",
+      title: "Create",
+      text: "Are you sure you want to create this element?",
+      action: this.action
+    };
+    this.confirmModal.open();
+  }
+
   protected openDeleteConfirmation() {
     this.modalData = {
       type: "delete",
