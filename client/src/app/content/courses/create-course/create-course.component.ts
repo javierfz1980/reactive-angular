@@ -1,74 +1,61 @@
 import {Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {AuthService} from "../../../core/providers/services/auth.service";
 import {
-  ConfirmationModalData,
   ConfirmationModalComponent
 } from "../../../commons/confirmation-modal/confirmation-modal.component";
 import {appRoutePaths} from "../../../app-routing.module";
 import {Course} from "../../../models/content/course";
 import {StudentsListFormComponent} from "../../commons/forms/lists/students-list/students-list-form.component";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {ContentService} from "../../../core/providers/services/content/content.service";
 import {Student} from "../../../models/content/student";
 import {Observable} from "rxjs/Observable";
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
-import {StoreData} from "../../../core/providers/services/content/basic-content.service";
+import {BasicInfoProfileList} from "../../commons/abstarct-clases/basic-info-profile-list";
 
 @Component({
   selector: "gl-create-course",
   templateUrl: "./create-course.component.html"
 })
-export class CreateCourseComponent implements OnInit, OnDestroy {
+export class CreateCourseComponent extends BasicInfoProfileList<Course, StudentsListFormComponent, Student> implements OnInit, OnDestroy {
 
   @ViewChild("confirmModal")
   confirmModal: ConfirmationModalComponent;
 
-  @ViewChild("courseStudents")
-  students: StudentsListFormComponent;
+  @ViewChild("listForm")
+  listForm: StudentsListFormComponent;
 
   title: string = "Create new Course";
-  isAdministrator: boolean;
-  modalData: ConfirmationModalData;
-
-  listFormSource: Observable<StoreData<Student>>;
-  listFormMarked: Observable<string[]>;
-  isEditMode: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
-
   private isAlive: boolean = true;
 
-  constructor(private authService: AuthService,
+  constructor(protected authService: AuthService,
               private contentService: ContentService,
-              private router: Router) {}
+              private router: Router,
+              protected route: ActivatedRoute) {
+    super(authService, route);
+  }
 
   ngOnInit() {
-    this.isAdministrator = this.authService.isAdministrator();
-
+    super.ngOnInit();
     this.listFormSource = this.contentService.getStudents();
     this.listFormMarked = Observable.of([]);
     this.isEditMode.next((this.isAdministrator && true));
-
   }
 
   create(data: Course) {
-    this.modalData = {
-      type: "confirm",
-      title: "Create",
-      text: "Are you sure you want to create this new Course?",
-      action: () => {
-        this.modalData.title = "Creating";
-        this.modalData.isBusy = true;
-        this.contentService
-          .createCourse(data, this.students.getSelecteds())
-          .takeWhile(() => this.isAlive)
-          .subscribe(
-            () => {
-              this.modalData.isBusy = false;
-              this.confirmModal.close();
-              this.router.navigate([appRoutePaths.courses.path])
-            });
-      }
-    };
-    this.confirmModal.open();
+    this.action = () => {
+      this.modalData.title = "Creating";
+      this.modalData.isBusy = true;
+      this.contentService
+        .createCourse(data, this.listForm.getSelecteds())
+        .takeWhile(() => this.isAlive)
+        .subscribe(
+          () => {
+            this.modalData.isBusy = false;
+            this.confirmModal.close();
+            this.router.navigate([appRoutePaths.courses.path])
+          });
+    }
+    this.openCreateConfirmation();
   }
 
   ngOnDestroy() {

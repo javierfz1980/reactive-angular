@@ -1,7 +1,6 @@
 import {Component, OnDestroy, ViewChild} from "@angular/core";
 import {CoursesListFormComponent} from "../../commons/forms/lists/courses-list/courses-list-form.component";
 import {
-  ConfirmationModalData,
   ConfirmationModalComponent
 } from "../../../commons/confirmation-modal/confirmation-modal.component";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -10,10 +9,7 @@ import {appRoutePaths} from "../../../app-routing.module";
 import {ContentService} from "../../../core/providers/services/content/content.service";
 import {Observable} from "rxjs/Observable";
 import {AuthService} from "../../../core/providers/services/auth.service";
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {Course} from "../../../models/content/course";
-import {StoreData} from "../../../core/providers/services/content/basic-content.service";
-import {Teacher} from "../../../models/content/teacher";
 import {BasicInfoProfileList} from "../../commons/abstarct-clases/basic-info-profile-list";
 
 @Component({
