@@ -5,7 +5,7 @@ import {Router} from "@angular/router";
 import {appRoutePaths} from "../../../../../app-routing.module";
 import {ContentService} from "../../../../../core/providers/services/content/content.service";
 import {BasicListForm} from "../../../abstarct-clases/basic-list-form";
-import {StoreData} from "../../../../../core/providers/services/content/basic-content.service";
+import {StoreData} from "../../../../../models/core/store-data";
 
 @Component({
   selector: "gl-students-list-form",

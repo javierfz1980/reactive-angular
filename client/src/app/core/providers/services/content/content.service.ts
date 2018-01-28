@@ -9,7 +9,7 @@ import {TeachersService} from "./teachers.service";
 import {Teacher} from "../../../../models/content/teacher";
 import {Course} from "../../../../models/content/course";
 import {AlertService} from "../alert.service";
-import {StoreData} from "./basic-content.service";
+import {StoreData} from "../../../../models/core/store-data";
 
 @Injectable()
 export class ContentService {

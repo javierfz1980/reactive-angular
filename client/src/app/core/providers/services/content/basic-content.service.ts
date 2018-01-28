@@ -5,11 +5,8 @@ import {HttpClient} from "@angular/common/http";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {getFakedDelay} from "../../../../helpers/helpers";
 import 'rxjs/add/operator/delay';
+import {StoreData} from "../../../../models/core/store-data";
 
-export interface StoreData<T> {
-  data: T[];
-  loading: boolean;
-}
 /**
  * Basic generic abstract class with basic api actions that should be extended by any entity service.
  * This implementation has an internal data store with a list and a loading boolean. It also have a
@@ -128,7 +125,7 @@ export abstract class BasicContentService<T> {
    */
   emit(isLoading?: boolean) {
     this.store.loading = isLoading ? isLoading : false;
-    console.log(`${this.constructor.name}: has emitted... <${this.store.loading}`);
+    console.log(`${this.constructor.name}: has emitted... ${this.store.loading}`);
     this.dataSubject.next(Object.assign({}, this.store));
   }
 

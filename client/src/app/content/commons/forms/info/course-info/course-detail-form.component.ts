@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Component, Input, OnInit} from "@angular/core";
+import {FormBuilder, Validators} from "@angular/forms";
 import {Course} from "../../../../../models/content/course";
 import {Observable} from "rxjs/Observable";
 import {Teacher} from "../../../../../models/content/teacher";
@@ -8,8 +8,7 @@ import {Router} from "@angular/router";
 import {appRoutePaths} from "../../../../../app-routing.module";
 import {ContentService} from "../../../../../core/providers/services/content/content.service";
 import {BasicInfoForm} from "../../../abstarct-clases/basic-info-form";
-import {InfoProfileData} from "../info-profile/info-profile-form.component";
-import {StoreData} from "../../../../../core/providers/services/content/basic-content.service";
+import {StoreData} from "../../../../../models/core/store-data";
 
 @Component({
   selector: "gl-course-detail-form",

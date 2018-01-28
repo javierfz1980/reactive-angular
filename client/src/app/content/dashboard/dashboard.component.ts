@@ -8,8 +8,7 @@ import {Course} from "../../models/content/course";
 import {Student} from "../../models/content/student";
 import {Teacher} from "../../models/content/teacher";
 import {ContentService} from "../../core/providers/services/content/content.service";
-import {DashboardAmount} from "./content/generic-amount.component";
-import {StoreData} from "../../core/providers/services/content/basic-content.service";
+import {StoreData} from "../../models/core/store-data";
 
 @Component({
   selector: "gl-dashboard",
