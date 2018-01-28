@@ -1,24 +1,24 @@
 <clr-modal #modal>
-  <div class="modal-title account-title" *ngIf="data">
-    {{(data) ? data.name : ""}}<hr>
+  <div class="modal-title account-title" *ngIf="modalData">
+    {{(modalData) ? modalData.name : ""}}<hr>
   </div>
   <div class="modal-body account-body">
-    <div *ngIf="data">
+    <div *ngIf="modalData">
       <p>
         <label>Name:</label>
-        {{data.name}}
+        {{modalData.name}}
       </p>
       <p>
         <label>Email:</label>
-        {{data.email}}
+        {{modalData.email}}
       </p>
       <p>
         <label>Role:</label>
-        {{data.role}}
+        {{modalData.role}}
       </p>
     </div>
   </div>
-  <div class="modal-footer" *ngIf="data">
+  <div class="modal-footer" *ngIf="modalData">
     <button type="button"
             (click)="close()"
             class="btn ok-btn btn-primary" >

@@ -14,11 +14,7 @@ export class AccountDetailsModalComponent {
   @ViewChild("modal") modal: ConfirmationModalComponent;
 
   @Input()
-  set modalData(data: Account) {
-    this.data = data;
-  }
-
-  data: Account;
+  modalData: Account;
 
   open() {
     this.modal.open();

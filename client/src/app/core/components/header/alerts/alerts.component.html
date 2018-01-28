@@ -40,5 +40,5 @@
   </clr-dropdown-menu>
 
 </clr-dropdown>
-<gl-alerts-modal #alertsModal [alert]="modalData"></gl-alerts-modal>
+<gl-alerts-modal #alertsModal [alert]="modalData" (onDelete)="deleteAlert($event)"></gl-alerts-modal>
 

@@ -1,0 +1,15 @@
+.account-modal-wrapper {
+  color: #000;
+}
+
+.alerts-body label {
+  font-weight: bold;
+}
+
+.alerts-body {
+  margin-top: -10px;
+}
+
+.alert-message {
+  white-space: normal;
+}

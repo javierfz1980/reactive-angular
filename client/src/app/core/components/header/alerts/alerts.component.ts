@@ -48,4 +48,8 @@ export class AlertsComponent {
   deleteRead() {
     this.alertService.removeRead();
   }
+
+  deleteAlert(data: Alert) {
+    this.alertService.removeAlert(data);
+  }
 }

@@ -1,17 +1,33 @@
 <clr-modal #modal [(clrModalOpen)]="opened">
-    <div class="modal-title account-title" *ngIf="alert">
+    <div class="modal-title alerts-title" *ngIf="alert">
       {{alert.from}}<hr>
     </div>
-    <div class="modal-body account-body" *ngIf="alert">
-      <div>
-
-      </div>
+    <div class="modal-body alerts-body" *ngIf="alert">
+      <p>
+        <label>Date:</label>
+        {{getDate(alert.date)}}
+      </p>
+      <p>
+        <label>Email:</label>
+        <a [href]="'mailto:' + alert.email">{{alert.email}}</a>
+      </p>
+      <p>
+        <label>Message:</label>
+          <span class="alert-message">
+          {{alert.message}}
+          </span>
+      </p>
     </div>
     <div class="modal-footer">
       <button type="button"
               (click)="close()"
               class="btn ok-btn btn-primary" >
         Ok
+      </button>
+      <button type="button"
+              (click)="delete()"
+              class="btn ok-btn btn-warning" >
+        <clr-icon shape="trash"></clr-icon> Delete
       </button>
     </div>
 </clr-modal>
