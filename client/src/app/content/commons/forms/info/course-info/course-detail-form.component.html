@@ -71,20 +71,15 @@
                                 form.controls['teacher'].touched && editMode}"
                               formControlName="teacher"
                               placeholder="Enter the teacher">
-                        <option [value]="null"
-                                [selected]="form.controls['teacher'].value === 'null' ||
-                                  form.controls['teacher'].value === selectTeacherStr">
-                          {{selectTeacherStr}}
-                        </option>
+                        <option [selected]="form.controls['teacher'].value === null"></option>
                         <option *ngFor="let teacher of storeData.data"
                                 [selected]="data.teacher === teacher.id"
                                 [value]="teacher.id">
-                          {{teacher.first_name}} - {{teacher.last_name}}
+                          {{teacher.first_name}} {{teacher.last_name}}
                         </option>
                       </select>
                     </div>
-                    <label *ngIf="form.controls['teacher'].value !== 'null' &&
-                        form.controls['teacher'].value !== selectTeacherStr">
+                    <label *ngIf="form.controls['teacher'].value !== null">
                       <a class="_pointer-mouse" (click)="gotoTeacher()">
                         <clr-icon shape="user"></clr-icon>
                       </a>
