@@ -1,5 +1,5 @@
 <!-- content -->
-<div *ngIf="dataSource | async as storeData; else loading">
+<div *ngIf="dataSource | async as storeData">
   <div class="container-fluid">
     <clr-datagrid class="_content-datagrid" [(clrDgSelected)]="selection" [clrDgLoading]="storeData.loading">
       <clr-dg-column>Course</clr-dg-column>
@@ -30,12 +30,4 @@
     </clr-datagrid>
   </div>
 </div>
-
-<!-- content loader -->
-
-<ng-template #loading>
-  <div class="_loader-wrapper">
-    <gl-content-loader></gl-content-loader>
-  </div>
-</ng-template>
 
