@@ -63,6 +63,32 @@ export class ContentService {
     return this.teachersService.getRecord(id);
   }
 
+  getCoursesWithTeacher(): Observable<StoreData<Course>> {
+    return this.getCourses()
+      .map((data: StoreData<Course>) => {
+        data.data = !data.data ? [] : data.data
+          .filter((course: Course) => course.active);
+        return data;
+      })
+      .switchMap((data: StoreData<Course>) => {
+        return Observable.from(data.data ? data.data : [])
+          .mergeMap((course: Course) => {
+            if (!course.teacher) return Observable.of(course);
+            return this.teachersService.getRecord(course.teacher)
+              .map((teacher: Teacher) => {
+                course.teacherInfo = teacher;
+                return course;
+              })
+          })
+          .toArray()
+          .map((coursesWithTeacher: Course[]) => {
+            data.data = coursesWithTeacher;
+            return data;
+          });
+      });
+
+  }
+
   // creates ---------------------
 
   /**
