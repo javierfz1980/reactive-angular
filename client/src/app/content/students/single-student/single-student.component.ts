@@ -4,12 +4,15 @@ import {ActivatedRoute, Params, Router} from "@angular/router";
 import {Student} from "../../../models/content/student";
 import {Profile} from "../../../models/content/profile";
 import {AuthService} from "../../../core/providers/services/auth.service";
-import {InfoProfileData} from "../../commons/forms/info/info-profile/info-profile-form.component";
+import {
+  InfoProfileData,
+  InfoProfileFormComponent
+} from "../../commons/forms/info/info-profile/info-profile-form.component";
 import {appRoutePaths} from "../../../app-routing.module";
-import {CoursesListFormComponent} from "../../commons/forms/lists/courses-list/courses-list-form.component";
 import {Course} from "../../../models/content/course";
-import {BasicInfoProfileList} from "../../commons/abstarct-clases/basic-info-profile-list";
+import {BasicInfoList} from "../../commons/abstarct-clases/basic-info-list";
 import {ConfirmationModalComponent} from "../../../commons/confirmation-modal/confirmation-modal.component";
+import {StoreData} from "../../../models/core/store-data";
 import 'rxjs/add/operator/takeWhile';
 import 'rxjs/add/operator/withLatestFrom';
 import 'rxjs/add/operator/filter';
@@ -18,16 +21,17 @@ import 'rxjs/add/operator/filter';
   selector: "gl-single-student",
   templateUrl: "./single-student.component.html"
 })
-export class SingleStudentComponent extends BasicInfoProfileList<InfoProfileData, CoursesListFormComponent, Course>
+export class SingleStudentComponent extends BasicInfoList<InfoProfileData, InfoProfileFormComponent, Course>
                                     implements OnInit, OnDestroy {
 
   @ViewChild("confirmModal")
   confirmModal: ConfirmationModalComponent;
 
-  @ViewChild("listForm")
-  listForm: CoursesListFormComponent;
+  @ViewChild("infoForm")
+  infoForm: InfoProfileFormComponent;
 
-  isAlive: boolean = true;
+  action: () => void;
+  private isAlive: boolean = true;
 
   constructor(private router: Router,
               private contentService: ContentService,
@@ -56,7 +60,12 @@ export class SingleStudentComponent extends BasicInfoProfileList<InfoProfileData
       });
 
     this.listFormSource = this.contentService
-      .getCourses();
+      .getCourses()
+      .map((data: StoreData<Course>) => {
+        data.data = !data.data ? [] : data.data
+          .filter((course: Course) => course.active);
+        return data;
+      });
 
     this.listFormMarked = this.source
       .map((data: InfoProfileData) => data.info)
@@ -82,7 +91,7 @@ export class SingleStudentComponent extends BasicInfoProfileList<InfoProfileData
 
   update(data: InfoProfileData) {
     const originalCourses: string[] = data.info.courses;
-    data.info.courses = this.listForm.getSelecteds();
+    data.info.courses = this.infoForm.listForm.getSelecteds();
     this.action = () => {
       this.modalData.title = "Updating";
       this.modalData.isBusy = true;
@@ -95,7 +104,7 @@ export class SingleStudentComponent extends BasicInfoProfileList<InfoProfileData
             this.confirmModal.close();
           });
     };
-    super.openUpdateConfirmation(originalCourses, this.listForm.getSelecteds())
+    super.openUpdateConfirmation(originalCourses, this.infoForm.listForm.getSelecteds())
   }
 
   ngOnDestroy() {

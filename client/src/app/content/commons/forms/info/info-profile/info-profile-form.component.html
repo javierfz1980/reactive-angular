@@ -1,213 +1,257 @@
-<div class="row">
-  <div class="col-xs-12 col-md-2">
-    <div class="image-profile">
-      <img *ngIf="form.controls['profile'].controls['avatar'].value;
-        else imgTemplate"[src]="form.controls['profile'].controls['avatar'].value" width="120" >
-      <ng-template #imgTemplate>
-        <img src="assets/images/generic_profile.png" width="120">
-      </ng-template>
+<form *ngIf="data" [formGroup]="form">
+
+  <!-- Stack View -->
+  <section class="form-block" >
+    <clr-stack-view>
+
+      <!-- basic info block -->
+      <clr-stack-block [clrSbExpanded]="true">
+        <clr-stack-label>Student Info</clr-stack-label>
+        <clr-stack-block>
+          <clr-stack-label class="clr-stack-hide-label"></clr-stack-label>
+          <clr-stack-content>
+            <div class="row">
+
+              <!-- image -->
+              <div class="col-xs-12 col-md-2">
+                <div class="image-profile">
+                  <img *ngIf="form.controls['profile'].controls['avatar'].value;
+                      else imgTemplate"[src]="form.controls['profile'].controls['avatar'].value" width="120" >
+                  <ng-template #imgTemplate>
+                    <img src="assets/images/generic_profile.png" width="120">
+                  </ng-template>
+                </div>
+              </div>
+              <!-- /image -->
+
+              <!-- info content -->
+              <div class="col-xs-12 col-md-10">
+
+                <!-- basic info -->
+                <section class="form-block">
+                  <div formGroupName="info">
+                    <div class="form-group">
+                      <label class="required">First Name:</label>
+                      <label for="first_name" aria-haspopup="true" role="tooltip"
+                             class="tooltip tooltip-validation tooltip-sm"
+                             [ngClass]="{'invalid': !form.controls['info'].controls['first_name'].valid
+                                && form.controls['info'].controls['first_name'].touched}">
+                        <input type="text"
+                               id="first_name"
+                               formControlName="first_name"
+                               placeholder="Enter your first name"
+                               size="50"
+                               [readonly]="_isReadOnly">
+                        <span class="tooltip-content">This field cannot be empty!</span>
+                      </label>
+                    </div>
+                    <div class="form-group">
+                      <label class="required">Last Name:</label>
+                      <label for="last_name" aria-haspopup="true" role="tooltip"
+                             class="tooltip tooltip-validation tooltip-sm"
+                             [ngClass]="{'invalid': !form.controls['info'].controls['last_name'].valid
+                                && form.controls['info'].controls['last_name'].touched}">
+                        <input type="text"
+                               id="last_name"
+                               formControlName="last_name"
+                               placeholder="Enter your last name"
+                               size="50"
+                               [readonly]="_isReadOnly">
+                        <span class="tooltip-content">This field cannot be empty!</span>
+                      </label>
+                    </div>
+                    <div class="form-group">
+                      <label class="required">Email:</label>
+                      <label for="email" aria-haspopup="true" role="tooltip"
+                             class="tooltip tooltip-validation tooltip-sm"
+                             [ngClass]="{'invalid': !form.controls['info'].controls['email'].valid
+                                && form.controls['info'].controls['email'].touched}">
+                        <input type="email"
+                               id="email"
+                               formControlName="email"
+                               placeholder="Enter your email"
+                               size="50"
+                               [readonly]="_isReadOnly">
+                        <span class="tooltip-content">This field cannot be empty!</span>
+                      </label>
+                    </div>
+                  </div>
+                </section>
+                <!-- /basic info -->
+
+                <!-- profile info -->
+                <section class="form-block">
+                  <div formGroupName="profile">
+                    <div class="form-group">
+                      <label class="required">Birthday:</label>
+                      <label for="birthday" aria-haspopup="true" role="tooltip"
+                             class="tooltip tooltip-validation tooltip-sm"
+                             [ngClass]="{'invalid': !form.controls['profile'].controls['birthday'].valid
+                                && form.controls['profile'].controls['birthday'].touched}">
+                        <input type="date"
+                               id="birthday"
+                               formControlName="birthday"
+                               placeholder="Enter your birthday"
+                               size="50"
+                               [readonly]="_isReadOnly">
+                        <span class="tooltip-content">This field cannot be empty!</span>
+                      </label>
+                    </div>
+                    <div class="form-group">
+                      <label>Avatar:</label>
+                      <input type="url"
+                             id="avatar"
+                             formControlName="avatar"
+                             placeholder="Enter a valid url"
+                             size="50"
+                             [readonly]="_isReadOnly">
+                    </div>
+                    <div class="form-group">
+                      <label>2nd Email:</label>
+                      <input type="email"
+                             id="secondary_email"
+                             formControlName="secondary_email"
+                             placeholder="Enter your secondary email"
+                             size="50"
+                             [readonly]="_isReadOnly">
+                    </div>
+                    <div formGroupName="contact">
+                      <div class="form-group">
+                        <label class="required">Street:</label>
+                        <label for="street" aria-haspopup="true" role="tooltip"
+                               class="tooltip tooltip-validation tooltip-sm"
+                               [ngClass]="{'invalid': !form.controls['profile'].controls['contact'].controls['street'].valid
+                                  && form.controls['profile'].controls['contact'].controls['street'].touched}">
+                          <input type="text"
+                                 id="street"
+                                 formControlName="street"
+                                 placeholder="Enter your street address"
+                                 size="50"
+                                 [readonly]="_isReadOnly">
+                          <span class="tooltip-content">This field cannot be empty!</span>
+                        </label>
+                      </div>
+                      <div class="form-group">
+                        <label class="required">State:</label>
+                        <label for="state" aria-haspopup="true" role="tooltip"
+                               class="tooltip tooltip-validation tooltip-sm"
+                               [ngClass]="{'invalid': !form.controls['profile'].controls['contact'].controls['state'].valid
+                                  && form.controls['profile'].controls['contact'].controls['state'].touched}">
+                          <input type="text"
+                                 id="state"
+                                 formControlName="state"
+                                 placeholder="Enter your state"
+                                 size="50"
+                                 [readonly]="_isReadOnly">
+                          <span class="tooltip-content">This field cannot be empty!</span>
+                        </label>
+                      </div>
+                      <div class="form-group">
+                        <label class="required">Country:</label>
+                        <label for="country" aria-haspopup="true" role="tooltip"
+                               class="tooltip tooltip-validation tooltip-sm"
+                               [ngClass]="{'invalid': !form.controls['profile'].controls['contact'].controls['country'].valid
+                                  && form.controls['profile'].controls['contact'].controls['country'].touched}">
+                          <input type="text"
+                                 id="country"
+                                 formControlName="country"
+                                 placeholder="Enter your country"
+                                 size="50"
+                                 [readonly]="_isReadOnly">
+                          <span class="tooltip-content">This field cannot be empty!</span>
+                        </label>
+                      </div>
+                      <div class="form-group">
+                        <label class="required">City:</label>
+                        <label for="city" aria-haspopup="true" role="tooltip"
+                               class="tooltip tooltip-validation tooltip-sm"
+                               [ngClass]="{'invalid': !form.controls['profile'].controls['contact'].controls['city'].valid
+                                  && form.controls['profile'].controls['contact'].controls['city'].touched}">
+                          <input type="text"
+                                 id="city"
+                                 formControlName="city"
+                                 placeholder="Enter your city name"
+                                 size="50"
+                                 [readonly]="_isReadOnly">
+                          <span class="tooltip-content">This field cannot be empty!</span>
+                        </label>
+                      </div>
+                      <div class="form-group">
+                        <label class="required">Zip:</label>
+                        <label for="zip" aria-haspopup="true" role="tooltip"
+                               class="tooltip tooltip-validation tooltip-sm"
+                               [ngClass]="{'invalid': !form.controls['profile'].controls['contact'].controls['zip'].valid
+                                  && form.controls['profile'].controls['contact'].controls['zip'].touched}">
+                          <input type="text"
+                                 id="zip"
+                                 formControlName="zip"
+                                 placeholder="Enter your zip code"
+                                 size="50"
+                                 [readonly]="_isReadOnly">
+                          <span class="tooltip-content">This field cannot be empty!</span>
+                        </label>
+                      </div>
+                      <div class="form-group">
+                        <label class="required">Phone:</label>
+                        <label for="phone" aria-haspopup="true" role="tooltip"
+                               class="tooltip tooltip-validation tooltip-sm"
+                               [ngClass]="{'invalid': !form.controls['profile'].controls['contact'].controls['phone'].valid
+                                  && form.controls['profile'].controls['contact'].controls['phone'].touched}">
+                          <input type="tel"
+                                 id="phone"
+                                 formControlName="phone"
+                                 placeholder="Enter your phone number"
+                                 size="50"
+                                 [readonly]="_isReadOnly">
+                          <span class="tooltip-content">This field cannot be empty!</span>
+                        </label>
+                      </div>
+                    </div>
+
+                  </div>
+                </section>
+                <!-- /profile info -->
+
+              </div>
+              <!-- /info content -->
+
+            </div>
+          </clr-stack-content>
+        </clr-stack-block>
+      </clr-stack-block>
+      <!--  /basic info block -->
+
+      <!-- students block -->
+      <clr-stack-block>
+        <clr-stack-label>Active Courses</clr-stack-label>
+        <clr-stack-block>
+          <clr-stack-label class="clr-stack-hide-label"></clr-stack-label>
+          <clr-stack-content>
+            <gl-courses-list-form #listForm
+                                  [sourceList]="sourceList"
+                                  [markedList]="markedList"
+                                  [editMode]="editMode">
+            </gl-courses-list-form>
+            <br>
+          </clr-stack-content>
+        </clr-stack-block>
+      </clr-stack-block>
+      <!--  -->
+
+    </clr-stack-view>
+  </section>
+  <!--  -->
+
+  <section class="form-block" *ngIf="!_isReadOnly">
+    <div class="form-group">
+      <button class="btn" (click)="form.reset()">Clear</button>
+      <button class="btn btn-primary"
+              [disabled]="!form.valid"
+              (click)="type === 'update' ? update() : create()">
+        {{ type === 'update' ? "Update" : "Create" }}
+      </button>
     </div>
-  </div>
-  <div class="col-xs-12 col-md-10">
-    <form *ngIf="data" [formGroup]="form">
+  </section>
 
-        <!-- basic info -->
-      <section class="form-block">
-        <label>Basic Info</label><br><br>
-        <div formGroupName="info">
-          <div class="form-group">
-            <label class="required">First Name:</label>
-            <label for="first_name" aria-haspopup="true" role="tooltip"
-                   class="tooltip tooltip-validation tooltip-sm"
-                   [ngClass]="{'invalid': !form.controls['info'].controls['first_name'].valid
-                      && form.controls['info'].controls['first_name'].touched}">
-              <input type="text"
-                     id="first_name"
-                     formControlName="first_name"
-                     placeholder="Enter your first name"
-                     size="50"
-                     [readonly]="isReadOnly">
-              <span class="tooltip-content">This field cannot be empty!</span>
-            </label>
-          </div>
-          <div class="form-group">
-            <label class="required">Last Name:</label>
-            <label for="last_name" aria-haspopup="true" role="tooltip"
-                   class="tooltip tooltip-validation tooltip-sm"
-                   [ngClass]="{'invalid': !form.controls['info'].controls['last_name'].valid
-                      && form.controls['info'].controls['last_name'].touched}">
-              <input type="text"
-                     id="last_name"
-                     formControlName="last_name"
-                     placeholder="Enter your last name"
-                     size="50"
-                     [readonly]="isReadOnly">
-              <span class="tooltip-content">This field cannot be empty!</span>
-            </label>
-          </div>
-          <div class="form-group">
-            <label class="required">Email:</label>
-            <label for="email" aria-haspopup="true" role="tooltip"
-                   class="tooltip tooltip-validation tooltip-sm"
-                   [ngClass]="{'invalid': !form.controls['info'].controls['email'].valid
-                      && form.controls['info'].controls['email'].touched}">
-              <input type="email"
-                     id="email"
-                     formControlName="email"
-                     placeholder="Enter your email"
-                     size="50"
-                     [readonly]="isReadOnly">
-              <span class="tooltip-content">This field cannot be empty!</span>
-            </label>
-          </div>
-        </div>
-      </section>
 
-      <!-- profile info -->
-      <section class="form-block">
-        <label>Profile Info</label><br><br>
-
-        <div formGroupName="profile">
-          <div class="form-group">
-            <label class="required">Birthday:</label>
-            <label for="birthday" aria-haspopup="true" role="tooltip"
-                   class="tooltip tooltip-validation tooltip-sm"
-                   [ngClass]="{'invalid': !form.controls['profile'].controls['birthday'].valid
-                      && form.controls['profile'].controls['birthday'].touched}">
-              <input type="date"
-                     id="birthday"
-                     formControlName="birthday"
-                     placeholder="Enter your birthday"
-                     size="50"
-                     [readonly]="isReadOnly">
-              <span class="tooltip-content">This field cannot be empty!</span>
-            </label>
-          </div>
-          <div class="form-group">
-            <label>Avatar:</label>
-            <input type="url"
-                   id="avatar"
-                   formControlName="avatar"
-                   placeholder="Enter a valid url"
-                   size="50"
-                   [readonly]="isReadOnly">
-          </div>
-          <div class="form-group">
-            <label>2nd Email:</label>
-            <input type="email"
-                   id="secondary_email"
-                   formControlName="secondary_email"
-                   placeholder="Enter your secondary email"
-                   size="50"
-                   [readonly]="isReadOnly">
-          </div>
-          <div formGroupName="contact">
-            <div class="form-group">
-              <label class="required">Street:</label>
-              <label for="street" aria-haspopup="true" role="tooltip"
-                     class="tooltip tooltip-validation tooltip-sm"
-                     [ngClass]="{'invalid': !form.controls['profile'].controls['contact'].controls['street'].valid
-                        && form.controls['profile'].controls['contact'].controls['street'].touched}">
-                <input type="text"
-                       id="street"
-                       formControlName="street"
-                       placeholder="Enter your street address"
-                       size="50"
-                       [readonly]="isReadOnly">
-                <span class="tooltip-content">This field cannot be empty!</span>
-              </label>
-            </div>
-            <div class="form-group">
-              <label class="required">State:</label>
-              <label for="state" aria-haspopup="true" role="tooltip"
-                     class="tooltip tooltip-validation tooltip-sm"
-                     [ngClass]="{'invalid': !form.controls['profile'].controls['contact'].controls['state'].valid
-                        && form.controls['profile'].controls['contact'].controls['state'].touched}">
-                <input type="text"
-                       id="state"
-                       formControlName="state"
-                       placeholder="Enter your state"
-                       size="50"
-                       [readonly]="isReadOnly">
-                <span class="tooltip-content">This field cannot be empty!</span>
-              </label>
-            </div>
-            <div class="form-group">
-              <label class="required">Country:</label>
-              <label for="country" aria-haspopup="true" role="tooltip"
-                     class="tooltip tooltip-validation tooltip-sm"
-                     [ngClass]="{'invalid': !form.controls['profile'].controls['contact'].controls['country'].valid
-                        && form.controls['profile'].controls['contact'].controls['country'].touched}">
-                <input type="text"
-                       id="country"
-                       formControlName="country"
-                       placeholder="Enter your country"
-                       size="50"
-                       [readonly]="isReadOnly">
-                <span class="tooltip-content">This field cannot be empty!</span>
-              </label>
-            </div>
-            <div class="form-group">
-              <label class="required">City:</label>
-              <label for="city" aria-haspopup="true" role="tooltip"
-                     class="tooltip tooltip-validation tooltip-sm"
-                     [ngClass]="{'invalid': !form.controls['profile'].controls['contact'].controls['city'].valid
-                        && form.controls['profile'].controls['contact'].controls['city'].touched}">
-                <input type="text"
-                       id="city"
-                       formControlName="city"
-                       placeholder="Enter your city name"
-                       size="50"
-                       [readonly]="isReadOnly">
-                <span class="tooltip-content">This field cannot be empty!</span>
-              </label>
-            </div>
-            <div class="form-group">
-              <label class="required">Zip:</label>
-              <label for="zip" aria-haspopup="true" role="tooltip"
-                     class="tooltip tooltip-validation tooltip-sm"
-                     [ngClass]="{'invalid': !form.controls['profile'].controls['contact'].controls['zip'].valid
-                        && form.controls['profile'].controls['contact'].controls['zip'].touched}">
-                <input type="text"
-                       id="zip"
-                       formControlName="zip"
-                       placeholder="Enter your zip code"
-                       size="50"
-                       [readonly]="isReadOnly">
-                <span class="tooltip-content">This field cannot be empty!</span>
-              </label>
-            </div>
-            <div class="form-group">
-              <label class="required">Phone:</label>
-              <label for="phone" aria-haspopup="true" role="tooltip"
-                     class="tooltip tooltip-validation tooltip-sm"
-                     [ngClass]="{'invalid': !form.controls['profile'].controls['contact'].controls['phone'].valid
-                        && form.controls['profile'].controls['contact'].controls['phone'].touched}">
-                <input type="tel"
-                       id="phone"
-                       formControlName="phone"
-                       placeholder="Enter your phone number"
-                       size="50"
-                       [readonly]="isReadOnly">
-                <span class="tooltip-content">This field cannot be empty!</span>
-              </label>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      <section class="form-block" *ngIf="!isReadOnly">
-        <div class="form-group">
-          <button class="btn" (click)="form.reset()">Clear</button>
-          <button class="btn btn-primary"
-                  [disabled]="!form.valid"
-                  (click)="type === 'update' ? update() : create()">
-            {{ type === 'update' ? "Update" : "Create" }}
-          </button>
-        </div>
-      </section>
-
-    </form>
-  </div>
-</div>
+</form>

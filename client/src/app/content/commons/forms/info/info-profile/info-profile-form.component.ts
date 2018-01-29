@@ -1,10 +1,14 @@
-import {Component, Input, OnInit} from "@angular/core";
+import {Component, Input, OnInit, ViewChild} from "@angular/core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Profile} from "../../../../../models/content/profile";
 import {BasicInfo} from "../../../../../models/content/basic-info";
 import {BasicInfoForm} from "../../../abstarct-clases/basic-info-form";
 import {getDateString} from "../../../../../helpers/helpers";
 import {AuthService} from "../../../../../core/providers/services/auth.service";
+import {StoreData} from "../../../../../models/core/store-data";
+import {Observable} from "rxjs/Observable";
+import {StudentsListFormComponent} from "../../lists/students-list/students-list-form.component";
+import {Student} from "../../../../../models/content/student";
 
 export interface InfoProfileData {
   info: BasicInfo;
@@ -18,6 +22,18 @@ export interface InfoProfileData {
   styleUrls: ["./info-profile-form.component.css"]
 })
 export class InfoProfileFormComponent extends BasicInfoForm<InfoProfileData> implements OnInit {
+
+  @ViewChild("listForm")
+  listForm: StudentsListFormComponent;
+
+  @Input()
+  markedList: Observable<string[]>;
+
+  @Input()
+  editMode: Observable<boolean>;
+
+  @Input()
+  sourceList: Observable<StoreData<Student>>;
 
   @Input()
   set info(data: InfoProfileData) {

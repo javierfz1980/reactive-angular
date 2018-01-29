@@ -23,10 +23,11 @@ export class StudentsComponent extends BasicContentDisplay<Student> implements O
   title: string = "All Students";
   nameLastnameFilter = new NameLastnameFilter();
   emailFilter = new EmailFilter();
-  isAlive: boolean = true;
-
+  action: () => void;
   createPath: string = appRoutePaths.students.childs.create.path;
   editPath:string = appRoutePaths.students.path;
+
+  private isAlive: boolean = true;
 
   constructor(protected contentService: ContentService,
               protected authService: AuthService,
