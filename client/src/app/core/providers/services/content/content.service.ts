@@ -352,7 +352,6 @@ export class ContentService {
       .catch((error: any) => {
         this.alertService.pushAlert(
           {type: "danger", message: `Error deleting student: ${error.message}`});
-        console.log(error)
         return Observable.of(false);
       })
   }

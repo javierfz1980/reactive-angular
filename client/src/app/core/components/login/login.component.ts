@@ -4,20 +4,20 @@ import {Router} from "@angular/router";
 import {Token} from "../../../models/api/token";
 import {AuthService} from "../../providers/services/auth.service";
 import {appRoutePaths} from "../../../app-routing.module";
+import {BasicSubscriptor} from "../../../commons/abstract-classes/basic-subscriptor";
 
 @Component({
   selector: "gl-login",
   templateUrl: "./login.component.html"
 })
-export class LoginComponent implements OnInit, OnDestroy {
+export class LoginComponent extends BasicSubscriptor implements OnInit {
 
   form: FormGroup;
   wrongCredentials: boolean = false;
-  private isAlive: boolean = true;
 
   constructor(private authService: AuthService,
               private router: Router) {
-
+    super();
     if (this.authService.isAuthorized())
         this.router.navigate([appRoutePaths.dashboard.path]);
   }
@@ -38,8 +38,5 @@ export class LoginComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy() {
-    this.isAlive = false;
-  }
 
 }

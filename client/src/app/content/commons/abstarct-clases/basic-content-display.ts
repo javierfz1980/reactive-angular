@@ -2,8 +2,8 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {AuthService} from "../../../core/providers/services/auth.service";
 import {BasicModalConfirmActions} from "./basic-modal-confirm-actions";
 import {Observable} from "rxjs/Observable";
+import {StoreData} from "../../../models/core/store-data";
 import 'rxjs/add/operator/takeWhile';
-import {StoreData} from "../../../core/providers/services/content/basic-content.service";
 
 export abstract class BasicContentDisplay<T> extends BasicModalConfirmActions {
 

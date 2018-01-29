@@ -47,7 +47,6 @@ export class SingleStudentComponent extends BasicInfoProfileList<InfoProfileData
     this.source = this.contentService
       .getStudents()
       .filter(storeData => Boolean(storeData.data))
-      .do(data => console.log(data))
       .withLatestFrom(this.id)
       .map(([storeData, id]) => storeData.data.find((student: Student) => student.id === id))
       .filter((student: Student) => Boolean(student))

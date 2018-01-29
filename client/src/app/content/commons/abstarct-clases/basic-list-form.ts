@@ -1,7 +1,7 @@
 import {Input, OnInit} from "@angular/core";
 import {Observable} from "rxjs/Observable";
+import {StoreData} from "../../../models/core/store-data";
 import 'rxjs/add/operator/combineLatest';
-import {StoreData} from "../../../core/providers/services/content/basic-content.service";
 
 export abstract class BasicListForm<T> implements OnInit {
 

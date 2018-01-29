@@ -49,7 +49,6 @@ export class DashboardComponent implements OnInit {
   }
 
   navigateTo(destination: string) {
-    console.log(destination);
     this.router.navigate([destination]);
   }
 }

@@ -136,7 +136,6 @@ export abstract class BasicContentService<T> {
    */
   emit(isLoading?: boolean) {
     this.store.loading = isLoading ? isLoading : false;
-    console.log(`${this.constructor.name}: has emitted... ${this.store.loading}`);
     this.dataSubject.next(Object.assign({}, this.store));
   }
 

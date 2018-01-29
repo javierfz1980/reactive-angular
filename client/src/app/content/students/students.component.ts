@@ -37,8 +37,7 @@ export class StudentsComponent extends BasicContentDisplay<Student> implements O
 
   ngOnInit() {
     this.dataSource = this.contentService
-      .getStudents()
-      .filter(students => students !== undefined);
+      .getStudents();
 
     this.contentService.fetchStudents();
   }

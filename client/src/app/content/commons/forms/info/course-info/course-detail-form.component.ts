@@ -47,7 +47,6 @@ export class CourseDetailFormComponent extends BasicInfoForm<Course> implements 
 
   ngOnInit() {
     super.ngOnInit();
-    console.log(this.type)
     this.data = this.validateInfo();
     this.isAdministrator = this.authService.isAdministrator();
     this.teachersDataSource = this.contentService

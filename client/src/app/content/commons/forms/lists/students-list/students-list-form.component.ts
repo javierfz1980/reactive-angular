@@ -41,8 +41,7 @@ export class StudentsListFormComponent extends BasicListForm<Student>{
         this.selection = null;
         this.maxSize = res.length;
         return {data: res, loading: storeData.loading};
-      })
-      .do(data => console.log("aca: ", data));
+      });
 
     this.contentService.fetchStudents();
   }

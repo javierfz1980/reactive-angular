@@ -7,7 +7,7 @@ import {
 } from "../../../commons/confirmation-modal/confirmation-modal.component";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {BasicModalConfirmActions} from "./basic-modal-confirm-actions";
-import {StoreData} from "../../../core/providers/services/content/basic-content.service";
+import {StoreData} from "../../../models/core/store-data";
 
 export abstract class BasicInfoProfileList<T, G, Z> extends BasicModalConfirmActions {
 
