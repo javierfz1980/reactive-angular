@@ -65,7 +65,7 @@ export class SingleTeacherComponent extends BasicInfoList<InfoProfileData, InfoP
       });
 
     this.listFormSource = this.contentService
-      .getCoursesWithTeacher();
+      .getActiveCoursesWithTeacher();
 
     this.listFormMarked = this.source
       .map((data: InfoProfileData) => data.info)
