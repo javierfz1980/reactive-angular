@@ -1,35 +1,16 @@
 <h1>
   {{ title }}
 </h1>
-<br>
-<!-- content tabs -->
 <div>
 
-  <clr-tabs>
-
-    <!-- Info -->
-    <clr-tab>
-      <button clrTabLink id="link1">Profile</button>
-      <clr-tab-content>
-        <gl-info-profile-form [isReadOnly]="false"
-                              (create)="create($event)">
-        </gl-info-profile-form>
-      </clr-tab-content>
-    </clr-tab>
-
-    <!-- Courses -->
-    <clr-tab>
-      <button clrTabLink>Courses</button>
-      <clr-tab-content>
-        <gl-courses-list-form #listForm
-                              [sourceList]="listFormSource"
-                              [markedList]="listFormMarked"
-                              [editMode]="isEditMode.asObservable()">
-        </gl-courses-list-form>
-      </clr-tab-content>
-    </clr-tab>
-
-  </clr-tabs>
+  <!-- student info -->
+  <gl-info-profile-form #infoForm
+                        [isReadOnly]="false"
+                        [markedList]="listFormMarked"
+                        [editMode]="isEditMode.asObservable()"
+                        [sourceList]="listFormSource"
+                        (create)="create($event)">
+  </gl-info-profile-form>
 
   <gl-confirmation-modal #confirmModal [modalData]="modalData"></gl-confirmation-modal>
 </div>

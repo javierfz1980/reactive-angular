@@ -13,6 +13,8 @@ import {Course} from "../../../models/content/course";
 import {BasicInfoList} from "../../commons/abstarct-clases/basic-info-list";
 import {ConfirmationModalComponent} from "../../../commons/confirmation-modal/confirmation-modal.component";
 import {StoreData} from "../../../models/core/store-data";
+import {Observable} from "rxjs/Observable";
+import {Teacher} from "../../../models/content/teacher";
 import 'rxjs/add/operator/takeWhile';
 import 'rxjs/add/operator/withLatestFrom';
 import 'rxjs/add/operator/filter';
@@ -65,6 +67,21 @@ export class SingleStudentComponent extends BasicInfoList<InfoProfileData, InfoP
         data.data = !data.data ? [] : data.data
           .filter((course: Course) => course.active);
         return data;
+      })
+      .switchMap((data: StoreData<Course>) => {
+        return Observable.from(data.data ? data.data : [])
+          .mergeMap((course: Course) => {
+            return this.contentService.getCourseTeacher(course.teacher)
+              .map((teacher: Teacher) => {
+                course.teacherInfo = teacher
+                return course;
+              })
+          })
+          .toArray()
+          .map((coursesWithTeacher: Course[]) => {
+            data.data = coursesWithTeacher;
+            return data;
+          });
       });
 
     this.listFormMarked = this.source
