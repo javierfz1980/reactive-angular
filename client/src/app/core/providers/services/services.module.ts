@@ -7,6 +7,7 @@ import {TeachersService} from "./content/teachers.service";
 import {CoursesService} from "./content/courses.service";
 import {ProfilesService} from "./content/profiles.service";
 import {AlertService} from "./alert.service";
+import {SearchService} from "./search.service";
 
 const services = [
   AuthService,
@@ -16,7 +17,8 @@ const services = [
   TeachersService,
   CoursesService,
   ProfilesService,
-  AlertService
+  AlertService,
+  SearchService
 ];
 
 @NgModule()

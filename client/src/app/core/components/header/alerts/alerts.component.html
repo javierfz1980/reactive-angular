@@ -28,6 +28,7 @@
               clrDropdownItem
               type="button"
               [ngClass]="{'read-alert': alert.read}"
+              class="_dropdown-item-with-border"
               (click)="openAlertsModal(alert)">
         <clr-icon shape="check" *ngIf="alert.read"></clr-icon>
         {{idx + 1}} - <span class="alert-from">{{alert.from || "system"}}:</span> {{alert.message | truncate : 50 : "..."}}

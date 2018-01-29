@@ -52,3 +52,8 @@ hr {
 ._db-card {
   cursor: pointer;
 }
+
+._dropdown-item-with-border {
+  border-bottom: 1px solid #eaeaea!important;
+}
+

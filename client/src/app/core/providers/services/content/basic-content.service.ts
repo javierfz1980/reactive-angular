@@ -4,8 +4,8 @@ import {Observable} from "rxjs/Observable";
 import {HttpClient} from "@angular/common/http";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {getFakedDelay} from "../../../../helpers/helpers";
-import 'rxjs/add/operator/delay';
 import {StoreData} from "../../../../models/core/store-data";
+import 'rxjs/add/operator/delay';
 
 /**
  * Basic generic abstract class with basic api actions that should be extended by any entity service.
@@ -117,6 +117,17 @@ export abstract class BasicContentService<T> {
   deleteRecord(id: string): Observable<MessageResponse> {
     return this.httpClient
       .delete<MessageResponse>(`${this.path}${id}`)
+      .delay(getFakedDelay());
+  }
+
+  /**
+   * Searchs records from server and from internal data and returns the results.
+   * @param {string} data
+   * @returns {Observable<T[]>}
+   */
+  searchRecords(data: string): Observable<T[]> {
+    return this.httpClient
+      .get<T[]>(`${this.path}?query=${data}`)
       .delay(getFakedDelay());
   }
 

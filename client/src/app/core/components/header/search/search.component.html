@@ -1,3 +1,70 @@
+<div class="search_container" (mouseleave)="mouseLeave()">
+  <div class="search">
   <label for="search_input">
-    <input id="search_input" type="text" placeholder="Search for keywords...">
+    <input #search_input id="search_input" (mouseover)="mouseOver()"
+           type="text"
+           placeholder="Search for keywords...">
   </label>
+  </div>
+
+  <ul class="search-results" *ngIf="displayResults"><!--*ngIf="displayResults" [ngClass]="{'search-results-hide' : !displayResults}" >-->
+
+    <!-- Courses -->
+    <ng-container *ngIf="coursesResults | async as resultsCourses">
+      <ng-container *ngIf="resultsCourses.data && resultsCourses.data.length > 0; else noCoursesFound">
+        <li class="_dropdown-item-with-border" type="button" *ngFor="let course of resultsCourses.data" (click)="gotoCourse(course)">
+          <div class="content"><clr-icon shape="library"></clr-icon> {{course.title}}</div>
+        </li>
+      </ng-container>
+      <ng-template #noCoursesFound>
+        <li class="_dropdown-item-with-border no-result" type="button" *ngIf="resultsCourses.loading">
+          <div class="content no-result">
+            <div class="spinner spinner-sm spinner-inverse"></div> Loading Courses...
+          </div>
+        </li>
+        <li class="_dropdown-item-with-border no-result" type="button" *ngIf="!resultsCourses.loading">
+          <div class="content no-result"><clr-icon shape="library"></clr-icon> No Courses found.</div>
+        </li>
+      </ng-template>
+    </ng-container>
+
+    <!-- Students -->
+    <ng-container *ngIf="studentsResults | async as resultsStudents">
+      <ng-container *ngIf="resultsStudents.data && resultsStudents.data.length > 0; else noStudentsFound">
+        <li class="_dropdown-item-with-border" type="button" *ngFor="let student of resultsStudents.data" (click)="gotoStudent(student)">
+          <div class="content"><clr-icon shape="happy-face"></clr-icon> {{student.first_name}} {{student.last_name}}</div>
+        </li>
+      </ng-container>
+      <ng-template #noStudentsFound>
+        <li class="_dropdown-item-with-border no-result" type="button" *ngIf="resultsStudents.loading">
+          <div class="content no-result">
+            <div class="spinner spinner-sm spinner-inverse"></div> Loading Students...
+          </div>
+        </li>
+        <li class="_dropdown-item-with-border no-result" type="button" *ngIf="!resultsStudents.loading" >
+          <div class="content no-result"><clr-icon shape="happy-face"></clr-icon> No Students found.</div>
+        </li>
+      </ng-template>
+    </ng-container>
+
+    <!-- Teachers -->
+    <ng-container *ngIf="teachersResults | async as resultsTeachers">
+      <ng-container *ngIf="resultsTeachers.data && resultsTeachers.data.length > 0; else noTeachersFound">
+        <li class="_dropdown-item-with-border" type="button" *ngFor="let teacher of resultsTeachers.data" (click)="gotoTeacher(teacher)">
+          <div class="content"><clr-icon shape="sad-face"></clr-icon> {{teacher.first_name}} {{teacher.last_name}}</div>
+        </li>
+      </ng-container>
+      <ng-template #noTeachersFound>
+        <li class="_dropdown-item-with-border no-result" type="button" *ngIf="resultsTeachers.loading">
+          <div class="content no-result">
+            <div class="spinner spinner-sm spinner-inverse"></div> Loading Teachers...
+          </div>
+        </li>
+        <li class="_dropdown-item-with-border no-result" type="button" *ngIf="!resultsTeachers.loading">
+          <div class="content no-result"><clr-icon shape="sad-face"></clr-icon> No Teachers found.</div>
+        </li>
+      </ng-template>
+    </ng-container>
+
+  </ul>
+</div>
