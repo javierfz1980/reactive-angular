@@ -33,7 +33,8 @@ export class DashboardComponent implements OnInit {
 
     this.totalCourses = this.contentService
       .getCourses()
-      .map((data: StoreData<Course>) => data.data);
+      .map((data: StoreData<Course>) => !data.data ? [] : data.data
+        .filter((course: Course) => course.active));
 
     this.totalTeachers = this.contentService
       .getTeachers()
