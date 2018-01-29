@@ -19,7 +19,14 @@
       <div class="error active" *ngIf="wrongCredentials">
         Invalid user name or password
       </div>
-      <button type="submit" class="btn btn-primary" [disabled]="!form.valid">{{ "login.login" | translate }}</button>
+      <button *ngIf="!loading; else wait" type="submit"
+              class="btn btn-primary"
+              [disabled]="!form.valid">
+        {{ "login.login" | translate }}
+      </button>
+      <ng-template #wait>
+        <div class="spinner spinner-md"></div>
+      </ng-template>
     </div>
   </form>
 </div>

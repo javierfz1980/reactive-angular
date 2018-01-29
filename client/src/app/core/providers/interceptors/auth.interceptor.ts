@@ -9,7 +9,8 @@ import {globalProperties} from "../../../../environments/properties";
 export class AuthInterceptor implements HttpInterceptor {
 
   private readonly skipUrls = [
-    globalProperties.basePath + globalProperties.loginPath
+    `${globalProperties.basePath}${globalProperties.loginPath}`,
+    `${globalProperties.basePath}${globalProperties.accountPath}`
   ];
 
   // NOTE: this injection will generate an Cyclic dependency error because

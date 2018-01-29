@@ -14,6 +14,7 @@ export class LoginComponent extends BasicSubscriptor implements OnInit {
 
   form: FormGroup;
   wrongCredentials: boolean = false;
+  loading: boolean = false;
 
   constructor(private authService: AuthService,
               private router: Router) {
@@ -30,10 +31,12 @@ export class LoginComponent extends BasicSubscriptor implements OnInit {
   }
 
   onSubmit() {
+    this.loading = true;
     this.authService
       .login(this.form.value)
       .takeWhile(() => this.isAlive)
-      .subscribe((response: Token) => {
+      .subscribe(() => {
+        this.loading = false;
         this.router.navigate([appRoutePaths.dashboard.path])
       });
   }

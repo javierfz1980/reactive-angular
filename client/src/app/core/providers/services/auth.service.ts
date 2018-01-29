@@ -1,12 +1,13 @@
 import {Injectable} from "@angular/core";
 import {LocalStorageService} from "./local-storage.service";
 import {LoginCredentials} from "../../../models/api/login-credentials";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {globalProperties} from "../../../../environments/properties";
 import {Observable} from "rxjs/Observable";
 import {Token} from "../../../models/api/token";
 import {Account} from "../../../models/core/account";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {getFakedDelay} from "../../../helpers/helpers";
 import "rxjs/add/operator/catch";
 import "rxjs/add/operator/do";
 import "rxjs/add/operator/switchMap";
@@ -42,12 +43,16 @@ export class AuthService {
     this._authEmitter.next(this.isAuthorized())
   }
 
-  private fetchAccount(): Observable<Account>  {
+  private fetchAccount(token: string): Observable<Account>  {
+    const headers = new HttpHeaders({'Token': token});
     return this.httpClient
-      .get<Account>(this.basePath + this.accountPath)
-      .do((account: Account) => {
+      .get<Account>(`${this.basePath}${this.accountPath}`, {headers: headers})
+      .delay(getFakedDelay())
+      .map((account: Account) => {
         this._account = account;
         this._accountSubject.next(this._account);
+        this.setToken(token);
+        return account;
       })
   }
 
@@ -69,16 +74,15 @@ export class AuthService {
   }
 
   loginByToken(): Observable<boolean> {
-    return this.fetchAccount()
+    return this.fetchAccount(this.getToken())
       .map((account: Account) => account ? true : false)
-      .catch((error: any) => Observable.throw(error));
+      .catch((error: any) => Observable.throw(error))
   }
 
-  login(data: LoginCredentials): Observable<Token> {
+  login(data: LoginCredentials): Observable<Account> {
     return this.httpClient
-      .post<Token>(this.basePath + this.loginPath, data)
-      .do((response: Token) => this.setToken(response.token))
-      .switchMap(() => this.fetchAccount())
+      .post<Token>(`${this.basePath}${this.loginPath}`, data)
+      .switchMap((response: Token) => this.fetchAccount(response.token))
       .catch((error: any) => Observable.throw(error));
   }
 

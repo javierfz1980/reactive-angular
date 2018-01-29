@@ -12,8 +12,8 @@ export function randomBetween(min: number, max: number) {
   return Math.floor(Math.random()*(max-min+1)+min);
 }
 
-export function getFakedDelay(): number {
-  return globalProperties.localDev ? randomBetween(0, globalProperties.maxFakedTime) * 1000 : 0;
+export function getFakedDelay(max?: number): number {
+  return globalProperties.localDev ? randomBetween(0, (max ? max : globalProperties.maxFakedTime)) * 1000 : 0;
 }
 
 export function getDateString(dateString: string): string {
