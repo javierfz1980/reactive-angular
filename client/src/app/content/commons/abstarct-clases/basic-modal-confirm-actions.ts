@@ -7,11 +7,11 @@ import {getDifferencesBetween} from "../../../helpers/helpers";
 export abstract class BasicModalConfirmActions {
 
   abstract confirmModal: ConfirmationModalComponent;
+  abstract action: () => void;
 
   protected modalData: ConfirmationModalData;
-  protected action: () => void;
-  protected elementsTobeRemoved: string[];
-  protected elementsTobeAdded: string[];
+  protected elementsTobeRemoved?: string[];
+  protected elementsTobeAdded?: string[];
 
   protected openCreateConfirmation() {
     this.modalData = {

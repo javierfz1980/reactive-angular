@@ -3,43 +3,29 @@
 
   <h1>
     {{courseInfo.title}}&nbsp;<br>
-    <!-- content edit -->
+
     <div class="btn-group" *ngIf="isAdministrator" >
+      <!-- content edit -->
       <button class="btn btn-sm" [ngClass]="{'btn-primary': editMode, 'btn-outline': !editMode}" (click)="toggleEditMode()">
         <clr-icon shape="pencil"></clr-icon> Edit
       </button>
+
       <!-- content delete -->
       <button class="btn btn-sm btn-danger" (click)="delete(courseInfo)">
         <clr-icon shape="trash"></clr-icon> Delete
       </button>
     </div>
   </h1>
-  <br>
 
-  <clr-tabs>
-
-    <!-- Info -->
-    <clr-tab>
-      <button clrTabLink id="link1">Info</button>
-      <clr-tab-content>
-        <gl-course-detail-form [info]="courseInfo"
-                        [isReadOnly]="!(isAdministrator && editMode)"
-                        (update)="update($event)"></gl-course-detail-form>
-      </clr-tab-content>
-    </clr-tab>
-
-    <!-- Students -->
-    <clr-tab *ngIf="courseInfo.active">
-      <button clrTabLink>Students</button>
-      <clr-tab-content>
-        <gl-students-list-form #listForm
-                            [markedList]="listFormMarked"
-                            [editMode]="isEditMode.asObservable()"
-                            [sourceList]="listFormSource"></gl-students-list-form>
-      </clr-tab-content>
-    </clr-tab>
-
-  </clr-tabs>
+  <!-- course info -->
+  <gl-course-detail-form #infoForm
+                         [info]="courseInfo"
+                         [isReadOnly]="!(isAdministrator && editMode)"
+                         [markedList]="listFormMarked"
+                         [editMode]="isEditMode.asObservable()"
+                         [sourceList]="listFormSource"
+                         (update)="update($event)">
+  </gl-course-detail-form>
 
   <gl-confirmation-modal #confirmModal [modalData]="modalData"></gl-confirmation-modal>
 </div>

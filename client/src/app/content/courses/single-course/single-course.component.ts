@@ -3,28 +3,29 @@ import {ActivatedRoute, Params, Router} from "@angular/router";
 import {AuthService} from "../../../core/providers/services/auth.service";
 import {Course} from "../../../models/content/course";
 import {appRoutePaths} from "../../../app-routing.module";
-import {StudentsListFormComponent} from "../../commons/forms/lists/students-list/students-list-form.component";
 import {ContentService} from "../../../core/providers/services/content/content.service";
 import {Student} from "../../../models/content/student";
-import {BasicInfoProfileList} from "../../commons/abstarct-clases/basic-info-profile-list";
+import {BasicInfoList} from "../../commons/abstarct-clases/basic-info-list";
 import {
   ConfirmationModalComponent
 } from "../../../commons/confirmation-modal/confirmation-modal.component";
+import {CourseDetailFormComponent} from "../../commons/forms/info/course-info/course-detail-form.component";
 import 'rxjs/add/operator/takeWhile';
 
 @Component({
   selector: "gl-single-course",
   templateUrl: "./single-course.component.html"
 })
-export class SingleCourseComponent extends BasicInfoProfileList<Course, StudentsListFormComponent, Student> implements OnInit, OnDestroy{
+export class SingleCourseComponent extends BasicInfoList<Course, CourseDetailFormComponent, Student> implements OnInit, OnDestroy{
 
   @ViewChild("confirmModal")
   confirmModal: ConfirmationModalComponent;
 
-  @ViewChild("listForm")
-  listForm: StudentsListFormComponent;
+  @ViewChild("infoForm")
+  infoForm: CourseDetailFormComponent;
 
   isAlive: boolean = true;
+  action: () => void;
 
   constructor(private router: Router,
               private contentService: ContentService,
@@ -74,7 +75,7 @@ export class SingleCourseComponent extends BasicInfoProfileList<Course, Students
 
   update(data: Course) {
     const originalStudents: string[] = data.students;
-    data.students = this.listForm ? this.listForm.getSelecteds() : data.students;
+    data.students = this.infoForm.listForm ? this.infoForm.listForm.getSelecteds() : data.students;
     this.action = () => {
       this.modalData.title = "Updating";
       this.modalData.isBusy = true;
@@ -87,7 +88,8 @@ export class SingleCourseComponent extends BasicInfoProfileList<Course, Students
             this.confirmModal.close();
           });
     };
-    super.openUpdateConfirmation(originalStudents, this.listForm ? this.listForm.getSelecteds() : data.students);
+    super.openUpdateConfirmation(originalStudents,
+      this.infoForm.listForm ? this.infoForm.listForm.getSelecteds() : data.students);
 
   }
 

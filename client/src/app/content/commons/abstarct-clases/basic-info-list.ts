@@ -1,28 +1,19 @@
 import {Observable} from "rxjs/Observable";
 import {AuthService} from "../../../core/providers/services/auth.service";
 import {ActivatedRoute} from "@angular/router";
-import {
-  ConfirmationModalComponent,
-  ConfirmationModalData
-} from "../../../commons/confirmation-modal/confirmation-modal.component";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {BasicModalConfirmActions} from "./basic-modal-confirm-actions";
 import {StoreData} from "../../../models/core/store-data";
 
-export abstract class BasicInfoProfileList<T, G, Z> extends BasicModalConfirmActions {
+export abstract class BasicInfoList<T, G, Z> extends BasicModalConfirmActions {
 
-  abstract confirmModal: ConfirmationModalComponent;
-  abstract listForm: G;
-
-  protected modalData: ConfirmationModalData;
-  protected action: () => void;
   protected source: Observable<T>;
   protected id: Observable<string>;
   protected listFormSource: Observable<StoreData<Z>>;
   protected listFormMarked: Observable<string[]>;
+  protected isEditMode: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   protected isAdministrator: boolean;
   protected editMode: boolean = false;
-  protected isEditMode: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(protected authService: AuthService,
               protected route: ActivatedRoute) {

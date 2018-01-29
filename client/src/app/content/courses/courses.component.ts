@@ -20,7 +20,8 @@ export class CoursesComponent extends BasicContentDisplay<Course> implements OnI
   confirmModal: ConfirmationModalComponent;
 
   title = "All Courses";
-  isAlive: boolean = true;
+  action: () => void;
+  private isAlive: boolean = true;
 
   createPath: string = appRoutePaths.courses.childs.create.path;
   editPath:string = appRoutePaths.courses.path;

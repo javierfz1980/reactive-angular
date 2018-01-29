@@ -1,93 +1,125 @@
 <form *ngIf="data" [formGroup]="form">
 
-  <!-- basic info -->
-  <section class="form-block">
-    <label>Course Info</label><br><br>
+  <!-- Stack View -->
+  <section class="form-block" >
+    <clr-stack-view>
 
-    <div class="form-group">
-      <label class="required">Title:</label>
-      <label for="title" aria-haspopup="true" role="tooltip"
-             class="tooltip tooltip-validation tooltip-sm"
-             [ngClass]="{'invalid': !form.controls['title'].valid && form.controls['title'].touched}">
-        <input type="text"
-               id="title"
-               formControlName="title"
-               placeholder="Enter the title"
-               size="50"
-               [readonly]="_isReadOnly">
-        <span class="tooltip-content">This field cannot be empty!</span>
-      </label>
-    </div>
-    <div class="form-group">
-      <label class="required">Short Description:</label>
-        <textarea [ngClass]="{'invalid-textarea': !form.controls['short_description'].valid  &&
+      <!-- basic info block -->
+      <clr-stack-block [clrSbExpanded]="true">
+        <clr-stack-label>Info</clr-stack-label>
+        <clr-stack-block>
+          <clr-stack-label class="clr-stack-hide-label"></clr-stack-label>
+          <clr-stack-content>
+
+            <section class="form-block">
+              <div class="form-group">
+                <label class="required">Title:</label>
+                <label for="title" aria-haspopup="true" role="tooltip"
+                       class="tooltip tooltip-validation tooltip-sm"
+                       [ngClass]="{'invalid': !form.controls['title'].valid && form.controls['title'].touched}">
+                  <input type="text"
+                         id="title"
+                         formControlName="title"
+                         placeholder="Enter the title"
+                         size="50"
+                         [readonly]="_isReadOnly">
+                  <span class="tooltip-content">This field cannot be empty!</span>
+                </label>
+              </div>
+              <div class="form-group">
+                <label class="required">Short Description:</label>
+                <textarea [ngClass]="{'invalid-textarea': !form.controls['short_description'].valid  &&
                     form.controls['short_description'].touched}"
-                  type="text"
-                  id="short_description"
-                  formControlName="short_description"
-                  placeholder="Enter the short description"
-                  rows="5"
-                  [readonly]="_isReadOnly">
+                          type="text"
+                          id="short_description"
+                          formControlName="short_description"
+                          placeholder="Enter the short description"
+                          rows="5"
+                          [readonly]="_isReadOnly">
         </textarea>
-    </div>
-    <div class="form-group">
-      <label class="required">Detail:</label>
-      <textarea [ngClass]="{'invalid-textarea': !form.controls['detail'].valid  &&
+              </div>
+              <div class="form-group">
+                <label class="required">Detail:</label>
+                <textarea [ngClass]="{'invalid-textarea': !form.controls['detail'].valid  &&
                   form.controls['detail'].touched}"
-                type="text"
-                id="detail"
-                formControlName="detail"
-                placeholder="Enter the detail"
-                rows="10"
-                [readonly]="_isReadOnly">
+                          type="text"
+                          id="detail"
+                          formControlName="detail"
+                          placeholder="Enter the detail"
+                          rows="10"
+                          [readonly]="_isReadOnly">
         </textarea>
-    </div>
-    <div class="form-group">
-      <label class="required">
-        Active:
-      </label>
-        <div class="toggle-switch">
-          <input type="checkbox"
-                 id="active"
-                 formControlName="active">
-          <label for="active"></label>
-        </div>
-    </div>
-    <div class="form-group" *ngIf="data.active || type === 'create'">
-      <label class="required"> Teacher: </label>
-      <ng-container *ngIf="teachersDataSource | async as storeData;">
-        <ng-container *ngIf="!storeData.loading; else loadingTeahers">
-          <div class="select">
-            <select id="teacher"
-                    [ngClass]="{'invalid-select': !form.controls['teacher'].valid  &&
+              </div>
+              <div class="form-group">
+                <label class="required">
+                  Active:
+                </label>
+                <div class="toggle-switch">
+                  <input type="checkbox"
+                         id="active"
+                         formControlName="active">
+                  <label for="active"></label>
+                </div>
+              </div>
+              <div class="form-group" *ngIf="data.active || type === 'create'">
+                <label> Teacher: </label>
+                <ng-container *ngIf="teachersDataSource | async as storeData;">
+                  <ng-container *ngIf="!storeData.loading; else loadingTeahers">
+                    <div class="select">
+                      <select id="teacher"
+                              [ngClass]="{'invalid-select': !form.controls['teacher'].valid  &&
                       form.controls['teacher'].touched && editMode}"
-                    formControlName="teacher"
-                    placeholder="Enter the teacher">
-              <option *ngFor="let teacher of storeData.data"
-                      [selected]="data.teacher === teacher.id"
-                      [value]="teacher.id">
-                {{teacher.first_name}} - {{teacher.last_name}}
-              </option>
-            </select>
-          </div>
-          <label *ngIf="form.controls['teacher'].value">
-            <a class="_pointer-mouse" (click)="gotoTeacher()">
-              <clr-icon shape="user"></clr-icon>
-            </a>
-            <a *ngIf="isAdministrator" class="_pointer-mouse" (click)="gotoTeacher(true)">
-              <clr-icon shape="edit"></clr-icon>
-            </a>
-          </label>
-        </ng-container>
-      </ng-container>
-      <ng-template #loadingTeahers>
-        <div class="spinner spinner-sm"></div>
-      </ng-template>
+                              formControlName="teacher"
+                              placeholder="Enter the teacher">
+                        <option *ngFor="let teacher of storeData.data"
+                                [selected]="data.teacher === teacher.id"
+                                [value]="teacher.id">
+                          {{teacher.first_name}} - {{teacher.last_name}}
+                        </option>
+                      </select>
+                    </div>
+                    <label *ngIf="form.controls['teacher'].value">
+                      <a class="_pointer-mouse" (click)="gotoTeacher()">
+                        <clr-icon shape="user"></clr-icon>
+                      </a>
+                      <a *ngIf="isAdministrator" class="_pointer-mouse" (click)="gotoTeacher(true)">
+                        <clr-icon shape="edit"></clr-icon>
+                      </a>
+                    </label>
+                  </ng-container>
+                </ng-container>
+                <ng-template #loadingTeahers>
+                  <div class="spinner spinner-sm"></div>
+                </ng-template>
+              </div>
+            </section>
 
-    </div>
+          </clr-stack-content>
+        </clr-stack-block>
+      </clr-stack-block>
+      <!--  -->
 
+      <!-- students block -->
+      <clr-stack-block *ngIf="data.active || type === 'create'">
+        <clr-stack-label>Students</clr-stack-label>
+        <clr-stack-block>
+          <clr-stack-label class="clr-stack-hide-label"></clr-stack-label>
+          <clr-stack-content>
+            <gl-students-list-form #listForm
+                                   [markedList]="markedList"
+                                   [editMode]="editMode"
+                                   [sourceList]="sourceList"></gl-students-list-form>
+            <br>
+          </clr-stack-content>
+        </clr-stack-block>
+      </clr-stack-block>
+      <!--  -->
+
+    </clr-stack-view>
   </section>
+  <!--  -->
 
+  <!-- Buttons  -->
   <section class="form-block" *ngIf="!_isReadOnly">
     <div class="form-group">
       <button class="btn" (click)="form.reset()">Clear</button>
@@ -98,5 +130,6 @@
       </button>
     </div>
   </section>
+  <!--  -->
 
 </form>

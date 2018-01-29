@@ -57,3 +57,8 @@ hr {
   border-bottom: 1px solid #eaeaea!important;
 }
 
+.stack-children .stack-block-label {
+  display: none;
+}
+
+

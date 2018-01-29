@@ -4,6 +4,7 @@ import {Profile} from "../../../../../models/content/profile";
 import {BasicInfo} from "../../../../../models/content/basic-info";
 import {BasicInfoForm} from "../../../abstarct-clases/basic-info-form";
 import {getDateString} from "../../../../../helpers/helpers";
+import {AuthService} from "../../../../../core/providers/services/auth.service";
 
 export interface InfoProfileData {
   info: BasicInfo;
@@ -32,8 +33,9 @@ export class InfoProfileFormComponent extends BasicInfoForm<InfoProfileData> imp
   private info_group: FormGroup;
   private profile_group: FormGroup;
 
-  constructor(protected fb: FormBuilder) {
-    super();
+  constructor(private fb: FormBuilder,
+              protected authService: AuthService) {
+    super(authService);
   }
 
   ngOnInit() {
