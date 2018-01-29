@@ -2,7 +2,8 @@
 <div *ngIf="source | async as courseInfo; else loading">
 
   <h1>
-    {{courseInfo.title}}&nbsp;<br>
+    {{courseInfo.title}}
+    <br>
 
     <div class="btn-group" *ngIf="isAdministrator" >
       <!-- content edit -->
