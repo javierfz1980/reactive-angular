@@ -9,8 +9,6 @@ import {appRoutePaths} from "../../../../../app-routing.module";
 import {ContentService} from "../../../../../core/providers/services/content/content.service";
 import {BasicInfoForm} from "../../../abstarct-clases/basic-info-form";
 import {StoreData} from "../../../../../models/core/store-data";
-import {getDateString} from "../../../../../helpers/helpers";
-import {InfoProfileData} from "../info-profile/info-profile-form.component";
 
 @Component({
   selector: "gl-course-detail-form",
