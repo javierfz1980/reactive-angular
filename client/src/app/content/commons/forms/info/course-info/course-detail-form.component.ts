@@ -55,6 +55,7 @@ export class CourseDetailFormComponent extends BasicInfoForm<Course> implements 
     }
   };
 
+  selectTeacherStr: string = "Select a Teacher";
   teachersDataSource: Observable<StoreData<Teacher>>;
 
   constructor(private fb: FormBuilder,
@@ -68,9 +69,10 @@ export class CourseDetailFormComponent extends BasicInfoForm<Course> implements 
     super.ngOnInit();
     this.data = this.validateInfo();
 
+    console.log(this.data.teacher)
+
     this.teachersDataSource = this.contentService
-      .getTeachers()
-      .merge(Observable.of({data:[], loading: true}));
+      .getTeachers();
 
     this.form = this.fb.group({
       id: [this.data.id ],

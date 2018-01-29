@@ -10,21 +10,23 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {ContentService} from "../../../core/providers/services/content/content.service";
 import {Student} from "../../../models/content/student";
 import {Observable} from "rxjs/Observable";
-import {BasicInfoProfileList} from "../../commons/abstarct-clases/basic-info-profile-list";
+import {BasicInfoList} from "../../commons/abstarct-clases/basic-info-list";
+import {CourseDetailFormComponent} from "../../commons/forms/info/course-info/course-detail-form.component";
 
 @Component({
   selector: "gl-create-course",
   templateUrl: "./create-course.component.html"
 })
-export class CreateCourseComponent extends BasicInfoProfileList<Course, StudentsListFormComponent, Student> implements OnInit, OnDestroy {
+export class CreateCourseComponent extends BasicInfoList<Course, CourseDetailFormComponent, Student> implements OnInit, OnDestroy {
 
   @ViewChild("confirmModal")
   confirmModal: ConfirmationModalComponent;
 
-  @ViewChild("listForm")
-  listForm: StudentsListFormComponent;
+  @ViewChild("infoForm")
+  infoForm: CourseDetailFormComponent;
 
   title: string = "Create new Course";
+  action: () => void;
   private isAlive: boolean = true;
 
   constructor(protected authService: AuthService,
@@ -46,7 +48,7 @@ export class CreateCourseComponent extends BasicInfoProfileList<Course, Students
       this.modalData.title = "Creating";
       this.modalData.isBusy = true;
       this.contentService
-        .createCourse(data, this.listForm.getSelecteds())
+        .createCourse(data, this.infoForm.listForm.getSelecteds())
         .takeWhile(() => this.isAlive)
         .subscribe(
           () => {

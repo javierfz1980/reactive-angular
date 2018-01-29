@@ -1,12 +1,6 @@
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {FormGroup} from "@angular/forms";
 import {EventEmitter, Input, Output} from "@angular/core";
-import {StoreData} from "../../../models/core/store-data";
-import {Observable} from "rxjs/Observable";
-import {BasicListForm} from "./basic-list-form";
-import {Course} from "../../../models/content/course";
-import {ContentService} from "../../../core/providers/services/content/content.service";
 import {AuthService} from "../../../core/providers/services/auth.service";
-import {Router} from "@angular/router";
 
 export type FormType = "create" | "update";
 

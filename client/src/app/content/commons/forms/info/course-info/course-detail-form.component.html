@@ -68,9 +68,14 @@
                     <div class="select">
                       <select id="teacher"
                               [ngClass]="{'invalid-select': !form.controls['teacher'].valid  &&
-                      form.controls['teacher'].touched && editMode}"
+                                form.controls['teacher'].touched && editMode}"
                               formControlName="teacher"
                               placeholder="Enter the teacher">
+                        <option [value]="null"
+                                [selected]="form.controls['teacher'].value === 'null' ||
+                                  form.controls['teacher'].value === selectTeacherStr">
+                          {{selectTeacherStr}}
+                        </option>
                         <option *ngFor="let teacher of storeData.data"
                                 [selected]="data.teacher === teacher.id"
                                 [value]="teacher.id">
@@ -78,7 +83,8 @@
                         </option>
                       </select>
                     </div>
-                    <label *ngIf="form.controls['teacher'].value">
+                    <label *ngIf="form.controls['teacher'].value !== 'null' &&
+                        form.controls['teacher'].value !== selectTeacherStr">
                       <a class="_pointer-mouse" (click)="gotoTeacher()">
                         <clr-icon shape="user"></clr-icon>
                       </a>
