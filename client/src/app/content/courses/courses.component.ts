@@ -52,15 +52,15 @@ export class CoursesComponent extends BasicContentDisplay<Course> implements OnI
             this.confirmModal.close();
           })
       };
-      super.openDeleteConfirmation();
+      super.openDeleteConfirmation(data.title);
   };
 
-  toggleStatus(course: Course) {
+  toggleStatus(data: Course) {
     this.action = () => {
       this.modalData.title = "Changing";
       this.modalData.isBusy = true;
       this.contentService
-        .updateCourseStatus(course.id, !course.active)
+        .updateCourseStatus(data.id, !data.active)
         .takeWhile(() => this.isAlive)
         .subscribe(
           () => {
@@ -68,7 +68,7 @@ export class CoursesComponent extends BasicContentDisplay<Course> implements OnI
             this.confirmModal.close();
           })
     };
-    super.openToggleStatusConfirmation();
+    super.openToggleStatusConfirmation(data.title);
   }
 
   ngOnDestroy() {

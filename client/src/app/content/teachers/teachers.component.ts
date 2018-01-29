@@ -55,7 +55,7 @@ export class TeachersComponent extends BasicContentDisplay<Teacher> implements O
             this.confirmModal.close();
           });
     };
-    super.openDeleteConfirmation();
+    super.openDeleteConfirmation(`${data.first_name} ${data.last_name}`);
   }
 
   ngOnDestroy() {

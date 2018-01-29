@@ -55,7 +55,7 @@ export class StudentsComponent extends BasicContentDisplay<Student> implements O
             this.confirmModal.close();
           });
     };
-    this.openDeleteConfirmation();
+    this.openDeleteConfirmation(`${data.first_name} ${data.last_name}`);
   }
 
   ngOnDestroy() {

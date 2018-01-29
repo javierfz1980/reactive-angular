@@ -17,27 +17,29 @@ export abstract class BasicModalConfirmActions {
     this.modalData = {
       type: "confirm",
       title: "Create",
-      text: "Are you sure you want to create this element?",
+      text: "Are you sure you want to create this element ?",
       action: this.action
     };
     this.confirmModal.open();
   }
 
-  protected openDeleteConfirmation() {
+  protected openDeleteConfirmation(data?: string) {
+    const detail: string = data ? `(${data}) ?` : "?";
     this.modalData = {
       type: "delete",
       title: "Delete",
-      text: "Are you sure you want to delete this element?",
+      text: `Are you sure you want to delete this element ${detail}`,
       action: this.action
     };
     this.confirmModal.open();
   }
 
-  protected openToggleStatusConfirmation() {
+  protected openToggleStatusConfirmation(data?: string) {
+    const detail: string = data ? `(${data}) ?` : "?";
     this.modalData = {
       type: "confirm",
-      title: "Change",
-      text: "Are you sure you want to change this element?",
+      title: "Change Status",
+      text: `Are you sure you want to change this element ${detail}`,
       action: this.action
     };
     this.confirmModal.open();
@@ -49,7 +51,7 @@ export abstract class BasicModalConfirmActions {
     this.modalData = {
       type: "confirm",
       title: "Update",
-      text: "Are you sure you want to update this element?",
+      text: "Are you sure you want to update this element ?",
       action: this.action
     };
     this.confirmModal.open();
