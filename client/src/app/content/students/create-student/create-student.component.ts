@@ -13,8 +13,6 @@ import {Observable} from "rxjs/Observable";
 import {Course} from "../../../models/content/course";
 import {AuthService} from "../../../core/providers/services/auth.service";
 import {BasicInfoList} from "../../commons/abstarct-clases/basic-info-list";
-import {StoreData} from "../../../models/core/store-data";
-import {Teacher} from "../../../models/content/teacher";
 
 @Component({
   selector: "gl-create-student",
@@ -44,27 +42,7 @@ export class CreateStudentComponent extends BasicInfoList<InfoProfileData, InfoP
     this.listFormMarked = Observable.of([]);
     this.isEditMode.next((this.isAdministrator && true));
     this.listFormSource = this.contentService
-      .getCourses()
-      .map((data: StoreData<Course>) => {
-        data.data = !data.data ? [] : data.data
-          .filter((course: Course) => course.active);
-        return data;
-      })
-      .switchMap((data: StoreData<Course>) => {
-        return Observable.from(data.data ? data.data : [])
-          .mergeMap((course: Course) => {
-            return this.contentService.getCourseTeacher(course.teacher)
-              .map((teacher: Teacher) => {
-                course.teacherInfo = teacher
-                return course;
-              })
-          })
-          .toArray()
-          .map((coursesWithTeacher: Course[]) => {
-            data.data = coursesWithTeacher;
-            return data;
-          });
-      });
+      .getActiveCoursesWithTeacher();
   }
 
   create(data: InfoProfileData) {

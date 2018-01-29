@@ -62,27 +62,7 @@ export class SingleStudentComponent extends BasicInfoList<InfoProfileData, InfoP
       });
 
     this.listFormSource = this.contentService
-      .getCourses()
-      .map((data: StoreData<Course>) => {
-        data.data = !data.data ? [] : data.data
-          .filter((course: Course) => course.active);
-        return data;
-      })
-      .switchMap((data: StoreData<Course>) => {
-        return Observable.from(data.data ? data.data : [])
-          .mergeMap((course: Course) => {
-            return this.contentService.getCourseTeacher(course.teacher)
-              .map((teacher: Teacher) => {
-                course.teacherInfo = teacher
-                return course;
-              })
-          })
-          .toArray()
-          .map((coursesWithTeacher: Course[]) => {
-            data.data = coursesWithTeacher;
-            return data;
-          });
-      });
+      .getActiveCoursesWithTeacher();
 
     this.listFormMarked = this.source
       .map((data: InfoProfileData) => data.info)

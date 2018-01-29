@@ -63,7 +63,7 @@ export class ContentService {
     return this.teachersService.getRecord(id);
   }
 
-  getCoursesWithTeacher(): Observable<StoreData<Course>> {
+  getActiveCoursesWithTeacher(): Observable<StoreData<Course>> {
     return this.getCourses()
       .map((data: StoreData<Course>) => {
         data.data = !data.data ? [] : data.data
