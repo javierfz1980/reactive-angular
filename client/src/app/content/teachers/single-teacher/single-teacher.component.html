@@ -16,32 +16,16 @@
   </h1>
   <br>
 
-  <clr-tabs>
+  <!-- student info -->
+  <gl-info-profile-form #infoForm
+                        [info]="{info: teacherInfo.info, profile: teacherInfo.profile}"
+                        [isReadOnly]="!(isAdministrator && editMode)"
+                        [markedList]="listFormMarked"
+                        [editMode]="isEditMode.asObservable()"
+                        [sourceList]="listFormSource"
+                        (update)="update($event)">
+  </gl-info-profile-form>
 
-    <!-- Info -->
-    <clr-tab>
-      <button clrTabLink id="link1">Profile</button>
-      <clr-tab-content>
-        <gl-info-profile-form [info]="{info: teacherInfo.info, profile: teacherInfo.profile}"
-                              [isReadOnly]="!(isAdministrator && editMode)"
-                              (update)="update($event)"></gl-info-profile-form>
-      </clr-tab-content>
-    </clr-tab>
-
-    <!-- Courses -->
-    <clr-tab>
-      <button clrTabLink>Courses</button>
-      <clr-tab-content>
-        <p>Note: If you select a Course which already has a Teacher it will be updated and assigned to you.</p>
-        <gl-courses-list-form #listForm
-                              [sourceList]="listFormSource"
-                              [markedList]="listFormMarked"
-                              [editMode]="isEditMode.asObservable()">
-        </gl-courses-list-form>
-      </clr-tab-content>
-    </clr-tab>
-
-  </clr-tabs>
 
   <gl-confirmation-modal #confirmModal [modalData]="modalData"></gl-confirmation-modal>
 </div>
