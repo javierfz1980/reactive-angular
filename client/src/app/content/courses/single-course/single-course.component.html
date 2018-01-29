@@ -22,14 +22,14 @@
     <clr-tab>
       <button clrTabLink id="link1">Info</button>
       <clr-tab-content>
-        <gl-course-detail-form [data]="courseInfo"
+        <gl-course-detail-form [info]="courseInfo"
                         [isReadOnly]="!(isAdministrator && editMode)"
                         (update)="update($event)"></gl-course-detail-form>
       </clr-tab-content>
     </clr-tab>
 
     <!-- Students -->
-    <clr-tab *ngIf="courseInfo.active || isAdministrator">
+    <clr-tab *ngIf="courseInfo.active">
       <button clrTabLink>Students</button>
       <clr-tab-content>
         <gl-students-list-form #listForm

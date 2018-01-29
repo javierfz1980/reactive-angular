@@ -9,6 +9,8 @@ import {appRoutePaths} from "../../../../../app-routing.module";
 import {ContentService} from "../../../../../core/providers/services/content/content.service";
 import {BasicInfoForm} from "../../../abstarct-clases/basic-info-form";
 import {StoreData} from "../../../../../models/core/store-data";
+import {getDateString} from "../../../../../helpers/helpers";
+import {InfoProfileData} from "../info-profile/info-profile-form.component";
 
 @Component({
   selector: "gl-course-detail-form",
@@ -18,7 +20,15 @@ import {StoreData} from "../../../../../models/core/store-data";
 export class CourseDetailFormComponent extends BasicInfoForm<Course> implements OnInit{
 
   @Input()
-  data: Course;
+  set info(data: Course) {
+    this.data = data;
+    if (this.form) {
+      this.form.reset();
+      this.form.patchValue(data);
+    }
+    this.contentService.fetchTeachers();
+  };
+
 
   @Input()
   set isReadOnly(value: boolean) {
@@ -49,6 +59,7 @@ export class CourseDetailFormComponent extends BasicInfoForm<Course> implements 
     super.ngOnInit();
     this.data = this.validateInfo();
     this.isAdministrator = this.authService.isAdministrator();
+
     this.teachersDataSource = this.contentService
       .getTeachers()
       .merge(Observable.of({data:[], loading: true}));

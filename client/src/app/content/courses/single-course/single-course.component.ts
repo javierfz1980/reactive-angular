@@ -46,7 +46,7 @@ export class SingleCourseComponent extends BasicInfoProfileList<Course, Students
       .getCourses()
       .filter(storeData => Boolean(storeData.data))
       .withLatestFrom(this.id)
-      .map(([storeData, id]) => storeData.data.find((courseData: Course) => courseData.id === id));
+      .map(([storeData, id]) => storeData.data.find((courseData: Course) => courseData.id === id))
 
     this.listFormSource = this.contentService
       .getStudents();
@@ -74,7 +74,7 @@ export class SingleCourseComponent extends BasicInfoProfileList<Course, Students
 
   update(data: Course) {
     const originalStudents: string[] = data.students;
-    data.students = this.listForm.getSelecteds();
+    data.students = this.listForm ? this.listForm.getSelecteds() : data.students;
     this.action = () => {
       this.modalData.title = "Updating";
       this.modalData.isBusy = true;
@@ -87,7 +87,7 @@ export class SingleCourseComponent extends BasicInfoProfileList<Course, Students
             this.confirmModal.close();
           });
     };
-    super.openUpdateConfirmation(originalStudents, this.listForm.getSelecteds());
+    super.openUpdateConfirmation(originalStudents, this.listForm ? this.listForm.getSelecteds() : data.students);
 
   }
 
