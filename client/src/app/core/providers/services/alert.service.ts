@@ -92,7 +92,7 @@ export class AlertService {
    * @returns {Observable<Alert[]>}
    */
   getAlerts(): Observable<Alert[]> {
-    return this.dataSubject.asObservable();;
+    return this.dataSubject.asObservable();
   }
 
   /**

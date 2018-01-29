@@ -5,7 +5,6 @@ import {ClarityModule} from "clarity-angular";
 import {HttpClientModule} from "@angular/common/http";
 import {CommonModule} from "@angular/common";
 import {RouterModule} from "@angular/router";
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {ConfirmationModalComponent} from "./confirmation-modal/confirmation-modal.component";
 
 const modules = [
@@ -14,7 +13,7 @@ const modules = [
   ReactiveFormsModule,
   RouterModule,
   ClarityModule,
-  PipesModule,
+  PipesModule
 ];
 
 const declarations = [

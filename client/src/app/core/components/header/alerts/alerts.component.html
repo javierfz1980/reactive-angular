@@ -22,7 +22,7 @@
       </span>
     </label>
     <div class="dropdown-divider"></div>
-    <div *ngIf="alerts | async as alertsList; else noAlerts">
+    <div *ngIf="alerts | async | reverse as alertsList; else noAlerts">
       <ng-container *ngIf="alertsList.length > 0; else noAlerts">
       <button *ngFor="let alert of alertsList; let idx = index"
               clrDropdownItem
