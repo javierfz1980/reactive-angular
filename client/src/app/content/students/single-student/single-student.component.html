@@ -2,7 +2,7 @@
 <div *ngIf="source | async as studentInfo; else loading">
 
   <h1>
-    {{studentInfo.info.first_name}} {{studentInfo.info.last_name}}&nbsp;<br>
+    {{studentInfo.info.first_name}} {{studentInfo.info.last_name}}<br>
 
     <div class="btn-group" *ngIf="isAdministrator" >
       <!-- content edit -->
@@ -16,7 +16,6 @@
       </button>
     </div>
   </h1>
-  <br>
 
   <!-- student info -->
   <gl-info-profile-form #infoForm

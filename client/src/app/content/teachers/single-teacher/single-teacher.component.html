@@ -2,7 +2,7 @@
 <div *ngIf="source | async as teacherInfo; else loading">
 
   <h1>
-    {{teacherInfo.info.first_name}} {{teacherInfo.info.last_name}}&nbsp;<br>
+    {{teacherInfo.info.first_name}} {{teacherInfo.info.last_name}}<br>
     <!-- content delete -->
     <div class="btn-group" *ngIf="isAdministrator">
       <button class="btn btn-sm" [ngClass]="{'btn-primary': editMode, 'btn-outline': !editMode}" (click)="toggleEditMode()">
@@ -14,7 +14,6 @@
       </button>
     </div>
   </h1>
-  <br>
 
   <!-- student info -->
   <gl-info-profile-form #infoForm
