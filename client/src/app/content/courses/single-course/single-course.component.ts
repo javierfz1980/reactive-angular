@@ -50,7 +50,7 @@ export class SingleCourseComponent extends BasicInfoList<Course, CourseDetailFor
       .map(([storeData, id]) => storeData.data.find((courseData: Course) => courseData.id === id))
 
     this.listFormSource = this.contentService
-      .getStudents();
+      .getStudents(false);
 
     this.listFormMarked = this.source
       .map((course: Course) => course ? course.students : []);

@@ -38,7 +38,7 @@ export class CreateCourseComponent extends BasicInfoList<Course, CourseDetailFor
 
   ngOnInit() {
     super.ngOnInit();
-    this.listFormSource = this.contentService.getStudents();
+    this.listFormSource = this.contentService.getStudents(false);
     this.listFormMarked = Observable.of([]);
     this.isEditMode.next((this.isAdministrator && true));
   }
