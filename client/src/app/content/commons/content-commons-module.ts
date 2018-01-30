@@ -1,17 +1,17 @@
 import {ContentLoaderComponent} from "./loader/content-loader.component";
 import {NgModule} from "@angular/core";
 import {CommonsModule} from "../../commons/commons.module";
-import {CoursesListFormComponent} from "./forms/lists/courses-list/courses-list-form.component";
-import {InfoProfileFormComponent} from "./forms/info/info-profile/info-profile-form.component";
-import {StudentsListFormComponent} from "./forms/lists/students-list/students-list-form.component";
-import {CourseDetailFormComponent} from "./forms/info/course-info/course-detail-form.component";
+import {CoursesListComponent} from "./lists/courses-list/courses-list.component";
+import {ProfileInfoComponent} from "./info/profile-info/profile-info.component";
+import {StudentsListComponent} from "./lists/students-list/students-list.component";
+import {CourseInfoComponent} from "./info/course-info/course-info.component";
 
 const contents = [
   ContentLoaderComponent,
-  InfoProfileFormComponent,
-  CoursesListFormComponent,
-  CourseDetailFormComponent,
-  StudentsListFormComponent
+  ProfileInfoComponent,
+  CoursesListComponent,
+  CourseInfoComponent,
+  StudentsListComponent
 ];
 
 @NgModule({

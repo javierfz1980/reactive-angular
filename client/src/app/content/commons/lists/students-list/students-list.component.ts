@@ -1,18 +1,18 @@
 import {Component} from "@angular/core";
 import {Observable} from "rxjs/Observable";
-import {Student} from "../../../../../models/content/student";
+import {Student} from "../../../../models/content/student";
 import {Router} from "@angular/router";
-import {appRoutePaths} from "../../../../../app-routing.module";
-import {ContentService} from "../../../../../core/providers/services/content/content.service";
-import {BasicListForm} from "../../../abstarct-clases/basic-list-form";
-import {StoreData} from "../../../../../models/core/store-data";
+import {appRoutePaths} from "../../../../app-routing.module";
+import {ContentService} from "../../../../core/providers/services/content/content.service";
+import {BasicList} from "../../abstarct-clases/basic-list";
+import {StoreData} from "../../../../models/core/store-data";
 
 @Component({
-  selector: "gl-students-list-form",
-  templateUrl: "./students-list-form.component.html",
-  styleUrls: ["./students-list-form.component.css"]
+  selector: "gl-students-list",
+  templateUrl: "./students-list.component.html",
+  styleUrls: ["./students-list.component.css"]
 })
-export class StudentsListFormComponent extends BasicListForm<Student>{
+export class StudentsListComponent extends BasicList<Student>{
 
   dataSource: Observable<StoreData<Student>>;
   gridSize: number = 10;

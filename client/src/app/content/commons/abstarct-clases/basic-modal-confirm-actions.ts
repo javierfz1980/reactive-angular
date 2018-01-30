@@ -2,7 +2,6 @@ import {
   ConfirmationModalComponent,
   ConfirmationModalData
 } from "../../../commons/confirmation-modal/confirmation-modal.component";
-import {getDifferencesBetween} from "../../../helpers/helpers";
 
 export abstract class BasicModalConfirmActions {
 
@@ -10,8 +9,6 @@ export abstract class BasicModalConfirmActions {
   abstract action: () => void;
 
   protected modalData: ConfirmationModalData;
-  protected elementsTobeRemoved?: string[];
-  protected elementsTobeAdded?: string[];
 
   protected openCreateConfirmation() {
     this.modalData = {
@@ -45,13 +42,12 @@ export abstract class BasicModalConfirmActions {
     this.confirmModal.open();
   }
 
-  protected openUpdateConfirmation(sourceElements: string[], newElements: string[]) {
-    this.elementsTobeRemoved = getDifferencesBetween<string>(sourceElements ? sourceElements : [], newElements);
-    this.elementsTobeAdded = getDifferencesBetween<string>(newElements, sourceElements ? sourceElements : []);
+  protected openUpdateConfirmation1(data?: string) {
+    const detail: string = data ? `(${data}) ?` : "?";
     this.modalData = {
       type: "confirm",
       title: "Update",
-      text: "Are you sure you want to update this element ?",
+      text: `Are you sure you want to update this element ${detail}`,
       action: this.action
     };
     this.confirmModal.open();

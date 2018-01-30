@@ -4,13 +4,13 @@
 <div>
 
   <!-- student info -->
-  <gl-info-profile-form #infoForm
-                        [isReadOnly]="false"
-                        [markedList]="listFormMarked"
-                        [editMode]="isEditMode.asObservable()"
-                        [sourceList]="listFormSource"
-                        (create)="create($event)">
-  </gl-info-profile-form>
+  <gl-profile-info #infoForm
+                   [isReadOnly]="false"
+                   [markedList]="listFormMarked"
+                   [editMode]="isEditMode.asObservable()"
+                   [sourceList]="listFormSource"
+                   (create)="create($event)">
+  </gl-profile-info>
 
   <gl-confirmation-modal #confirmModal [modalData]="modalData"></gl-confirmation-modal>
 </div>

@@ -1,5 +1,5 @@
 <!-- content tabs -->
-<div *ngIf="source | async as studentInfo; else loading">
+<div *ngIf="dataSource | async as studentInfo; else loading">
 
   <h1>
     {{studentInfo.info.first_name}} {{studentInfo.info.last_name}}<br>
@@ -18,14 +18,14 @@
   </h1>
 
   <!-- student info -->
-  <gl-info-profile-form #infoForm
-                        [info]="{info: studentInfo.info, profile: studentInfo.profile}"
-                        [isReadOnly]="!(isAdministrator && editMode)"
-                        [markedList]="listFormMarked"
-                        [editMode]="isEditMode.asObservable()"
-                        [sourceList]="listFormSource"
-                        (update)="update($event)">
-  </gl-info-profile-form>
+  <gl-profile-info #infoForm
+                   [info]="{info: studentInfo.info, profile: studentInfo.profile}"
+                   [isReadOnly]="!(isAdministrator && editMode)"
+                   [markedList]="listFormMarked"
+                   [editMode]="isEditMode.asObservable()"
+                   [sourceList]="listFormSource"
+                   (update)="update($event)">
+  </gl-profile-info>
 
   <gl-confirmation-modal #confirmModal [modalData]="modalData"></gl-confirmation-modal>
 </div>

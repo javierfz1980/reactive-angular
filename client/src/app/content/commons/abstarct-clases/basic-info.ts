@@ -4,7 +4,7 @@ import {AuthService} from "../../../core/providers/services/auth.service";
 
 export type FormType = "create" | "update";
 
-export abstract class BasicInfoForm<T> {
+export abstract class BasicInfo<T> {
 
   @Output('update')
   protected updateEvent: EventEmitter<T> = new EventEmitter<T>();

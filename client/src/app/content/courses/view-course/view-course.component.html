@@ -1,5 +1,5 @@
 <!-- content tabs -->
-<div *ngIf="source | async as courseInfo; else loading">
+<div *ngIf="dataSource | async as courseInfo; else loading">
 
   <h1>
     {{courseInfo.title}}
@@ -19,14 +19,14 @@
   </h1>
 
   <!-- course info -->
-  <gl-course-detail-form #infoForm
-                         [info]="courseInfo"
-                         [isReadOnly]="!(isAdministrator && editMode)"
-                         [markedList]="listFormMarked"
-                         [editMode]="isEditMode.asObservable()"
-                         [sourceList]="listFormSource"
-                         (update)="update($event)">
-  </gl-course-detail-form>
+  <gl-course-info #infoForm
+                  [info]="courseInfo"
+                  [isReadOnly]="!(isAdministrator && editMode)"
+                  [markedList]="listFormMarked"
+                  [editMode]="isEditMode.asObservable()"
+                  [sourceList]="listFormSource"
+                  (update)="update($event)">
+  </gl-course-info>
 
   <gl-confirmation-modal #confirmModal [modalData]="modalData"></gl-confirmation-modal>
 </div>

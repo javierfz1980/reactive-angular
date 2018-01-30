@@ -1,8 +1,8 @@
 import {Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {
   InfoProfileData,
-  InfoProfileFormComponent
-} from "../../commons/forms/info/info-profile/info-profile-form.component";
+  ProfileInfoComponent
+} from "../../commons/info/profile-info/profile-info.component";
 import {
   ConfirmationModalComponent
 } from "../../../commons/confirmation-modal/confirmation-modal.component";
@@ -12,22 +12,26 @@ import {ContentService} from "../../../core/providers/services/content/content.s
 import {Observable} from "rxjs/Observable";
 import {Course} from "../../../models/content/course";
 import {AuthService} from "../../../core/providers/services/auth.service";
-import {BasicInfoList} from "../../commons/abstarct-clases/basic-info-list";
+import {BasicContentEditor} from "../../commons/abstarct-clases/basic-content-editor";
+import {StoreData} from "../../../models/core/store-data";
 
 @Component({
   selector: "gl-create-student",
   templateUrl: "./create-student.component.html"
 })
-export class CreateStudentComponent extends BasicInfoList<InfoProfileData, InfoProfileFormComponent, Course> implements OnInit, OnDestroy {
+export class CreateStudentComponent extends BasicContentEditor<InfoProfileData> implements OnInit, OnDestroy {
 
   @ViewChild("confirmModal")
   confirmModal: ConfirmationModalComponent;
 
   @ViewChild("infoForm")
-  infoForm: InfoProfileFormComponent;
+  infoForm: ProfileInfoComponent;
 
   title: string = "Add new Student";
+  listFormSource: Observable<StoreData<Course>>;
+  listFormMarked: Observable<string[]>;
   action: () => void;
+
   private isAlive: boolean = true;
 
   constructor(protected authService: AuthService,
@@ -41,8 +45,7 @@ export class CreateStudentComponent extends BasicInfoList<InfoProfileData, InfoP
     super.ngOnInit();
     this.listFormMarked = Observable.of([]);
     this.isEditMode.next((this.isAdministrator && true));
-    this.listFormSource = this.contentService
-      .getActiveCoursesWithTeacher();
+    this.listFormSource = this.contentService.getActiveCoursesWithTeacher();
   }
 
   create(data: InfoProfileData) {

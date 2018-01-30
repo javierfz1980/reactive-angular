@@ -5,28 +5,31 @@ import {
 } from "../../../commons/confirmation-modal/confirmation-modal.component";
 import {appRoutePaths} from "../../../app-routing.module";
 import {Course} from "../../../models/content/course";
-import {StudentsListFormComponent} from "../../commons/forms/lists/students-list/students-list-form.component";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ContentService} from "../../../core/providers/services/content/content.service";
 import {Student} from "../../../models/content/student";
 import {Observable} from "rxjs/Observable";
-import {BasicInfoList} from "../../commons/abstarct-clases/basic-info-list";
-import {CourseDetailFormComponent} from "../../commons/forms/info/course-info/course-detail-form.component";
+import {CourseInfoComponent} from "../../commons/info/course-info/course-info.component";
+import {BasicContentEditor} from "../../commons/abstarct-clases/basic-content-editor";
+import {StoreData} from "../../../models/core/store-data";
 
 @Component({
   selector: "gl-create-course",
   templateUrl: "./create-course.component.html"
 })
-export class CreateCourseComponent extends BasicInfoList<Course, CourseDetailFormComponent, Student> implements OnInit, OnDestroy {
+export class CreateCourseComponent extends BasicContentEditor<Course> implements OnInit, OnDestroy {
 
   @ViewChild("confirmModal")
   confirmModal: ConfirmationModalComponent;
 
   @ViewChild("infoForm")
-  infoForm: CourseDetailFormComponent;
+  infoForm: CourseInfoComponent;
 
   title: string = "Create new Course";
+  listFormSource: Observable<StoreData<Student>>;
+  listFormMarked: Observable<string[]>;
   action: () => void;
+
   private isAlive: boolean = true;
 
   constructor(protected authService: AuthService,
@@ -56,7 +59,7 @@ export class CreateCourseComponent extends BasicInfoList<Course, CourseDetailFor
             this.confirmModal.close();
             this.router.navigate([appRoutePaths.courses.path])
           });
-    }
+    };
     this.openCreateConfirmation();
   }
 

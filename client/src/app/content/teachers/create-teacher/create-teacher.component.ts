@@ -5,29 +5,33 @@ import {
 import {ActivatedRoute, Router} from "@angular/router";
 import {
   InfoProfileData,
-  InfoProfileFormComponent
-} from "../../commons/forms/info/info-profile/info-profile-form.component";
+  ProfileInfoComponent
+} from "../../commons/info/profile-info/profile-info.component";
 import {appRoutePaths} from "../../../app-routing.module";
 import {ContentService} from "../../../core/providers/services/content/content.service";
 import {Observable} from "rxjs/Observable";
 import {AuthService} from "../../../core/providers/services/auth.service";
 import {Course} from "../../../models/content/course";
-import {BasicInfoList} from "../../commons/abstarct-clases/basic-info-list";
+import {StoreData} from "../../../models/core/store-data";
+import {BasicContentEditor} from "../../commons/abstarct-clases/basic-content-editor";
 
 @Component({
   selector: "gl-create-teacher",
   templateUrl: "create-teacher.component.html"
 })
-export class CreateTeacherComponent extends BasicInfoList<InfoProfileData, InfoProfileFormComponent, Course> implements OnDestroy{
+export class CreateTeacherComponent extends BasicContentEditor<InfoProfileData> implements OnDestroy{
 
   @ViewChild("confirmModal")
   confirmModal: ConfirmationModalComponent;
 
   @ViewChild("infoForm")
-  infoForm: InfoProfileFormComponent;
+  infoForm: ProfileInfoComponent;
 
   title: string = "Add new Teacher";
+  listFormSource: Observable<StoreData<Course>>;
+  listFormMarked: Observable<string[]>;
   action: () => void;
+
   private isAlive: boolean = true;
 
   constructor(protected authService: AuthService,

@@ -1,7 +1,9 @@
 import {globalProperties} from "../../environments/properties";
 
 export function getDifferencesBetween<T>(origin: T[], destiny: T[]): T[] {
-  return  origin ? origin.filter((originItem: T) => destiny && destiny.indexOf(originItem) < 0) : destiny;
+  origin = origin ? origin : [];
+  destiny = destiny ? destiny : [];
+  return  origin.filter((originItem: T) => destiny.indexOf(originItem) < 0);
 }
 
 export function objectCopy<T>(source: T): T {

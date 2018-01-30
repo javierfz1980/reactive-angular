@@ -6,32 +6,34 @@ import {Profile} from "../../../models/content/profile";
 import {AuthService} from "../../../core/providers/services/auth.service";
 import {
   InfoProfileData,
-  InfoProfileFormComponent
-} from "../../commons/forms/info/info-profile/info-profile-form.component";
+  ProfileInfoComponent
+} from "../../commons/info/profile-info/profile-info.component";
 import {appRoutePaths} from "../../../app-routing.module";
 import {Course} from "../../../models/content/course";
-import {BasicInfoList} from "../../commons/abstarct-clases/basic-info-list";
 import {ConfirmationModalComponent} from "../../../commons/confirmation-modal/confirmation-modal.component";
 import {StoreData} from "../../../models/core/store-data";
 import {Observable} from "rxjs/Observable";
-import {Teacher} from "../../../models/content/teacher";
+import {BasicContentEditor} from "../../commons/abstarct-clases/basic-content-editor";
+import {getDifferencesBetween} from "../../../helpers/helpers";
 import 'rxjs/add/operator/takeWhile';
 import 'rxjs/add/operator/withLatestFrom';
 import 'rxjs/add/operator/filter';
 
 @Component({
-  selector: "gl-single-student",
-  templateUrl: "./single-student.component.html"
+  selector: "gl-view-student",
+  templateUrl: "./view-student.component.html"
 })
-export class SingleStudentComponent extends BasicInfoList<InfoProfileData, InfoProfileFormComponent, Course>
+export class ViewStudentComponent extends BasicContentEditor<InfoProfileData>
                                     implements OnInit, OnDestroy {
 
   @ViewChild("confirmModal")
   confirmModal: ConfirmationModalComponent;
 
   @ViewChild("infoForm")
-  infoForm: InfoProfileFormComponent;
+  infoForm: ProfileInfoComponent;
 
+  listFormSource: Observable<StoreData<Course>>;
+  listFormMarked: Observable<string[]>;
   action: () => void;
   private isAlive: boolean = true;
 
@@ -50,7 +52,7 @@ export class SingleStudentComponent extends BasicInfoList<InfoProfileData, InfoP
         return params.id;
       });
 
-    this.source = this.contentService
+    this.dataSource = this.contentService
       .getStudents()
       .filter(storeData => Boolean(storeData.data))
       .withLatestFrom(this.id)
@@ -64,7 +66,7 @@ export class SingleStudentComponent extends BasicInfoList<InfoProfileData, InfoP
     this.listFormSource = this.contentService
       .getActiveCoursesWithTeacher();
 
-    this.listFormMarked = this.source
+    this.listFormMarked = this.dataSource
       .map((data: InfoProfileData) => data.info)
       .map((student: Student) => student.courses);
   }
@@ -83,17 +85,18 @@ export class SingleStudentComponent extends BasicInfoList<InfoProfileData, InfoP
             this.router.navigate([appRoutePaths.students.path]);
           });
     };
-    super.openDeleteConfirmation();
+    super.openDeleteConfirmation(`${data.first_name} ${data.last_name}`);
   }
 
   update(data: InfoProfileData) {
-    const originalCourses: string[] = data.info.courses;
+    const elementsTobeRemoved = getDifferencesBetween<string>(data.info.courses, this.infoForm.listForm.getSelecteds());
+    const elementsTobeAdded = getDifferencesBetween<string>(this.infoForm.listForm.getSelecteds(), data.info.courses);
     data.info.courses = this.infoForm.listForm.getSelecteds();
     this.action = () => {
       this.modalData.title = "Updating";
       this.modalData.isBusy = true;
       this.contentService
-        .updateStudent(data.info, data.profile, this.elementsTobeRemoved, this.elementsTobeAdded)
+        .updateStudent(data.info, data.profile, elementsTobeRemoved, elementsTobeAdded)
         .takeWhile(() => this.isAlive)
         .subscribe(
           () => {
@@ -101,7 +104,7 @@ export class SingleStudentComponent extends BasicInfoList<InfoProfileData, InfoP
             this.confirmModal.close();
           });
     };
-    super.openUpdateConfirmation(originalCourses, this.infoForm.listForm.getSelecteds())
+    super.openUpdateConfirmation1(`${data.info.first_name} ${data.info.last_name}`)
   }
 
   ngOnDestroy() {

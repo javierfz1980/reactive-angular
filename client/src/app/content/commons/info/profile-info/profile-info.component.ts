@@ -1,30 +1,30 @@
 import {Component, Input, OnInit, ViewChild} from "@angular/core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Profile} from "../../../../../models/content/profile";
-import {BasicInfo} from "../../../../../models/content/basic-info";
-import {BasicInfoForm} from "../../../abstarct-clases/basic-info-form";
-import {getDateString} from "../../../../../helpers/helpers";
-import {AuthService} from "../../../../../core/providers/services/auth.service";
-import {StoreData} from "../../../../../models/core/store-data";
+import {Profile} from "../../../../models/content/profile";
+import {ProfileBasicInfo} from "../../../../models/content/basic-info";
+import {BasicInfo} from "../../abstarct-clases/basic-info";
+import {getDateString} from "../../../../helpers/helpers";
+import {AuthService} from "../../../../core/providers/services/auth.service";
+import {StoreData} from "../../../../models/core/store-data";
 import {Observable} from "rxjs/Observable";
-import {StudentsListFormComponent} from "../../lists/students-list/students-list-form.component";
-import {Student} from "../../../../../models/content/student";
+import {StudentsListComponent} from "../../lists/students-list/students-list.component";
+import {Student} from "../../../../models/content/student";
 
 export interface InfoProfileData {
-  info: BasicInfo;
+  info: ProfileBasicInfo;
   profile: Profile;
   courses?: string[];
 }
 
 @Component({
-  selector: "gl-info-profile-form",
-  templateUrl: "./info-profile-form.component.html",
-  styleUrls: ["./info-profile-form.component.css"]
+  selector: "gl-profile-info",
+  templateUrl: "./profile-info.component.html",
+  styleUrls: ["./profile-info.component.css"]
 })
-export class InfoProfileFormComponent extends BasicInfoForm<InfoProfileData> implements OnInit {
+export class ProfileInfoComponent extends BasicInfo<InfoProfileData> implements OnInit {
 
   @ViewChild("listForm")
-  listForm: StudentsListFormComponent;
+  listForm: StudentsListComponent;
 
   @Input()
   markedList: Observable<string[]>;
