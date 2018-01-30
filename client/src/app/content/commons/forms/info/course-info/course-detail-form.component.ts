@@ -33,7 +33,7 @@ export class CourseDetailFormComponent extends BasicInfoForm<Course> implements 
 
   @Input()
   set info(data: Course) {
-    this.data = data;
+    this._info = data;
     if (this.form) {
       this.form.reset();
       this.form.patchValue(data);
@@ -66,27 +66,27 @@ export class CourseDetailFormComponent extends BasicInfoForm<Course> implements 
 
   ngOnInit() {
     super.ngOnInit();
-    this.data = this.validateInfo();
+    this._info = this.validateInfo();
 
     this.teachersDataSource = this.contentService
       .getTeachers()
       .merge(Observable.of({data:[], loading: true}));
 
     this.form = this.fb.group({
-      id: [this.data.id ],
-      title: [this.data.title, Validators.required ],
-      short_description: [this.data.short_description, Validators.required ],
-      detail: [this.data.detail, Validators.required ],
-      active: [{value: this.data.active, disabled: this._isReadOnly}, Validators.required ],
-      teacher: [{value: this.data.teacher, disabled: this._isReadOnly} ],
-      students: [this.data.students ]
+      id: [this._info.id ],
+      title: [this._info.title, Validators.required ],
+      short_description: [this._info.short_description, Validators.required ],
+      detail: [this._info.detail, Validators.required ],
+      active: [{value: this._info.active, disabled: this._isReadOnly}, Validators.required ],
+      teacher: [{value: this._info.teacher, disabled: this._isReadOnly} ],
+      students: [this._info.students ]
     });
 
     this.contentService.fetchTeachers();
   }
 
   private validateInfo(): Course {
-    if (!this.data) {
+    if (!this._info) {
       return {
         id: "",
         title: "",
@@ -97,7 +97,7 @@ export class CourseDetailFormComponent extends BasicInfoForm<Course> implements 
         students: []
       }
     }
-    return this.data;
+    return this._info;
   }
 
   gotoTeacher(edit: boolean = false) {

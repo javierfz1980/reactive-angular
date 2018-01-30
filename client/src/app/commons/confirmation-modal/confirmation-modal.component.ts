@@ -1,7 +1,4 @@
-import {Component, EventEmitter, Input, Output, ViewChild} from "@angular/core";
-import {Student} from "../../models/content/student";
-import {Teacher} from "../../models/content/teacher";
-import {Course} from "../../models/content/course";
+import {Component, Input} from "@angular/core";
 
 export type ConfirmationModalType = "delete" | "confirm" | "response";
 export interface ConfirmationModalData {
@@ -19,11 +16,11 @@ export interface ConfirmationModalData {
 export class ConfirmationModalComponent {
 
   opened: boolean = false;
-  data: ConfirmationModalData;
+  _modalData: ConfirmationModalData;
 
   @Input()
   set modalData(data: ConfirmationModalData) {
-    this.data = data;
+    this._modalData = data;
   }
 
   open() {
@@ -35,7 +32,7 @@ export class ConfirmationModalComponent {
   }
 
   onOkClicked() {
-    if (this.data.action) this.data.action();
+    if (this._modalData.action) this._modalData.action();
   }
 
 }

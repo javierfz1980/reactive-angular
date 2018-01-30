@@ -14,7 +14,7 @@ export abstract class BasicInfoForm<T> {
 
   @Input()
   protected set info(data: T) {
-    this.data = data;
+    this._info = data;
   }
 
   @Input()
@@ -22,17 +22,17 @@ export abstract class BasicInfoForm<T> {
     this._isReadOnly = value;
   }
 
-  protected data: T;
+  protected _info: T;
+  protected _isReadOnly: boolean;
   protected form: FormGroup;
   protected type: FormType;
-  protected _isReadOnly: boolean;
   protected isAdministrator: boolean;
 
   constructor(protected authService: AuthService) {}
 
   ngOnInit() {
     this.isAdministrator = this.authService.isAdministrator();
-    this.type = this.data ? "update" : "create";
+    this.type = this._info ? "update" : "create";
   }
 
   protected update() {

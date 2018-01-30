@@ -12,21 +12,21 @@ export class NotificationComponent {
   readEvent: EventEmitter<Alert> = new EventEmitter<Alert>();
 
   @Input()
-  set data(content: Alert) {
-    this.alert = content;
+  set alert(data: Alert) {
+    this._alert = data;
     this.closed = false;
-    if (content.duration) {
+    if (data.duration) {
       setTimeout(() => {
         this.onClose();
-      }, content.duration);
+      }, data.duration);
     }
   }
 
   closed: boolean = true;
-  alert: Alert;
+  _alert: Alert;
 
   onClose() {
-    this.readEvent.emit(this.alert);
+    this.readEvent.emit(this._alert);
     this.closed = true;
   }
 }

@@ -1,24 +1,24 @@
 <clr-modal #modal
            [(clrModalOpen)]="opened"
-           [clrModalClosable]="(data && data.type !== 'response' && !data.isBusy)">
+           [clrModalClosable]="(_modalData && _modalData.type !== 'response' && !_modalData.isBusy)">
   <h3 class="modal-title">
-    {{(data) ? data.title : ""}}
-    <span *ngIf="data && data.isBusy" class="spinner spinner-sm"></span>
+    {{(_modalData) ? _modalData.title : ""}}
+    <span *ngIf="_modalData && _modalData.isBusy" class="spinner spinner-sm"></span>
   </h3>
   <div class="modal-body">
-    <p>{{(data) ? data.text : ""}}</p>
+    <p>{{(_modalData) ? _modalData.text : ""}}</p>
   </div>
-  <div class="modal-footer" *ngIf="data">
-    <button *ngIf="data && data.type !== 'response'" type="button" class="btn btn-outline"
-            [disabled]="data.isBusy"
+  <div class="modal-footer" *ngIf="_modalData">
+    <button *ngIf="_modalData && _modalData.type !== 'response'" type="button" class="btn btn-outline"
+            [disabled]="_modalData.isBusy"
             (click)="close()">Cancel</button>
     <button type="button"
             (click)="onOkClicked()"
-            [disabled]="data.isBusy"
-            [class]="(data && data.type === 'delete') ?
+            [disabled]="_modalData.isBusy"
+            [class]="(_modalData && _modalData.type === 'delete') ?
                 'btn ok-btn btn-warning' : 'btn ok-btn btn-primary'" >
-      <clr-icon *ngIf="data.type === 'delete'" shape="trash"></clr-icon>
-      {{data.type === 'delete' ? 'delete' : 'ok'}}
+      <clr-icon *ngIf="_modalData.type === 'delete'" shape="trash"></clr-icon>
+      {{_modalData.type === 'delete' ? 'delete' : 'ok'}}
     </button>
   </div>
 </clr-modal>

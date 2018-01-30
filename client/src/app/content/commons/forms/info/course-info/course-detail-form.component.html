@@ -1,4 +1,4 @@
-<form *ngIf="data" [formGroup]="form">
+<form *ngIf="_info" [formGroup]="form">
 
   <!-- Stack View -->
   <section class="form-block" >
@@ -61,7 +61,7 @@
                   <label for="active"></label>
                 </div>
               </div>
-              <div class="form-group" *ngIf="data.active || type === 'create'">
+              <div class="form-group" *ngIf="_info.active || type === 'create'">
                 <label> Teacher: </label>
                 <ng-container *ngIf="teachersDataSource | async as storeData;">
                   <ng-container *ngIf="!storeData.loading; else loadingTeahers">
@@ -73,13 +73,13 @@
                               placeholder="Enter the teacher">
                         <option [selected]="form.controls['teacher'].value === null"></option>
                         <option *ngFor="let teacher of storeData.data"
-                                [selected]="data.teacher === teacher.id"
+                                [selected]="_info.teacher === teacher.id"
                                 [value]="teacher.id">
                           {{teacher.first_name}} {{teacher.last_name}}
                         </option>
                       </select>
                     </div>
-                    <label *ngIf="form.controls['teacher'].value !== null">
+                    <label *ngIf="form.controls['teacher'].value !== ''">
                       <a class="_pointer-mouse" (click)="gotoTeacher()">
                         <clr-icon shape="user"></clr-icon>
                       </a>
@@ -101,7 +101,7 @@
       <!--  -->
 
       <!-- students block -->
-      <clr-stack-block *ngIf="data.active || type === 'create'">
+      <clr-stack-block *ngIf="_info.active || type === 'create'">
         <clr-stack-label>Students</clr-stack-label>
         <clr-stack-block>
           <clr-stack-label class="clr-stack-hide-label"></clr-stack-label>
