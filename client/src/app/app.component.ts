@@ -1,8 +1,8 @@
 import {Component, OnInit} from "@angular/core";
 import {AuthService} from "./core/providers/services/auth.service";
 import {Observable} from "rxjs/Observable";
-import {TranslateService} from "ng2-translate";
 import {globalProperties} from "../environments/properties";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'gl-root',

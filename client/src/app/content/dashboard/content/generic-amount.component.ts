@@ -4,9 +4,6 @@ import {Teacher} from "../../../models/content/teacher";
 import {Student} from "../../../models/content/student";
 import {Course} from "../../../models/content/course";
 
-export interface DashboardAmount {
-  total: number;
-}
 
 @Component({
   selector: "gl-generic-amount",

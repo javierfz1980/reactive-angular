@@ -5,5 +5,11 @@
     "hint": "Complete las credenciales para ingresar",
     "remember": "Recordar",
     "login": "Login"
+  },
+  "dashboard": {
+    "courses": "Cursos",
+    "students": "Estudiantes",
+    "teachers": "Profesores",
+    "mostPopular": "Curso mas popular"
   }
 }

@@ -5,5 +5,11 @@
     "hint": "Enter your credentials to sign",
     "remember": "Remember me",
     "login": "Login"
+  },
+  "dashboard": {
+    "courses": "Courses",
+    "students": "Students",
+    "teachers": "Teachers",
+    "mostPopular": "Most popular Coure"
   }
 }

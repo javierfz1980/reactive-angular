@@ -5,8 +5,7 @@ import {LoginComponent} from "./components/login/login.component";
 import {SideNavComponent} from "./components/nav/side-nav/side-nav.component";
 import {CommonsModule} from "../commons/commons.module";
 import {ServicesModule} from "./providers/services/services.module";
-import {interceptors, InterceptorsModule} from "./providers/interceptors/interceptors.module";
-import {AppI18nModule} from "./i18n/app-i18n.module";
+import {InterceptorsModule} from "./providers/interceptors/interceptors.module";
 import {GuardModule} from "./providers/guards/guard.module";
 import {AccountComponent} from "./components/header/account/account.component";
 import {AccountDetailsModalComponent} from "./components/header/account/account-details-modal/account-details-modal.component";
@@ -35,7 +34,6 @@ const elements = [
   ],
   imports: [
     CommonsModule,
-    AppI18nModule.forRoot(),
   ],
   exports: [
     ...elements,

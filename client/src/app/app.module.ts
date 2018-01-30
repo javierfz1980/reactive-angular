@@ -7,6 +7,14 @@ import {BrowserModule} from "@angular/platform-browser";
 import {CoreModule} from "./core/core.module";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {DashboardModule} from "./content/dashboard/dashboard.module";
+import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
+import {globalProperties} from "../environments/properties";
+import {TranslateStaticLoader} from "ng2-translate";
+import {Http} from "@angular/http";
+
+export function HttpLoaderFactory(http: Http) {
+  return new TranslateStaticLoader(http, globalProperties.localesPath, '.json');
+}
 
 @NgModule({
   declarations: [
@@ -19,6 +27,13 @@ import {DashboardModule} from "./content/dashboard/dashboard.module";
     DashboardModule,
     CoreModule.forRoot(),
     AppRoutingModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [Http]
+      }
+    })
   ],
   providers: [
     HttpClient,

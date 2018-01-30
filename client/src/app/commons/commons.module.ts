@@ -6,19 +6,22 @@ import {HttpClientModule} from "@angular/common/http";
 import {CommonModule} from "@angular/common";
 import {RouterModule} from "@angular/router";
 import {ConfirmationModalComponent} from "./confirmation-modal/confirmation-modal.component";
+import {TranslateModule} from "@ngx-translate/core";
+import {HttpModule} from "@angular/http";
 
 const modules = [
   CommonModule,
   HttpClientModule,
+  HttpModule,
   ReactiveFormsModule,
   RouterModule,
   ClarityModule,
-  PipesModule
+  PipesModule,
 ];
 
 const declarations = [
   ConfirmationModalComponent
-]
+];
 
 /**
  * This module will include the common functionalities to be used all across the app in order to
@@ -33,7 +36,8 @@ const declarations = [
   ],
   exports: [
     ...modules,
-    ...declarations
+    ...declarations,
+    TranslateModule
   ]
 })
 export class CommonsModule {}
