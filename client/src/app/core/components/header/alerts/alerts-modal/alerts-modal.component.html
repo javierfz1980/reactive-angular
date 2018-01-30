@@ -1,13 +1,13 @@
 <clr-modal #modal [(clrModalOpen)]="opened">
     <div class="modal-title alerts-title" *ngIf="alert">
-      {{alert.from}}<hr>
+      {{alert.from ? alert.from : "System"}}<hr>
     </div>
     <div class="modal-body alerts-body" *ngIf="alert">
       <p>
         <label>Date:</label>
         {{getDate(alert.date)}}
       </p>
-      <p>
+      <p *ngIf="alert.email">
         <label>Email:</label>
         <a [href]="'mailto:' + alert.email">{{alert.email}}</a>
       </p>
