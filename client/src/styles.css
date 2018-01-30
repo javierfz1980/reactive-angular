@@ -61,4 +61,12 @@ hr {
   display: none;
 }
 
+clr-stack-content .spinner {
+  text-indent: -100%;
+}
+
+.datagrid-spinner{
+  z-index: 1;
+}
+
 

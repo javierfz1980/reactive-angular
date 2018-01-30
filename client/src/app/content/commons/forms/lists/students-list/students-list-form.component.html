@@ -1,10 +1,11 @@
 <!-- content -->
-<div class="qty-wrapper">
-  <span class="qty-span" (click)="changeGridSize()"><clr-icon shape="view-list"></clr-icon>show all</span>
-  <span class="qty-span" (click)="changeGridSize(50)"><clr-icon shape="view-list"></clr-icon>show 50</span>
-  <span class="qty-span" (click)="changeGridSize(25)"><clr-icon shape="view-list"></clr-icon>show 25</span>
-</div>
-<div *ngIf="dataSource | async as storeData">
+<div *ngIf="dataSource | async as storeData; else loading">
+  <div class="qty-wrapper">
+    <span class="qty-span" (click)="changeGridSize()"><clr-icon shape="view-list"></clr-icon>show all</span>
+    <span class="qty-span" (click)="changeGridSize(50)"><clr-icon shape="view-list"></clr-icon>show 50</span>
+    <span class="qty-span" (click)="changeGridSize(25)"><clr-icon shape="view-list"></clr-icon>show 25</span>
+    <span class="qty-span" (click)="changeGridSize(10)"><clr-icon shape="view-list"></clr-icon>show 10</span>
+  </div>
   <div class="container-fluid">
     <clr-datagrid class="_content-datagrid" [(clrDgSelected)]="selection" [clrDgLoading]="storeData.loading">
       <clr-dg-column>Name</clr-dg-column>
@@ -23,4 +24,8 @@
     </clr-datagrid>
   </div>
 </div>
+
+<ng-template #loading>
+  <div class="spinner spinner-sm">Loading</div>
+</ng-template>
 
