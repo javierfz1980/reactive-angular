@@ -121,7 +121,7 @@ export class ContentService {
           this.coursesService.getRecords())
           .map(() => {
             this.alertService.pushAlert(
-              {type: "success", message: "Student created", duration: 3000});
+              {type: "success", message: `Student ${student.first_name} ${student.last_name} was created`, duration: 3000});
             this.profilesService.emit();
             this.studentsService.emit();
             this.coursesService.emit();
@@ -130,7 +130,7 @@ export class ContentService {
       })
       .catch((error: any) => {
         this.alertService.pushAlert(
-          {type: "danger", message: `Error creating Student: ${error.message}`});
+          {type: "danger", message: `Error creating Student ${student.first_name} ${student.last_name}: ${error.message}`});
         return Observable.of(false);
       })
   }
@@ -160,7 +160,7 @@ export class ContentService {
           this.coursesService.getRecords())
           .map(() => {
             this.alertService.pushAlert(
-              {type: "success", message: "Teacher created", duration: 3000});
+              {type: "success", message: `Teacher ${teacher.first_name} ${teacher.last_name} was created`, duration: 3000});
             this.profilesService.emit();
             this.teachersService.emit();
             this.coursesService.emit();
@@ -169,7 +169,7 @@ export class ContentService {
       })
       .catch((error: any) => {
         this.alertService.pushAlert(
-          {type: "danger", message: `Error creating Teacher: ${error.message}`});
+          {type: "danger", message: `Error creating Teacher ${teacher.first_name} ${teacher.last_name}: ${error.message}`});
         return Observable.of(false);
       })
   }
@@ -192,7 +192,7 @@ export class ContentService {
           this.studentsService.getRecords())
           .map(() => {
             this.alertService.pushAlert(
-              {type: "success", message: "Course created", duration: 3000});
+              {type: "success", message: `Course ${course.title} was created`, duration: 3000});
             this.coursesService.emit();
             this.studentsService.emit();
             return true;
@@ -200,7 +200,7 @@ export class ContentService {
       })
       .catch((error: any) => {
         this.alertService.pushAlert(
-          {type: "danger", message: `Error creating Course: ${error.message}`});
+          {type: "danger", message: `Error creating Course ${course.title}: ${error.message}`});
         return Observable.of(false);
       })
   }
@@ -237,7 +237,7 @@ export class ContentService {
           this.coursesService.getRecords())
           .map(() => {
             this.alertService.pushAlert(
-              {type: "success", message: "Student info updated", duration: 3000});
+              {type: "success", message: `Student ${student.id} was updated`, duration: 3000});
             this.studentsService.emit();
             this.profilesService.emit();
             this.coursesService.emit();
@@ -246,7 +246,7 @@ export class ContentService {
       })
       .catch((error: any) => {
         this.alertService.pushAlert(
-          {type: "danger", message: `Error updating Student: ${error.message}`});
+          {type: "danger", message: `Error updating Student ${student.id}: ${error.message}`});
         return Observable.of(false);
       })
   }
@@ -281,7 +281,7 @@ export class ContentService {
           this.coursesService.getRecords())
           .map(() => {
             this.alertService.pushAlert(
-              {type: "success", message: "Teacher info updated", duration: 3000});
+              {type: "success", message: `Teacher ${teacher.id} was updated`, duration: 3000});
             this.teachersService.emit();
             this.profilesService.emit();
             this.coursesService.emit();
@@ -290,7 +290,7 @@ export class ContentService {
       })
       .catch((error: any) => {
         this.alertService.pushAlert(
-          {type: "danger", message: `Error updating Teacher: ${error.message}`});
+          {type: "danger", message: `Error updating Teacher ${teacher.id}: ${error.message}`});
         return Observable.of(false);
       })
   }
@@ -316,7 +316,7 @@ export class ContentService {
           this.studentsService.getRecords())
           .map(() => {
             this.alertService.pushAlert(
-              {type: "success", message: "The selected course was updated", duration: 3000});
+              {type: "success", message: `Course ${course.id} was updated`, duration: 3000});
             this.coursesService.emit();
             this.studentsService.emit();
             return true;
@@ -324,7 +324,7 @@ export class ContentService {
       })
       .catch((error: any) => {
         this.alertService.pushAlert(
-          {type: "danger", message: `Error updating Course: ${error.message}`});
+          {type: "danger", message: `Error updating Course ${course.id}: ${error.message}`});
         return Observable.of(false);
       })
   }
@@ -340,13 +340,13 @@ export class ContentService {
       .switchMap((course: Course) => this.coursesService.getRecord(course.id))
       .map(() => {
         this.alertService.pushAlert(
-          {type: "success", message: "The selected course status was updated", duration: 3000});
+          {type: "success", message: `Course ${id} status was updated`, duration: 3000});
         this.coursesService.emit();
         return true;
       })
       .catch((error: any) => {
         this.alertService.pushAlert(
-          {type: "danger", message: `Error updating Course Status: ${error.message}`});
+          {type: "danger", message: `Error updating Course Status ${id}: ${error.message}`});
         return Observable.of(false);
       })
   }
@@ -370,7 +370,7 @@ export class ContentService {
           this.studentsService.getRecords())
           .map(() => {
             this.alertService.pushAlert(
-              {type: "success", message: `${student.id}: The resource was deleted`, duration: 3000});
+              {type: "success", message: `Student ${student.id} was deleted`, duration: 3000});
             this.profilesService.emit();
             this.coursesService.emit();
             this.studentsService.emit();
@@ -379,7 +379,7 @@ export class ContentService {
       })
       .catch((error: any) => {
         this.alertService.pushAlert(
-          {type: "danger", message: `Error deleting student: ${error.message}`});
+          {type: "danger", message: `Error deleting student ${student.id}: ${error.message}`});
         return Observable.of(false);
       })
   }
@@ -402,7 +402,7 @@ export class ContentService {
           this.coursesService.getRecords())
           .map(() => {
             this.alertService.pushAlert(
-              {type: "success", message: `${teacher.id}: The resource was deleted`, duration: 3000});
+              {type: "success", message: `Teacher ${teacher.id} was deleted`, duration: 3000});
             this.profilesService.emit();
             this.teachersService.emit();
             this.coursesService.emit();
@@ -411,7 +411,7 @@ export class ContentService {
       })
       .catch((error: any) => {
         this.alertService.pushAlert(
-          {type: "danger", message: `Error deleting teacher: ${error.message}`});
+          {type: "danger", message: `Error deleting teacher ${teacher.id}: ${error.message}`});
         return Observable.of(false);
       })
   }
@@ -431,7 +431,7 @@ export class ContentService {
           this.coursesService.getRecords())
           .map(() => {
             this.alertService.pushAlert(
-              {type: "success", message: `${course.id}: The resource was deleted`, duration: 3000});
+              {type: "success", message: `Course ${course.id} was deleted`, duration: 3000});
             this.studentsService.emit();
             this.coursesService.emit();
             return true;
@@ -439,7 +439,7 @@ export class ContentService {
       })
       .catch((error: any) => {
         this.alertService.pushAlert(
-          {type: "danger", message: `Error deleting course: ${error.message}`});
+          {type: "danger", message: `Error deleting course ${course.id}: ${error.message}`});
         return Observable.of(false);
       })
   }
