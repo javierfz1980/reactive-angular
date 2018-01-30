@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {ContentService} from "../../../core/providers/services/content/content.service";
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {Student} from "../../../models/content/student";
@@ -21,7 +21,8 @@ import 'rxjs/add/operator/filter';
 
 @Component({
   selector: "gl-view-student",
-  templateUrl: "./view-student.component.html"
+  templateUrl: "./view-student.component.html",
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewStudentComponent extends BasicContentEditor<InfoProfileData>
                                     implements OnInit, OnDestroy {

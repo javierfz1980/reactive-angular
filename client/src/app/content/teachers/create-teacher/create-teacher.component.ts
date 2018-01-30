@@ -1,4 +1,4 @@
-import {Component, OnDestroy, ViewChild} from "@angular/core";
+import {ChangeDetectionStrategy, Component, OnDestroy, ViewChild} from "@angular/core";
 import {
   ConfirmationModalComponent
 } from "../../../commons/confirmation-modal/confirmation-modal.component";
@@ -17,7 +17,8 @@ import {BasicContentEditor} from "../../commons/abstarct-clases/basic-content-ed
 
 @Component({
   selector: "gl-create-teacher",
-  templateUrl: "create-teacher.component.html"
+  templateUrl: "create-teacher.component.html",
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CreateTeacherComponent extends BasicContentEditor<InfoProfileData> implements OnDestroy{
 

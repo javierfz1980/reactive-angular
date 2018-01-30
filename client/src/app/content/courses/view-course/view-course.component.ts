@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {AuthService} from "../../../core/providers/services/auth.service";
 import {Course} from "../../../models/content/course";
@@ -17,7 +17,8 @@ import {getDifferencesBetween} from "../../../helpers/helpers";
 
 @Component({
   selector: "gl-view-course",
-  templateUrl: "./view-course.component.html"
+  templateUrl: "./view-course.component.html",
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewCourseComponent extends BasicContentEditor<Course> implements OnInit, OnDestroy{
 
@@ -56,7 +57,7 @@ export class ViewCourseComponent extends BasicContentEditor<Course> implements O
       .map(([storeData, id]) => storeData.data.find((courseData: Course) => courseData.id === id));
 
     this.listFormSource = this.contentService
-      .getStudents(false);
+      .getStudents();
 
     this.listFormMarked = this.dataSource
       .map((course: Course) => course ? course.students : []);

@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {AuthService} from "../../../core/providers/services/auth.service";
 import {
   ConfirmationModalComponent
@@ -15,7 +15,8 @@ import {StoreData} from "../../../models/core/store-data";
 
 @Component({
   selector: "gl-create-course",
-  templateUrl: "./create-course.component.html"
+  templateUrl: "./create-course.component.html",
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CreateCourseComponent extends BasicContentEditor<Course> implements OnInit, OnDestroy {
 
@@ -41,7 +42,7 @@ export class CreateCourseComponent extends BasicContentEditor<Course> implements
 
   ngOnInit() {
     super.ngOnInit();
-    this.listFormSource = this.contentService.getStudents(false);
+    this.listFormSource = this.contentService.getStudents();
     this.listFormMarked = Observable.of([]);
     this.isEditMode.next((this.isAdministrator && true));
   }

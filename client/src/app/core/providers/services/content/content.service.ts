@@ -36,14 +36,9 @@ export class ContentService {
 
   // getters ---------------------
 
-  getStudents(subscribe: boolean = true): Observable<StoreData<Student>> {
-    if (subscribe) {
-      return this.studentsService.source
-        .filter(data => data !== undefined);
-    }
-    return this.studentsService.getRecords()
-      .map((students: Student[]) => ({data: students, loading: false}))
-      .startWith({data: null, loading: false})
+  getStudents(): Observable<StoreData<Student>> {
+    return this.studentsService.source
+      .filter(data => data !== undefined);
   }
 
   getTeachers(): Observable<StoreData<Teacher>> {

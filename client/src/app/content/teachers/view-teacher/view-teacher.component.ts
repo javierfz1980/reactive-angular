@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {AuthService} from "../../../core/providers/services/auth.service";
 import {Observable} from "rxjs/Observable";
@@ -20,7 +20,8 @@ import 'rxjs/add/operator/takeWhile';
 
 @Component({
   selector: "gl-view-teacher",
-  templateUrl: "./view-teacher.component.html"
+  templateUrl: "./view-teacher.component.html",
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewTeacherComponent extends BasicContentEditor<InfoProfileData>
                                     implements OnInit, OnDestroy {

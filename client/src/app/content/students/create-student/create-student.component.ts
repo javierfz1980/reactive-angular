@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {
   InfoProfileData,
   ProfileInfoComponent
@@ -17,7 +17,8 @@ import {StoreData} from "../../../models/core/store-data";
 
 @Component({
   selector: "gl-create-student",
-  templateUrl: "./create-student.component.html"
+  templateUrl: "./create-student.component.html",
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CreateStudentComponent extends BasicContentEditor<InfoProfileData> implements OnInit, OnDestroy {
 

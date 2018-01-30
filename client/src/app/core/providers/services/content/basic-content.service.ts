@@ -136,7 +136,11 @@ export abstract class BasicContentService<T> {
    */
   emit(isLoading?: boolean) {
     this.store.loading = isLoading ? isLoading : false;
-    this.dataSubject.next(Object.assign({}, this.store));
+
+    const newStore: StoreData<T> = Object.assign({}, this.store);
+    if (this.store.data) newStore.data = this.store.data.slice();
+
+    this.dataSubject.next(newStore);
   }
 
 }
