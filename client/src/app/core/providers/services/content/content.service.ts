@@ -64,14 +64,14 @@ export class ContentService {
   }
 
   getActiveCoursesWithTeacher(): Observable<StoreData<Course>> {
-    return this.getCourses()
-      .map((data: StoreData<Course>) => {
-        data.data = !data.data ? [] : data.data
+    return this.coursesService.getRecords()
+      .map((data: Course[]) => {
+        data = !data ? [] : data
           .filter((course: Course) => course.active);
         return data;
       })
-      .switchMap((data: StoreData<Course>) => {
-        return Observable.from(data.data ? data.data : [])
+      .switchMap((data: Course[]) => {
+        return Observable.from(data ? data : [])
           .mergeMap((course: Course) => {
             if (!course.teacher) return Observable.of(course);
             return this.teachersService.getRecord(course.teacher)
@@ -80,13 +80,16 @@ export class ContentService {
                 return course;
               })
           })
-          .toArray()
-          .map((coursesWithTeacher: Course[]) => {
-            data.data = coursesWithTeacher;
-            return data;
-          });
+      })
+      .toArray()
+      .map((coursesWithTeacher: Course[]) => ({
+        data: coursesWithTeacher,
+        loading: false
+      }))
+      .startWith({
+        data: [],
+        loading: true
       });
-
   }
 
   // creates ---------------------

@@ -11,7 +11,6 @@ import {StoreData} from "../../../../../models/core/store-data";
   selector: "gl-courses-list-form",
   templateUrl: "./courses-list-form.component.html",
   styleUrls: ["./courses-list-form.component.css"],
-  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CoursesListFormComponent extends BasicListForm<Course> implements OnInit {
 

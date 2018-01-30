@@ -15,7 +15,8 @@ import {StoreData} from "../../../../../models/core/store-data";
 export class StudentsListFormComponent extends BasicListForm<Student>{
 
   dataSource: Observable<StoreData<Student>>;
-  gridSize: number = 50;
+  gridSize: number = 10;
+  initialGridSize: number = this.gridSize;
   maxSize: number = this.gridSize;
 
   constructor(private contentService: ContentService,
@@ -33,13 +34,16 @@ export class StudentsListFormComponent extends BasicListForm<Student>{
           .filter((student: Student) => marked && marked
             .some((markedStudentId: string) => markedStudentId === student.id)
           );
+        this.gridSize = this.initialGridSize;
         if (editMode) {
-          this.maxSize = storeData.data.length;
+          this.setMaxSize(storeData.data.length);
+          this.changeGridSize(storeData.data.length > this.gridSize ? this.gridSize : storeData.data.length);
           return storeData;
         }
         const res: Student[] = this.selection.slice();
         this.selection = null;
-        this.maxSize = res.length;
+        this.setMaxSize(res.length);
+        this.changeGridSize(res.length > this.gridSize ? this.gridSize : res.length);
         return {data: res, loading: storeData.loading};
       });
 
@@ -50,8 +54,14 @@ export class StudentsListFormComponent extends BasicListForm<Student>{
     this.router.navigate([appRoutePaths.students.path, id])
   }
 
+
+
   changeGridSize(value?: number) {
     this.gridSize = value ? value : this.maxSize;
+  }
+
+  private setMaxSize(value: number) {
+    this.maxSize = value > 0 ? value : this.gridSize;
   }
 
 }
