@@ -16,27 +16,9 @@ export class CoursesListComponent extends BasicList<Course> implements OnInit {
 
   dataSource: Observable<StoreData<Course>>;
 
-  constructor(private contentService: ContentService,
-              private router: Router) {
-    super();
-  }
-
-  ngOnInit() {
-    super.ngOnInit();
-    this.dataSource = this.stream
-      .map(([storeData, marked, editMode]) => {
-        if (!storeData.data) storeData.data = [];
-        this.selection = storeData.data
-          .filter((course: Course) => marked && marked
-            .some((idCourses: string) => idCourses === course.id)
-          );
-        if (editMode) return storeData;
-        const res: Course[] = this.selection.slice();
-        this.selection = null;
-        return {data: res, loading: storeData.loading};
-      });
-
-    this.contentService.fetchCourses();
+  constructor(private router: Router,
+              protected contentService: ContentService) {
+    super(contentService);
   }
 
   gotoCourse(id: string) {
