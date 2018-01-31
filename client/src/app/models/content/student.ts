@@ -1,3 +1,3 @@
-import {ProfileBasicInfo} from "./basic-info";
+import {ProfileBasicInfo} from "./profile-basic-info";
 
 export interface Student extends ProfileBasicInfo{}

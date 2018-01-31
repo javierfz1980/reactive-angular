@@ -4,7 +4,6 @@ import {
 } from "../../../commons/confirmation-modal/confirmation-modal.component";
 import {ActivatedRoute, Router} from "@angular/router";
 import {
-  InfoProfileData,
   ProfileInfoComponent
 } from "../../commons/info/profile-info/profile-info.component";
 import {appRoutePaths} from "../../../app-routing.module";
@@ -14,13 +13,14 @@ import {AuthService} from "../../../core/providers/services/auth.service";
 import {Course} from "../../../models/content/course";
 import {StoreData} from "../../../models/core/store-data";
 import {BasicContentEditor} from "../../commons/abstarct-clases/basic-content-editor";
+import {Teacher} from "../../../models/content/teacher";
 
 @Component({
   selector: "gl-create-teacher",
   templateUrl: "create-teacher.component.html",
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CreateTeacherComponent extends BasicContentEditor<InfoProfileData> implements OnDestroy{
+export class CreateTeacherComponent extends BasicContentEditor<Teacher> implements OnDestroy{
 
   @ViewChild("confirmModal")
   confirmModal: ConfirmationModalComponent;
@@ -49,12 +49,14 @@ export class CreateTeacherComponent extends BasicContentEditor<InfoProfileData> 
     this.isEditMode.next((this.isAdministrator && true));
   }
 
-  create(data: InfoProfileData) {
+  create(data: Teacher) {
+    data.courses = this.infoForm.listForm.getSelecteds();
+    data.profile = data.profile;
     this.action = () => {
       this.modalData.title = "Creating";
       this.modalData.isBusy = true;
       this.contentService
-        .createTeacher(data.info, data.profile, this.infoForm.listForm.getSelecteds())
+        .createTeacher(data, this.infoForm.listForm.getSelecteds())
         .takeWhile(() => this.isAlive)
         .subscribe(
           () => {

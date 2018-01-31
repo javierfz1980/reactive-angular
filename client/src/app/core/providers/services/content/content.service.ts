@@ -95,12 +95,12 @@ export class ContentService {
    * @param {string[]} courses: The Courses to whom to add the Student
    * @returns {Observable<boolean>}
    */
-  createStudent(student: Student, profile: Profile, courses: string[]): Observable<boolean> {
-    profile.birthday = new Date(profile.birthday).toString();
+  createStudent(student: Student, courses: string[]): Observable<boolean> {
+    student.profile.birthday = new Date(student.profile.birthday).toString();
 
     return Observable.forkJoin(
       this.studentsService.createRecord(student),
-      this.profilesService.createRecord(profile))
+      this.profilesService.createRecord(student.profile))
       .switchMap(([newStudent, newProfile]) => {
         return Observable.forkJoin(
           this.coursesService.addStudentToCourses(newStudent.id, courses),
@@ -137,11 +137,11 @@ export class ContentService {
    * @param {string[]} courses: The Courses to whom to add the Student
    * @returns {Observable<boolean>}
    */
-  createTeacher(teacher: Teacher, profile: Profile, courses: string[]): Observable<boolean> {
-    profile.birthday = new Date(profile.birthday).toString();
+  createTeacher(teacher: Teacher, courses: string[]): Observable<boolean> {
+    teacher.profile.birthday = new Date(teacher.profile.birthday).toString();
 
     return Observable.forkJoin(
-      this.profilesService.createRecord(profile),
+      this.profilesService.createRecord(teacher.profile),
       this.teachersService.createRecord(teacher))
       .switchMap(([newProfile, newTeacher]) => {
         return Observable.forkJoin(
@@ -210,25 +210,25 @@ export class ContentService {
    * @param {string[]} coursesToBeAdded: The list of Courses where Student should be added.
    * @returns {Observable<boolean>}
    */
-  updateStudent(student:Student, profile: Profile, coursesToBeRemoved: string[],
+  updateStudent(student:Student, coursesToBeRemoved: string[],
                 coursesToBeAdded: string[]): Observable<boolean> {
 
     const studentData: Student = Object.assign({}, student);
-    const profileData: Profile = Object.assign({}, profile);
+    const profileData: Profile = Object.assign({}, student.profile);
     delete studentData.id;
     delete profileData.id;
 
-    profile.birthday = new Date(profile.birthday).toString();
+    student.profile.birthday = new Date(student.profile.birthday).toString();
 
     return Observable.forkJoin(
       this.studentsService.updateRecord(student.id, studentData),
-      this.profilesService.updateRecord(profile.id, profileData),
+      this.profilesService.updateRecord(student.profile.id, profileData),
       this.coursesService.deleteStudentFromCourses(student.id, coursesToBeRemoved)
         .switchMap(() => this.coursesService.addStudentToCourses(student.id, coursesToBeAdded)))
       .switchMap(() => {
         return Observable.forkJoin(
           this.studentsService.getRecord(student.id),
-          this.profilesService.getRecord(profile.id),
+          this.profilesService.getRecord(student.profile.id),
           this.coursesService.getRecords())
           .map(() => {
             this.alertService.pushAlert(
@@ -254,25 +254,25 @@ export class ContentService {
    * @param {string[]} coursesToBeAdded: The list of Courses where Teacher should be added.
    * @returns {Observable<boolean>}
    */
-  updateTeacher(teacher: Teacher, profile: Profile, coursesToBeRemoved: string[],
+  updateTeacher(teacher: Teacher, coursesToBeRemoved: string[],
                 coursesToBeAdded: string[]): Observable<boolean> {
 
     const teacherData: Teacher = Object.assign({}, teacher);
-    const profileData: Profile = Object.assign({}, profile);
+    const profileData: Profile = Object.assign({}, teacher.profile);
     delete teacherData.id;
     delete profileData.id;
 
-    profile.birthday = new Date(profile.birthday).toString();
+    teacher.profile.birthday = new Date(teacher.profile.birthday).toString();
 
     return Observable.forkJoin(
       this.teachersService.updateRecord(teacher.id, teacherData),
-      this.profilesService.updateRecord(profile.id, profileData),
+      this.profilesService.updateRecord(teacher.profile.id, profileData),
       this.coursesService.deleteTeacherFromCourses(teacher.id, coursesToBeRemoved)
         .switchMap(() => this.coursesService.addTeacherToCourses(teacher.id, coursesToBeAdded)))
       .switchMap(() => {
         return Observable.forkJoin(
           this.teachersService.getRecord(teacher.id),
-          this.profilesService.getRecord(profile.id),
+          this.profilesService.getRecord(teacher.profile.id),
           this.coursesService.getRecords())
           .map(() => {
             this.alertService.pushAlert(

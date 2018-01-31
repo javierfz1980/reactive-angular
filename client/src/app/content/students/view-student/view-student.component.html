@@ -2,7 +2,7 @@
 <div *ngIf="dataSource | async as studentInfo; else loading">
 
   <h1>
-    {{studentInfo.info.first_name}} {{studentInfo.info.last_name}}<br>
+    {{studentInfo.first_name}} {{studentInfo.last_name}}<br>
 
     <div class="btn-group" *ngIf="isAdministrator" >
       <!-- content edit -->
@@ -11,7 +11,7 @@
       </button>
 
       <!-- content delete -->
-      <button class="btn btn-sm btn-danger" (click)="delete(studentInfo.info)">
+      <button class="btn btn-sm btn-danger" (click)="delete(studentInfo)">
         <clr-icon shape="trash"></clr-icon> Delete
       </button>
     </div>
@@ -19,7 +19,7 @@
 
   <!-- student info -->
   <gl-profile-info #infoForm
-                   [info]="{info: studentInfo.info, profile: studentInfo.profile}"
+                   [info]="studentInfo"
                    [isReadOnly]="!(isAdministrator && editMode)"
                    [markedList]="listFormMarked"
                    [editMode]="isEditMode.asObservable()"

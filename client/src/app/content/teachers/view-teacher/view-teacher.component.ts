@@ -7,7 +7,6 @@ import {
 } from "../../../commons/confirmation-modal/confirmation-modal.component";
 import {Teacher} from "../../../models/content/teacher";
 import {
-  InfoProfileData,
   ProfileInfoComponent
 } from "../../commons/info/profile-info/profile-info.component";
 import {appRoutePaths} from "../../../app-routing.module";
@@ -23,7 +22,7 @@ import 'rxjs/add/operator/takeWhile';
   templateUrl: "./view-teacher.component.html",
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ViewTeacherComponent extends BasicContentEditor<InfoProfileData>
+export class ViewTeacherComponent extends BasicContentEditor<Teacher>
                                     implements OnInit, OnDestroy {
 
   @ViewChild("confirmModal")
@@ -66,7 +65,8 @@ export class ViewTeacherComponent extends BasicContentEditor<InfoProfileData>
           this.contentService.getAllCoursesOfTeacher(teacher.id))
           .map(([profile, courses]) => {
             teacher.courses = courses;
-            return ({info: teacher, profile: profile});
+            teacher.profile = profile;
+            return teacher;
           })
       });
 
@@ -74,7 +74,6 @@ export class ViewTeacherComponent extends BasicContentEditor<InfoProfileData>
       .getActiveCoursesWithTeacher();
 
     this.listFormMarked = this.dataSource
-      .map((data: InfoProfileData) => data.info)
       .map((teacher: Teacher) => teacher.courses);
   }
 
@@ -95,14 +94,15 @@ export class ViewTeacherComponent extends BasicContentEditor<InfoProfileData>
     super.openDeleteConfirmation(`${data.first_name} ${data.last_name}`);
   }
 
-  update(data: InfoProfileData) {
-    const elementsTobeRemoved = getDifferencesBetween<string>(data.info.courses, this.infoForm.listForm.getSelecteds());
-    const elementsTobeAdded = getDifferencesBetween<string>(this.infoForm.listForm.getSelecteds(), data.info.courses);
+  update(data: Teacher) {
+    const elementsTobeRemoved = getDifferencesBetween<string>(data.courses, this.infoForm.listForm.getSelecteds());
+    const elementsTobeAdded = getDifferencesBetween<string>(this.infoForm.listForm.getSelecteds(), data.courses);
+    data.profile = data.profile;
     this.action = () => {
       this.modalData.title = "Updating";
       this.modalData.isBusy = true;
       this.contentService
-        .updateTeacher(data.info, data.profile, elementsTobeRemoved, elementsTobeAdded)
+        .updateTeacher(data, elementsTobeRemoved, elementsTobeAdded)
         .takeWhile(() => this.isAlive)
         .subscribe(
           () => {
@@ -110,7 +110,7 @@ export class ViewTeacherComponent extends BasicContentEditor<InfoProfileData>
             this.confirmModal.close();
           });
     };
-    super.openUpdateConfirmation(`${data.info.first_name} ${data.info.last_name}`)
+    super.openUpdateConfirmation(`${data.first_name} ${data.last_name}`)
   }
 
   ngOnDestroy() {

@@ -1,6 +1,5 @@
 import {ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {
-  InfoProfileData,
   ProfileInfoComponent
 } from "../../commons/info/profile-info/profile-info.component";
 import {
@@ -14,13 +13,14 @@ import {Course} from "../../../models/content/course";
 import {AuthService} from "../../../core/providers/services/auth.service";
 import {BasicContentEditor} from "../../commons/abstarct-clases/basic-content-editor";
 import {StoreData} from "../../../models/core/store-data";
+import {Student} from "../../../models/content/student";
 
 @Component({
   selector: "gl-create-student",
   templateUrl: "./create-student.component.html",
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CreateStudentComponent extends BasicContentEditor<InfoProfileData> implements OnInit, OnDestroy {
+export class CreateStudentComponent extends BasicContentEditor<Student> implements OnInit, OnDestroy {
 
   @ViewChild("confirmModal")
   confirmModal: ConfirmationModalComponent;
@@ -49,13 +49,14 @@ export class CreateStudentComponent extends BasicContentEditor<InfoProfileData> 
     this.listFormSource = this.contentService.getActiveCoursesWithTeacher();
   }
 
-  create(data: InfoProfileData) {
-    data.info.courses = this.infoForm.listForm.getSelecteds();
+  create(data: Student) {
+    data.courses = this.infoForm.listForm.getSelecteds();
+    data.profile = data.profile;
     this.action = () => {
       this.modalData.title = "Creating";
       this.modalData.isBusy = true;
       this.contentService
-        .createStudent(data.info, data.profile, this.infoForm.listForm.getSelecteds())
+        .createStudent(data, this.infoForm.listForm.getSelecteds())
         .takeWhile(() => this.isAlive)
         .subscribe(
           () => {
