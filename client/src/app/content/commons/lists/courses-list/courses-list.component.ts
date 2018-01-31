@@ -12,7 +12,7 @@ import {StoreData} from "../../../../models/core/store-data";
   templateUrl: "./courses-list.component.html",
   styleUrls: ["./courses-list.component.css"],
 })
-export class CoursesListComponent extends BasicList<Course> implements OnInit {
+export class CoursesListComponent extends BasicList<Course>{
 
   dataSource: Observable<StoreData<Course>>;
 
