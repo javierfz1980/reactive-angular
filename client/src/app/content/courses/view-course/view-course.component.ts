@@ -96,7 +96,7 @@ export class ViewCourseComponent extends BasicContentEditor<Course> implements O
             this.confirmModal.close();
           });
     };
-    super.openUpdateConfirmation1(data.title);
+    super.openUpdateConfirmation(data.title);
 
   }
 

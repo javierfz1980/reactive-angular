@@ -105,7 +105,7 @@ export class ViewStudentComponent extends BasicContentEditor<InfoProfileData>
             this.confirmModal.close();
           });
     };
-    super.openUpdateConfirmation1(`${data.info.first_name} ${data.info.last_name}`)
+    super.openUpdateConfirmation(`${data.info.first_name} ${data.info.last_name}`)
   }
 
   ngOnDestroy() {

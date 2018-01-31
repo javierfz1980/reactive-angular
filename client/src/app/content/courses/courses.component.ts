@@ -58,7 +58,7 @@ export class CoursesComponent extends BasicContentDisplay<Course> implements OnI
 
   toggleStatus(data: Course) {
     this.action = () => {
-      this.modalData.title = "Changing";
+      this.modalData.title = "Updating";
       this.modalData.isBusy = true;
       this.contentService
         .updateCourseStatus(data.id, !data.active)
@@ -69,7 +69,7 @@ export class CoursesComponent extends BasicContentDisplay<Course> implements OnI
             this.confirmModal.close();
           })
     };
-    super.openToggleStatusConfirmation(data.title);
+    super.openUpdateConfirmation(data.title);
   }
 
   ngOnDestroy() {

@@ -31,18 +31,7 @@ export abstract class BasicModalConfirmActions {
     this.confirmModal.open();
   }
 
-  protected openToggleStatusConfirmation(data?: string) {
-    const detail: string = data ? `(${data}) ?` : "?";
-    this.modalData = {
-      type: "confirm",
-      title: "Change Status",
-      text: `Are you sure you want to change this element ${detail}`,
-      action: this.action
-    };
-    this.confirmModal.open();
-  }
-
-  protected openUpdateConfirmation1(data?: string) {
+  protected openUpdateConfirmation(data?: string) {
     const detail: string = data ? `(${data}) ?` : "?";
     this.modalData = {
       type: "confirm",
