@@ -63,8 +63,8 @@
               </div>
               <div class="form-group" *ngIf="_info.active || type === 'create'">
                 <label> Teacher: </label>
-                <ng-container *ngIf="teachersDataSource | async as storeData;">
-                  <ng-container *ngIf="!storeData.loading; else loadingTeahers">
+                <ng-container *ngIf="teachersDataSource | async as teachersStoreData;">
+                  <ng-container *ngIf="!teachersStoreData.loading; else loadingTeahers">
                     <div class="select">
                       <select id="teacher"
                               [ngClass]="{'invalid-select': !form.controls['teacher'].valid  &&
@@ -72,14 +72,15 @@
                               formControlName="teacher"
                               placeholder="Enter the teacher">
                         <option [selected]="form.controls['teacher'].value === null"></option>
-                        <option *ngFor="let teacher of storeData.data"
+                        <option *ngFor="let teacher of teachersStoreData.data"
                                 [selected]="_info.teacher === teacher.id"
                                 [value]="teacher.id">
                           {{teacher.first_name}} {{teacher.last_name}}
                         </option>
                       </select>
                     </div>
-                    <label *ngIf="form.controls['teacher'].value !== ''">
+                    <ng-container *ngIf="teachersStoreData.data.length > 0; else noTeachersOnDb">
+                    <label *ngIf="form.controls['teacher'].value !== null && form.controls['teacher'].value !== ''">
                       <a class="_pointer-mouse" (click)="gotoTeacher()">
                         <clr-icon shape="user"></clr-icon>
                       </a>
@@ -87,6 +88,10 @@
                         <clr-icon shape="edit"></clr-icon>
                       </a>
                     </label>
+                    </ng-container>
+                    <ng-template #noTeachersOnDb>
+                      There are no Teachers.
+                    </ng-template>
                   </ng-container>
                 </ng-container>
                 <ng-template #loadingTeahers>
