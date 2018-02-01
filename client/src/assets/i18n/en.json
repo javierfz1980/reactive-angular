@@ -7,7 +7,7 @@
     "login": "Login"
   },
   "dashboard": {
-    "courses": "Courses",
+    "courses": "Active Courses",
     "students": "Students",
     "teachers": "Teachers",
     "mostPopular": "Most popular Coure"
