@@ -1,4 +1,4 @@
-import {Component, ViewChild} from "@angular/core";
+import {ChangeDetectionStrategy, Component, ViewChild} from "@angular/core";
 import {AlertsModalComponent} from "./alerts-modal/alerts-modal.component";
 import {Alert} from "../../../../models/core/alert";
 import {AlertService} from "../../../providers/services/alert.service";
@@ -7,7 +7,8 @@ import {Observable} from "rxjs/Observable";
 @Component({
   selector: "gl-alerts",
   templateUrl: "./alerts.component.html",
-  styleUrls: ["./alerts.component.css"]
+  styleUrls: ["./alerts.component.css"],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AlertsComponent {
 

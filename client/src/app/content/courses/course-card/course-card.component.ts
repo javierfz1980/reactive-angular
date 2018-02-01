@@ -1,10 +1,14 @@
-import {Component, ElementRef, EventEmitter, Input, Output, ViewChild} from "@angular/core";
+import {
+  ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output,
+  ViewChild
+} from "@angular/core";
 import {Course} from "../../../models/content/course";
 
 @Component({
   selector: "gl-course-card",
   templateUrl: "./course-card.component.html",
-  styleUrls: ['./course-card.component.css']
+  styleUrls: ['./course-card.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CourseCardComponent {
 

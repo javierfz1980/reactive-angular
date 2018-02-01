@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {ChangeDetectionStrategy, Component, OnInit} from "@angular/core";
 import {AuthService} from "../../core/providers/services/auth.service";
 import {Router} from "@angular/router";
 import {appRoutePaths} from "../../app-routing.module";
@@ -13,7 +13,8 @@ import {StoreData} from "../../models/core/store-data";
 @Component({
   selector: "gl-dashboard",
   templateUrl: "dashboard.component.html",
-  styleUrls: ["./dashboard.component.css"]
+  styleUrls: ["./dashboard.component.css"],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashboardComponent implements OnInit {
 

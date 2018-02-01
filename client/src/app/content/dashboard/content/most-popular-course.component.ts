@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {ChangeDetectionStrategy, Component, OnInit} from "@angular/core";
 import {Observable} from "rxjs/Observable";
 import {Course} from "../../../models/content/course";
 import {Router} from "@angular/router";
@@ -9,7 +9,8 @@ import {StoreData} from "../../../models/core/store-data";
 @Component({
   selector: "gl-most-popular-course",
   templateUrl: "./most-popular-course.component.html",
-  styleUrls: ["./most-popular-course.component.css"]
+  styleUrls: ["./most-popular-course.component.css"],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MostPopularCourseComponent implements OnInit {
 

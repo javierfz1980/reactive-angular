@@ -58,8 +58,10 @@ export class ViewCourseComponent extends BasicContentEditor<Course> implements O
   }
 
   update(data: Course) {
-    const elementsTobeRemoved = getDifferencesBetween<string>(data.students, this.infoForm.listForm.getSelecteds());
-    const elementsTobeAdded = getDifferencesBetween<string>(this.infoForm.listForm.getSelecteds(), data.students);
+    const elementsTobeRemoved = getDifferencesBetween<string>
+      (data.students, this.infoForm.listForm ? this.infoForm.listForm.getSelecteds() : []);
+    const elementsTobeAdded = getDifferencesBetween<string>
+      (this.infoForm.listForm ? this.infoForm.listForm.getSelecteds() : [], data.students);
     data.students = this.infoForm.listForm ? this.infoForm.listForm.getSelecteds() : data.students;
     super.update(data, elementsTobeRemoved, elementsTobeAdded);
 

@@ -1,10 +1,11 @@
-import {Component, EventEmitter, Input, Output} from "@angular/core";
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from "@angular/core";
 import {Alert} from "../../../../models/core/alert";
 
 
 @Component({
   selector: "gl-alert",
-  templateUrl: "./notification.component.html"
+  templateUrl: "./notification.component.html",
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NotificationComponent {
 

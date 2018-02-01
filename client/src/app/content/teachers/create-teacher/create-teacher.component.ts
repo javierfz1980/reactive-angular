@@ -13,6 +13,7 @@ import {Course} from "../../../models/content/course";
 import {StoreData} from "../../../models/core/store-data";
 import {BasicContentEditor} from "../../commons/abstarct-clases/basic-content-editor";
 import {Teacher} from "../../../models/content/teacher";
+import {appRoutePaths} from "../../../app-routing.module";
 
 @Component({
   selector: "gl-create-teacher",
@@ -49,7 +50,7 @@ export class CreateTeacherComponent extends BasicContentEditor<Teacher> implemen
   create(data: Teacher) {
     data.courses = this.infoForm.listForm.getSelecteds();
     data.profile = data.profile;
-    super.create(data, this.infoForm.listForm.getSelecteds());
+    super.create(data, this.infoForm.listForm.getSelecteds(), appRoutePaths.teachers.path);
   }
 
 }

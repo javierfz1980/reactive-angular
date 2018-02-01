@@ -1,11 +1,12 @@
-import {Component, OnInit} from "@angular/core";
+import {ChangeDetectionStrategy, Component, OnInit} from "@angular/core";
 import {Observable} from "rxjs/Observable";
 import {Alert} from "../../../models/core/alert";
 import {AlertService} from "../../providers/services/alert.service";
 
 @Component({
   selector: "gl-notifications",
-  templateUrl: "./notifications.component.html"
+  templateUrl: "./notifications.component.html",
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NotificationsComponent implements OnInit {
 

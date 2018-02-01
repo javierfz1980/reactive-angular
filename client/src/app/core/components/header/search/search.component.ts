@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
+import {ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild} from "@angular/core";
 import {SearchService} from "../../../providers/services/search.service";
 import {StoreData} from "../../../../models/core/store-data";
 import {Teacher} from "../../../../models/content/teacher";
@@ -15,7 +15,8 @@ import 'rxjs/add/operator/distinctUntilChanged';
 @Component({
   selector: "gl-search",
   templateUrl: "./search.component.html",
-  styleUrls: ["./search.component.css"]
+  styleUrls: ["./search.component.css"],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchComponent implements OnInit {
 

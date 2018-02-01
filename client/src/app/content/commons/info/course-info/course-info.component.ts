@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from "@angular/core";
+import {ChangeDetectionStrategy, Component, Input, OnInit, ViewChild} from "@angular/core";
 import {FormBuilder, Validators} from "@angular/forms";
 import {Course} from "../../../../models/content/course";
 import {Observable} from "rxjs/Observable";
@@ -15,7 +15,8 @@ import {StudentsListComponent} from "../../lists/students-list/students-list.com
 @Component({
   selector: "gl-course-info",
   templateUrl: "./course-info.component.html",
-  styleUrls: ["./course-info.component.css"]
+  styleUrls: ["./course-info.component.css"],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CourseInfoComponent extends BasicInfo<Course> implements OnInit{
 

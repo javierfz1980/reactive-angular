@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {ChangeDetectionStrategy, Component} from "@angular/core";
 import {Observable} from "rxjs/Observable";
 import {Student} from "../../../../models/content/student";
 import {Router} from "@angular/router";
@@ -10,7 +10,8 @@ import {StoreData} from "../../../../models/core/store-data";
 @Component({
   selector: "gl-students-list",
   templateUrl: "./students-list.component.html",
-  styleUrls: ["./students-list.component.css"]
+  styleUrls: ["./students-list.component.css"],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StudentsListComponent extends BasicList<Student>{
 

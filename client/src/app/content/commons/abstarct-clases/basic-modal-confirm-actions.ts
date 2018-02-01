@@ -109,7 +109,7 @@ export abstract class BasicModalConfirmActions<T> extends BasicSubscriptor {
     this.confirmModal.open();
   }
 
-  create(data: T, selectedItems: string[]) {
+  create(data: T, selectedItems: string[], redirectPath: string) {
     if (this.createProvider) {
       this.createProvider = this.createProvider.bind(this.contentService);
       this.action = () => {
@@ -121,7 +121,7 @@ export abstract class BasicModalConfirmActions<T> extends BasicSubscriptor {
             () => {
               this.modalData.isBusy = false;
               this.confirmModal.close();
-              this.router.navigate([appRoutePaths.students.path]);
+              this.router.navigate([redirectPath]);
             });
       };
     } else {

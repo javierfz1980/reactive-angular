@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from "@angular/core";
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from "@angular/core";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {Token} from "../../../models/api/token";
@@ -8,7 +8,8 @@ import {BasicSubscriptor} from "../../../commons/abstract-classes/basic-subscrip
 
 @Component({
   selector: "gl-login",
-  templateUrl: "./login.component.html"
+  templateUrl: "./login.component.html",
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent extends BasicSubscriptor implements OnInit {
 

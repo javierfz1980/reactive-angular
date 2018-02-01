@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from "@angular/core";
+import {ChangeDetectionStrategy, Component, Input, OnInit, ViewChild} from "@angular/core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ProfileBasicInfo} from "../../../../models/content/profile-basic-info";
 import {BasicInfo} from "../../abstarct-clases/basic-info";
@@ -12,7 +12,8 @@ import {Student} from "../../../../models/content/student";
 @Component({
   selector: "gl-profile-info",
   templateUrl: "./profile-info.component.html",
-  styleUrls: ["./profile-info.component.css"]
+  styleUrls: ["./profile-info.component.css"],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProfileInfoComponent extends BasicInfo<ProfileBasicInfo> implements OnInit {
 

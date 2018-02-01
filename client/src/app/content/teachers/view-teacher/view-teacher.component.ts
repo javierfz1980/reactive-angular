@@ -72,8 +72,10 @@ export class ViewTeacherComponent extends BasicContentEditor<Teacher> implements
   }
 
   update(data: Teacher) {
-    const elementsTobeRemoved = getDifferencesBetween<string>(data.courses, this.infoForm.listForm.getSelecteds());
-    const elementsTobeAdded = getDifferencesBetween<string>(this.infoForm.listForm.getSelecteds(), data.courses);
+    const elementsTobeRemoved = getDifferencesBetween<string>
+      (data.courses, this.infoForm.listForm ? this.infoForm.listForm.getSelecteds() : []);
+    const elementsTobeAdded = getDifferencesBetween<string>
+      (this.infoForm.listForm ? this.infoForm.listForm.getSelecteds() : [], data.courses);
     data.profile = data.profile;
     super.update(data, elementsTobeRemoved, elementsTobeAdded);
   }

@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {ChangeDetectionStrategy, Component, OnInit} from "@angular/core";
 import {AuthService} from "./core/providers/services/auth.service";
 import {Observable} from "rxjs/Observable";
 import {globalProperties} from "../environments/properties";
@@ -7,7 +7,8 @@ import {TranslateService} from "@ngx-translate/core";
 @Component({
   selector: 'gl-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent implements OnInit {
 

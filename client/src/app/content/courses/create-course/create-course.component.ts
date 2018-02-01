@@ -11,6 +11,7 @@ import {Observable} from "rxjs/Observable";
 import {CourseInfoComponent} from "../../commons/info/course-info/course-info.component";
 import {BasicContentEditor} from "../../commons/abstarct-clases/basic-content-editor";
 import {StoreData} from "../../../models/core/store-data";
+import {appRoutePaths} from "../../../app-routing.module";
 
 @Component({
   selector: "gl-create-course",
@@ -45,7 +46,7 @@ export class CreateCourseComponent extends BasicContentEditor<Course> implements
   }
 
   create(data: Course) {
-    super.create(data, this.infoForm.listForm.getSelecteds());
+    super.create(data, this.infoForm.listForm.getSelecteds(), appRoutePaths.courses.path);
   }
 
 }

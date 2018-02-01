@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from "@angular/core";
+import {ChangeDetectionStrategy, Component, OnInit, ViewChild} from "@angular/core";
 import {AuthService} from "../../../providers/services/auth.service";
 import {Observable} from "rxjs/Observable";
 import {Account} from "../../../../models/core/account";
@@ -9,7 +9,8 @@ import {AccountDetailsModalComponent} from "./account-details-modal/account-deta
 @Component({
   selector: "gl-account",
   templateUrl: "./account.component.html",
-  styleUrls: ["./account.component.css"]
+  styleUrls: ["./account.component.css"],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AccountComponent implements OnInit {
 

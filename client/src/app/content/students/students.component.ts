@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from "@angular/core";
+import {ChangeDetectionStrategy, Component, OnInit, ViewChild} from "@angular/core";
 import {Student} from "../../models/content/student";
 import {AuthService} from "../../core/providers/services/auth.service";
 import {
@@ -13,7 +13,8 @@ import 'rxjs/add/operator/takeWhile';
 
 @Component({
   selector: "gl-alumnos",
-  templateUrl: "./students.component.html"
+  templateUrl: "./students.component.html",
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StudentsComponent extends BasicContentDisplay<Student> {
 

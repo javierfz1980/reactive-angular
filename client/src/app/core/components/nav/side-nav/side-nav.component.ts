@@ -1,11 +1,12 @@
-import {Component, OnInit} from "@angular/core";
+import {ChangeDetectionStrategy, Component, OnInit} from "@angular/core";
 import {RouteElement} from "../../../../models/core/route-element";
 import {appRoutePaths} from "../../../../app-routing.module";
 
 @Component({
   selector: "gl-side-nav",
   templateUrl: "./side-nav.component.html",
-  styleUrls: ["./side-nav.component.css"]
+  styleUrls: ["./side-nav.component.css"],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SideNavComponent implements OnInit {
 

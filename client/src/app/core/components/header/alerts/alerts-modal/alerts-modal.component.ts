@@ -1,11 +1,12 @@
-import {Component, EventEmitter, Input, Output} from "@angular/core";
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from "@angular/core";
 import {Alert} from "../../../../../models/core/alert";
 import {getDateString} from "../../../../../helpers/helpers";
 
 @Component({
   selector: "gl-alerts-modal",
   templateUrl: "./alerts-modal.component.html",
-  styleUrls: ["./alerts-modal.component.css"]
+  styleUrls: ["./alerts-modal.component.css"],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AlertsModalComponent {
 

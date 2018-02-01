@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {ChangeDetectionStrategy, Component, OnInit} from "@angular/core";
 import {Course} from "../../../../models/content/course";
 import {Observable} from "rxjs/Observable";
 import {Router} from "@angular/router";
@@ -11,6 +11,7 @@ import {StoreData} from "../../../../models/core/store-data";
   selector: "gl-courses-list",
   templateUrl: "./courses-list.component.html",
   styleUrls: ["./courses-list.component.css"],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CoursesListComponent extends BasicList<Course>{
 

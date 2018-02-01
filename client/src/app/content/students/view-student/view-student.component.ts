@@ -70,8 +70,10 @@ export class ViewStudentComponent extends BasicContentEditor<Student> implements
   }
 
   update(data: Student) {
-    const elementsTobeRemoved = getDifferencesBetween<string>(data.courses, this.infoForm.listForm.getSelecteds());
-    const elementsTobeAdded = getDifferencesBetween<string>(this.infoForm.listForm.getSelecteds(), data.courses);
+    const elementsTobeRemoved = getDifferencesBetween<string>
+      (data.courses, this.infoForm.listForm ? this.infoForm.listForm.getSelecteds() : []);
+    const elementsTobeAdded = getDifferencesBetween<string>
+      (this.infoForm.listForm ? this.infoForm.listForm.getSelecteds() : [], data.courses);
     data.courses = this.infoForm.listForm.getSelecteds();
     data.profile = data.profile;
     super.update(data, elementsTobeRemoved, elementsTobeAdded);
