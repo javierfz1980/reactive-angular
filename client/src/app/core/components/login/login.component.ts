@@ -1,7 +1,6 @@
-import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from "@angular/core";
+import {ChangeDetectionStrategy, Component, OnInit} from "@angular/core";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
-import {Token} from "../../../models/api/token";
 import {AuthService} from "../../providers/services/auth.service";
 import {appRoutePaths} from "../../../app-routing.module";
 import {BasicSubscriptor} from "../../../commons/abstract-classes/basic-subscriptor";

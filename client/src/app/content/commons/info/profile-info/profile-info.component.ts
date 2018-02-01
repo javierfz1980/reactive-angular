@@ -40,7 +40,6 @@ export class ProfileInfoComponent extends BasicInfo<ProfileBasicInfo> implements
       this.form.controls["profile"].patchValue(data.profile);
     }
 
-    console.log(data, this.form)
   };
 
   private profile_group: FormGroup;
@@ -80,7 +79,6 @@ export class ProfileInfoComponent extends BasicInfo<ProfileBasicInfo> implements
       profile: this.profile_group
     });
 
-    console.log(this.form)
   }
 
   private validateInfo(): ProfileBasicInfo{

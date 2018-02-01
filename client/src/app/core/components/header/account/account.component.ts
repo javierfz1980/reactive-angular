@@ -35,4 +35,8 @@ export class AccountComponent implements OnInit {
     this.router.navigate([appRoutePaths.login.path]);
   }
 
+  getNewReference(info: Account): Account {
+    return {...info};
+  }
+
 }

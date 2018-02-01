@@ -1,4 +1,4 @@
-import {Component, Input} from "@angular/core";
+import {ChangeDetectionStrategy, Component, Input} from "@angular/core";
 
 export type ConfirmationModalType = "delete" | "confirm" | "response";
 export interface ConfirmationModalData {
@@ -11,7 +11,8 @@ export interface ConfirmationModalData {
 
 @Component({
   selector: "gl-confirmation-modal",
-  templateUrl: "./confirmation-modal.component.html"
+  templateUrl: "./confirmation-modal.component.html",
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ConfirmationModalComponent {
 

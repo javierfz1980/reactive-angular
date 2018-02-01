@@ -37,7 +37,10 @@ export abstract class BasicModalConfirmActions<T> extends BasicSubscriptor {
           .takeWhile(() => true)
           .subscribe(
             () => {
-              this.modalData.isBusy = false;
+              this.modalData = {
+                ...this.modalData,
+                isBusy: false
+              };
               this.confirmModal.close();
             });
       };
@@ -65,7 +68,10 @@ export abstract class BasicModalConfirmActions<T> extends BasicSubscriptor {
           .takeWhile(() => true)
           .subscribe(
             () => {
-              this.modalData.isBusy = false;
+              this.modalData = {
+                ...this.modalData,
+                isBusy: false
+              };
               this.confirmModal.close();
             })
       };
@@ -92,7 +98,10 @@ export abstract class BasicModalConfirmActions<T> extends BasicSubscriptor {
           .takeWhile(() => true)
           .subscribe(
             () => {
-              this.modalData.isBusy = false;
+              this.modalData = {
+                ...this.modalData,
+                isBusy: false
+              };
               this.confirmModal.close();
               if (redirectPath) this.router.navigate([redirectPath]);
             });
@@ -119,7 +128,10 @@ export abstract class BasicModalConfirmActions<T> extends BasicSubscriptor {
           .takeWhile(() => true)
           .subscribe(
             () => {
-              this.modalData.isBusy = false;
+              this.modalData = {
+                ...this.modalData,
+                isBusy: false
+              };
               this.confirmModal.close();
               this.router.navigate([redirectPath]);
             });
