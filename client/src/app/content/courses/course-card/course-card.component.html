@@ -4,7 +4,7 @@
   </div>
   <div class="card-block">
     <div class="card-text" [ngClass]="{'content-disabled': !course.active}">
-      {{ course.detail | capitalize }}
+      {{ course.detail | capitalize | truncate : 300 }}
     </div>
   </div>
   <div class="card-footer">
