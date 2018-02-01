@@ -8,7 +8,7 @@
   <hr>
 
 <!-- content cards -->
-  <ng-container *ngIf="storeData.data.length > 0; else noCourses">
+  <ng-container *ngIf="storeData.data && storeData.data.length > 0 || storeData.loading; else noCourses">
   <div class="container-fluid">
     <div class="row">
       <div class="card-columns">
