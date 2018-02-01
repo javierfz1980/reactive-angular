@@ -2,7 +2,7 @@
   <div class="course-title">
       {{courseInfo.title}}
   </div>
-  <div class="header-subtitle">
+  <div class="header-subtitle" *ngIf="courseInfo.students && courseInfo.students.length > 0">
     {{courseInfo.students.length}} <clr-icon shape="users"></clr-icon> {{"dashboard.mostPopular" | translate}}...
   </div>
 </div>

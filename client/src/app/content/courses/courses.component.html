@@ -1,4 +1,5 @@
 <div *ngIf="dataSource | async as storeData; else loading">
+
   <h1>
     {{ title }}
     <button *ngIf="isAdministrator" class="btn btn-sm btn-primary" (click)="create()">New Course</button>
@@ -7,6 +8,7 @@
   <hr>
 
 <!-- content cards -->
+  <ng-container *ngIf="storeData.data.length > 0; else noCourses">
   <div class="container-fluid">
     <div class="row">
       <div class="card-columns">
@@ -22,6 +24,10 @@
     </div>
   </div>
   <gl-confirmation-modal #confirmModal [modalData]="modalData"></gl-confirmation-modal>
+  </ng-container>
+  <ng-template #noCourses>
+    There are no Courses...
+  </ng-template>
 </div>
 
 <!-- content loader -->
