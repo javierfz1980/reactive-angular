@@ -13,8 +13,9 @@ export abstract class BasicContentDisplay<T> extends BasicModalConfirmActions<T>
   protected editPath: string;
   protected contentProvider: () => Observable<StoreData<T>>;
   protected fetchProvider: (id: string) => void;
-  protected dataSource: Observable<StoreData<T>>;
-  protected isAdministrator: boolean;
+
+  dataSource: Observable<StoreData<T>>;
+  isAdministrator: boolean;
 
   constructor(protected router: Router,
               protected contentService: ContentService,

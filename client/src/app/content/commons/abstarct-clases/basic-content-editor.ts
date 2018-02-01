@@ -10,11 +10,12 @@ export abstract class BasicContentEditor<T> extends BasicModalConfirmActions<T> 
 
   protected contentProvider: () => Observable<StoreData<T>>;
   protected fetchProvider: (id: string) => void;
-  protected dataSource: Observable<T>;
   protected id: Observable<string>;
-  protected isEditMode: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  protected isAdministrator: boolean;
-  protected editMode: boolean = false;
+
+  dataSource: Observable<T>;
+  isEditMode: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  isAdministrator: boolean;
+  editMode: boolean = false;
 
   constructor(protected router: Router,
               protected contentService: ContentService,

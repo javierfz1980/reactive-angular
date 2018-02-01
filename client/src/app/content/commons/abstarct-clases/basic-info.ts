@@ -22,11 +22,12 @@ export abstract class BasicInfo<T> {
     this._isReadOnly = value;
   }
 
-  protected _info: T;
   protected _isReadOnly: boolean;
-  protected form: FormGroup;
   protected type: FormType;
   protected isAdministrator: boolean;
+
+  _info: T;
+  form: FormGroup;
 
   constructor(protected authService: AuthService) {}
 

@@ -14,12 +14,13 @@ export abstract class BasicModalConfirmActions<T> extends BasicSubscriptor {
   @ViewChild("confirmModal")
   abstract confirmModal: ConfirmationModalComponent;
   protected action: () => void;
-  protected modalData: ConfirmationModalData;
 
   protected createProvider: (data: T, selectedItems: string[]) => Observable<boolean>;
   protected updateProvider: (data: T, toBeRemoved: string[], toBeAdded: string[]) => Observable<boolean>;
   protected updateStatusProvider: (id: string, data: boolean) => Observable<boolean>;
   protected deleteProvider: (data: T) => Observable<boolean>;
+
+  modalData: ConfirmationModalData;
 
   constructor(protected router: Router,
               protected contentService: ContentService) {
