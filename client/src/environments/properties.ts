@@ -1,6 +1,6 @@
 export const globalProperties = {
-  localDev: true,
-  maxFakedTime: 1,
+  localDev: false,
+  maxFakedTime: 0,
   locale: "en",
   localesPath: "/assets/i18n/",
   administratorKey: "administrator",
