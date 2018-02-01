@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
+import {Component, OnInit, ViewChild} from "@angular/core";
 import {Student} from "../../models/content/student";
 import {AuthService} from "../../core/providers/services/auth.service";
 import {
@@ -15,7 +15,7 @@ import 'rxjs/add/operator/takeWhile';
   selector: "gl-alumnos",
   templateUrl: "./students.component.html"
 })
-export class StudentsComponent extends BasicContentDisplay<Student> implements OnInit, OnDestroy {
+export class StudentsComponent extends BasicContentDisplay<Student> {
 
   @ViewChild("confirmModal")
   confirmModal: ConfirmationModalComponent;
@@ -23,44 +23,18 @@ export class StudentsComponent extends BasicContentDisplay<Student> implements O
   title: string = "All Students";
   nameLastnameFilter = new NameLastnameFilter();
   emailFilter = new EmailFilter();
-  action: () => void;
-  createPath: string = appRoutePaths.students.childs.create.path;
-  editPath:string = appRoutePaths.students.path;
 
-  private isAlive: boolean = true;
+  contentProvider = this.contentService.getStudents;
+  fetchProvider = this.contentService.fetchStudents;
+  deleteProvider = this.contentService.deleteStudent;
+  createPath = appRoutePaths.students.childs.create.path;
+  editPath = appRoutePaths.students.path;
 
-  constructor(protected contentService: ContentService,
+  constructor(protected router: Router,
+              protected contentService: ContentService,
               protected authService: AuthService,
-              protected router: Router,
               protected route: ActivatedRoute) {
-    super(authService, router, route);
-  }
-
-  ngOnInit() {
-    this.dataSource = this.contentService
-      .getStudents();
-
-    this.contentService.fetchStudents();
-  }
-
-  delete(data: Student) {
-    this.action = () => {
-      this.modalData.title = "Deleting";
-      this.modalData.isBusy = true;
-      this.contentService
-        .deleteStudent(data)
-        .takeWhile(() => this.isAlive)
-        .subscribe(
-          () => {
-            this.modalData.isBusy = false;
-            this.confirmModal.close();
-          });
-    };
-    this.openDeleteConfirmation(`${data.first_name} ${data.last_name}`);
-  }
-
-  ngOnDestroy() {
-    this.isAlive = false;
+    super(router, contentService, authService, route);
   }
 
 }

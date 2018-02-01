@@ -3,21 +3,32 @@ import {AuthService} from "../../../core/providers/services/auth.service";
 import {BasicModalConfirmActions} from "./basic-modal-confirm-actions";
 import {Observable} from "rxjs/Observable";
 import {StoreData} from "../../../models/core/store-data";
+import {ContentService} from "../../../core/providers/services/content/content.service";
+import {OnInit} from "@angular/core";
 import 'rxjs/add/operator/takeWhile';
 
-export abstract class BasicContentDisplay<T> extends BasicModalConfirmActions {
+export abstract class BasicContentDisplay<T> extends BasicModalConfirmActions<T> implements OnInit{
 
-  abstract createPath: string;
-  abstract editPath: string;
-
+  protected createPath: string;
+  protected editPath: string;
+  protected contentProvider: () => Observable<StoreData<T>>;
+  protected fetchProvider: (id: string) => void;
   protected dataSource: Observable<StoreData<T>>;
   protected isAdministrator: boolean;
 
-  constructor(protected authService: AuthService,
-              protected router: Router,
+  constructor(protected router: Router,
+              protected contentService: ContentService,
+              protected authService: AuthService,
               protected route: ActivatedRoute) {
-    super();
+    super(router, contentService);
     this.isAdministrator = this.authService.isAdministrator();
+  }
+
+  ngOnInit() {
+    if (this.contentProvider && this.fetchProvider) {
+      this.dataSource = this.contentProvider.bind(this.contentService)()
+      this.fetchProvider.bind(this.contentService)();
+    }
   }
 
   create() {

@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
+import {ChangeDetectionStrategy, Component, OnInit, ViewChild} from "@angular/core";
 import {
   ProfileInfoComponent
 } from "../../commons/info/profile-info/profile-info.component";
@@ -6,7 +6,6 @@ import {
   ConfirmationModalComponent
 } from "../../../commons/confirmation-modal/confirmation-modal.component";
 import {ActivatedRoute, Router} from "@angular/router";
-import {appRoutePaths} from "../../../app-routing.module";
 import {ContentService} from "../../../core/providers/services/content/content.service";
 import {Observable} from "rxjs/Observable";
 import {Course} from "../../../models/content/course";
@@ -20,7 +19,7 @@ import {Student} from "../../../models/content/student";
   templateUrl: "./create-student.component.html",
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CreateStudentComponent extends BasicContentEditor<Student> implements OnInit, OnDestroy {
+export class CreateStudentComponent extends BasicContentEditor<Student> implements OnInit {
 
   @ViewChild("confirmModal")
   confirmModal: ConfirmationModalComponent;
@@ -31,15 +30,13 @@ export class CreateStudentComponent extends BasicContentEditor<Student> implemen
   title: string = "Add new Student";
   listFormSource: Observable<StoreData<Course>>;
   listFormMarked: Observable<string[]>;
-  action: () => void;
+  createProvider = this.contentService.createStudent;
 
-  private isAlive: boolean = true;
-
-  constructor(protected authService: AuthService,
-              private contentService: ContentService,
-              private router: Router,
+  constructor(protected router: Router,
+              protected contentService: ContentService,
+              protected authService: AuthService,
               protected route: ActivatedRoute) {
-    super(authService, route);
+    super(router, contentService, authService, route);
   }
 
   ngOnInit() {
@@ -52,23 +49,7 @@ export class CreateStudentComponent extends BasicContentEditor<Student> implemen
   create(data: Student) {
     data.courses = this.infoForm.listForm.getSelecteds();
     data.profile = data.profile;
-    this.action = () => {
-      this.modalData.title = "Creating";
-      this.modalData.isBusy = true;
-      this.contentService
-        .createStudent(data, this.infoForm.listForm.getSelecteds())
-        .takeWhile(() => this.isAlive)
-        .subscribe(
-          () => {
-            this.modalData.isBusy = false;
-            this.confirmModal.close();
-            this.router.navigate([appRoutePaths.students.path]);
-          });
-    };
-    this.openCreateConfirmation();
+    super.create(data, this.infoForm.listForm.getSelecteds());
   }
 
-  ngOnDestroy() {
-    this.isAlive = false;
-  }
 }

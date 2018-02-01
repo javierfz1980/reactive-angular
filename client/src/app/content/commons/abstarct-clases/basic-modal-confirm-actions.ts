@@ -2,26 +2,104 @@ import {
   ConfirmationModalComponent,
   ConfirmationModalData
 } from "../../../commons/confirmation-modal/confirmation-modal.component";
+import {Router} from "@angular/router";
+import {ContentService} from "../../../core/providers/services/content/content.service";
+import {Observable} from "rxjs/Observable";
+import {appRoutePaths} from "../../../app-routing.module";
+import {BasicSubscriptor} from "../../../commons/abstract-classes/basic-subscriptor";
+import {ViewChild} from "@angular/core";
 
-export abstract class BasicModalConfirmActions {
+export abstract class BasicModalConfirmActions<T> extends BasicSubscriptor {
 
+  @ViewChild("confirmModal")
   abstract confirmModal: ConfirmationModalComponent;
-  abstract action: () => void;
-
+  protected action: () => void;
   protected modalData: ConfirmationModalData;
 
-  protected openCreateConfirmation() {
+  protected createProvider: (data: T, selectedItems: string[]) => Observable<boolean>;
+  protected updateProvider: (data: T, toBeRemoved: string[], toBeAdded: string[]) => Observable<boolean>;
+  protected updateStatusProvider: (id: string, data: boolean) => Observable<boolean>;
+  protected deleteProvider: (data: T) => Observable<boolean>;
+
+  constructor(protected router: Router,
+              protected contentService: ContentService) {
+    super();
+  }
+
+  update(data: T, elementsTobeRemoved: string[], elementsTobeAdded: string[]) {
+    const detail: string = data ? `(${data["id"]}) ?` : "?";
+    if (this.updateProvider) {
+      this.updateProvider = this.updateProvider.bind(this.contentService);
+      this.action = () => {
+        this.modalData.title = "Updating";
+        this.modalData.isBusy = true;
+        this.updateProvider(data, elementsTobeRemoved, elementsTobeAdded)
+          .takeWhile(() => true)
+          .subscribe(
+            () => {
+              this.modalData.isBusy = false;
+              this.confirmModal.close();
+            });
+      };
+    } else {
+      this.action = () => {}
+    }
     this.modalData = {
       type: "confirm",
-      title: "Create",
-      text: "Are you sure you want to create this element ?",
+      title: "Update",
+      text: `Are you sure you want to update this element ${detail}`,
       action: this.action
     };
     this.confirmModal.open();
   }
 
-  protected openDeleteConfirmation(data?: string) {
-    const detail: string = data ? `(${data}) ?` : "?";
+  toggleStatus(data: T) {
+    const detail: string = data ? `(${data["id"]}) ?` : "?";
+    if (this.updateStatusProvider) {
+      this.updateStatusProvider = this.updateStatusProvider.bind(this.contentService);
+      this.action = () => {
+        this.modalData.title = "Updating";
+        this.modalData.isBusy = true;
+        this.contentService
+          .updateCourseStatus(data["id"], !data["active"])
+          .takeWhile(() => true)
+          .subscribe(
+            () => {
+              this.modalData.isBusy = false;
+              this.confirmModal.close();
+            })
+      };
+    } else {
+      this.action = () => {}
+    }
+    this.modalData = {
+      type: "confirm",
+      title: "Update",
+      text: `Are you sure you want to update this element ${detail}`,
+      action: this.action
+    };
+    this.confirmModal.open();
+  }
+
+  delete(data: T, redirectPath?: string) {
+    const detail: string = data ? `(${data["id"]}) ?` : "?";
+    if (this.deleteProvider) {
+      this.deleteProvider = this.deleteProvider.bind(this.contentService);
+      this.action = () => {
+        this.modalData.title = "Deleting";
+        this.modalData.isBusy = true;
+        this.deleteProvider(data)
+          .takeWhile(() => true)
+          .subscribe(
+            () => {
+              this.modalData.isBusy = false;
+              this.confirmModal.close();
+              if (redirectPath) this.router.navigate([redirectPath]);
+            });
+      };
+    } else {
+      this.action = () => {}
+    }
     this.modalData = {
       type: "delete",
       title: "Delete",
@@ -31,12 +109,28 @@ export abstract class BasicModalConfirmActions {
     this.confirmModal.open();
   }
 
-  protected openUpdateConfirmation(data?: string) {
-    const detail: string = data ? `(${data}) ?` : "?";
+  create(data: T, selectedItems: string[]) {
+    if (this.createProvider) {
+      this.createProvider = this.createProvider.bind(this.contentService);
+      this.action = () => {
+        this.modalData.title = "Creating";
+        this.modalData.isBusy = true;
+        this.createProvider(data, selectedItems)
+          .takeWhile(() => true)
+          .subscribe(
+            () => {
+              this.modalData.isBusy = false;
+              this.confirmModal.close();
+              this.router.navigate([appRoutePaths.students.path]);
+            });
+      };
+    } else {
+      this.action = () => {}
+    }
     this.modalData = {
       type: "confirm",
-      title: "Update",
-      text: `Are you sure you want to update this element ${detail}`,
+      title: "Create",
+      text: "Are you sure you want to create this element ?",
       action: this.action
     };
     this.confirmModal.open();
