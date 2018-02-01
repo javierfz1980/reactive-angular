@@ -2,7 +2,6 @@ import {ChangeDetectionStrategy, Component, OnInit, ViewChild} from "@angular/co
 import {ActivatedRoute, Router} from "@angular/router";
 import {AuthService} from "../../../core/providers/services/auth.service";
 import {Course} from "../../../models/content/course";
-import {appRoutePaths} from "../../../app-routing.module";
 import {ContentService} from "../../../core/providers/services/content/content.service";
 import {Student} from "../../../models/content/student";
 import {
@@ -14,6 +13,7 @@ import {BasicContentEditor} from "../../commons/abstarct-clases/basic-content-ed
 import {StoreData} from "../../../models/core/store-data";
 import {Observable} from "rxjs/Observable";
 import {getDifferencesBetween} from "../../../helpers/helpers";
+import {appRoutePaths} from "../../../app-routes";
 
 @Component({
   selector: "gl-view-course",

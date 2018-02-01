@@ -2,9 +2,9 @@ import {ChangeDetectionStrategy, Component, OnInit, ViewChild} from "@angular/co
 import {AuthService} from "../../../providers/services/auth.service";
 import {Observable} from "rxjs/Observable";
 import {Account} from "../../../../models/core/account";
-import {appRoutePaths} from "../../../../app-routing.module";
 import {Router} from "@angular/router";
 import {AccountDetailsModalComponent} from "./account-details-modal/account-details-modal.component";
+import {appRoutePaths} from "../../../../app-routes";
 
 @Component({
   selector: "gl-account",

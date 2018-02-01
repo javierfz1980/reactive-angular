@@ -5,11 +5,11 @@ import {Teacher} from "../../../../models/content/teacher";
 import {Student} from "../../../../models/content/student";
 import {Course} from "../../../../models/content/course";
 import {Router} from "@angular/router";
-import {appRoutePaths} from "../../../../app-routing.module";
 import {Observable} from "rxjs/Observable";
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
+import {appRoutePaths} from "../../../../app-routes";
 
 
 @Component({

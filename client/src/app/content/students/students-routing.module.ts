@@ -4,12 +4,7 @@ import {StudentsComponent} from "./students.component";
 import {RouterModule, Routes} from "@angular/router";
 import {ViewStudentComponent} from "./view-student/view-student.component";
 import {CreateStudentComponent} from "./create-student/create-student.component";
-import {RouteElement} from "../../models/core/route-element";
 import {RoleGuard} from "../../core/providers/guards/role.guard";
-
-export const contentStudentsRoutePaths: {[key:string]: RouteElement} = {
-  create: {path: "create", icon: null}
-};
 
 const studentsRoutes: Routes = [
   {path: "", component: StudentsComponent, canActivate: [AuthGuard]},

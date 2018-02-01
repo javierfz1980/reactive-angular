@@ -7,7 +7,6 @@ import {AuthService} from "../../../core/providers/services/auth.service";
 import {
   ProfileInfoComponent
 } from "../../commons/info/profile-info/profile-info.component";
-import {appRoutePaths} from "../../../app-routing.module";
 import {Course} from "../../../models/content/course";
 import {ConfirmationModalComponent} from "../../../commons/confirmation-modal/confirmation-modal.component";
 import {StoreData} from "../../../models/core/store-data";
@@ -17,6 +16,7 @@ import {getDifferencesBetween} from "../../../helpers/helpers";
 import 'rxjs/add/operator/takeWhile';
 import 'rxjs/add/operator/withLatestFrom';
 import 'rxjs/add/operator/filter';
+import {appRoutePaths} from "../../../app-routes";
 
 @Component({
   selector: "gl-view-student",

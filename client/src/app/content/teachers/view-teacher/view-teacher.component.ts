@@ -9,13 +9,13 @@ import {Teacher} from "../../../models/content/teacher";
 import {
   ProfileInfoComponent
 } from "../../commons/info/profile-info/profile-info.component";
-import {appRoutePaths} from "../../../app-routing.module";
 import {ContentService} from "../../../core/providers/services/content/content.service";
 import {Course} from "../../../models/content/course";
 import {BasicContentEditor} from "../../commons/abstarct-clases/basic-content-editor";
 import {StoreData} from "../../../models/core/store-data";
 import {getDifferencesBetween} from "../../../helpers/helpers";
 import 'rxjs/add/operator/takeWhile';
+import {appRoutePaths} from "../../../app-routes";
 
 @Component({
   selector: "gl-view-teacher",

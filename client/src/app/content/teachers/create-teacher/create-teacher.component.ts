@@ -13,7 +13,7 @@ import {Course} from "../../../models/content/course";
 import {StoreData} from "../../../models/core/store-data";
 import {BasicContentEditor} from "../../commons/abstarct-clases/basic-content-editor";
 import {Teacher} from "../../../models/content/teacher";
-import {appRoutePaths} from "../../../app-routing.module";
+import {appRoutePaths} from "../../../app-routes";
 
 @Component({
   selector: "gl-create-teacher",

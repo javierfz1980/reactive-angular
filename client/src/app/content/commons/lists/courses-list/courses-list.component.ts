@@ -1,11 +1,11 @@
-import {ChangeDetectionStrategy, Component, OnInit} from "@angular/core";
+import {ChangeDetectionStrategy, Component} from "@angular/core";
 import {Course} from "../../../../models/content/course";
 import {Observable} from "rxjs/Observable";
 import {Router} from "@angular/router";
-import {appRoutePaths} from "../../../../app-routing.module";
 import {ContentService} from "../../../../core/providers/services/content/content.service";
 import {BasicList} from "../../abstarct-clases/basic-list";
 import {StoreData} from "../../../../models/core/store-data";
+import {appRoutePaths} from "../../../../app-routes";
 
 @Component({
   selector: "gl-courses-list",

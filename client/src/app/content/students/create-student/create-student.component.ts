@@ -13,7 +13,7 @@ import {AuthService} from "../../../core/providers/services/auth.service";
 import {BasicContentEditor} from "../../commons/abstarct-clases/basic-content-editor";
 import {StoreData} from "../../../models/core/store-data";
 import {Student} from "../../../models/content/student";
-import {appRoutePaths} from "../../../app-routing.module";
+import {appRoutePaths} from "../../../app-routes";
 
 @Component({
   selector: "gl-create-student",

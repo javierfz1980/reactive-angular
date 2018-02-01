@@ -11,7 +11,7 @@ import {Observable} from "rxjs/Observable";
 import {CourseInfoComponent} from "../../commons/info/course-info/course-info.component";
 import {BasicContentEditor} from "../../commons/abstarct-clases/basic-content-editor";
 import {StoreData} from "../../../models/core/store-data";
-import {appRoutePaths} from "../../../app-routing.module";
+import {appRoutePaths} from "../../../app-routes";
 
 @Component({
   selector: "gl-create-course",

@@ -2,9 +2,9 @@ import {ChangeDetectionStrategy, Component, OnInit} from "@angular/core";
 import {Observable} from "rxjs/Observable";
 import {Course} from "../../../models/content/course";
 import {Router} from "@angular/router";
-import {appRoutePaths} from "../../../app-routing.module";
 import {ContentService} from "../../../core/providers/services/content/content.service";
 import {StoreData} from "../../../models/core/store-data";
+import {appRoutePaths} from "../../../app-routes";
 
 @Component({
   selector: "gl-most-popular-course",

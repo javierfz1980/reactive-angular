@@ -5,11 +5,11 @@ import {
   ConfirmationModalComponent
 } from "../../commons/confirmation-modal/confirmation-modal.component";
 import {ActivatedRoute, Router} from "@angular/router";
-import {appRoutePaths} from "../../app-routing.module";
 import {EmailFilter, NameLastnameFilter} from "../../models/filters/generic-string-filter";
 import {ContentService} from "../../core/providers/services/content/content.service";
 import {BasicContentDisplay} from "../commons/abstarct-clases/basic-content-display";
 import 'rxjs/add/operator/takeWhile';
+import {appRoutePaths} from "../../app-routes";
 
 @Component({
   selector: "gl-alumnos",

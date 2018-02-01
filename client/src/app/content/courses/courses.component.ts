@@ -4,12 +4,12 @@ import {AuthService} from "../../core/providers/services/auth.service";
 import {
   ConfirmationModalComponent
 } from "../../commons/confirmation-modal/confirmation-modal.component";
-import {appRoutePaths} from "../../app-routing.module";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ContentService} from "../../core/providers/services/content/content.service";
 import {BasicContentDisplay} from "../commons/abstarct-clases/basic-content-display";
 import {Observable} from "rxjs/Observable";
 import 'rxjs/add/operator/takeWhile';
+import {appRoutePaths} from "../../app-routes";
 
 @Component({
   selector: "gl-cursos",

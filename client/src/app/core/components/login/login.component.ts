@@ -2,8 +2,8 @@ import {ChangeDetectionStrategy, Component, OnInit} from "@angular/core";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {AuthService} from "../../providers/services/auth.service";
-import {appRoutePaths} from "../../../app-routing.module";
 import {BasicSubscriptor} from "../../../commons/abstract-classes/basic-subscriptor";
+import {appRoutePaths} from "../../../app-routes";
 
 @Component({
   selector: "gl-login",

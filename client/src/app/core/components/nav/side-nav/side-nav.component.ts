@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, OnInit} from "@angular/core";
 import {RouteElement} from "../../../../models/core/route-element";
-import {appRoutePaths} from "../../../../app-routing.module";
+import {appRoutePaths} from "../../../../app-routes";
 
 @Component({
   selector: "gl-side-nav",

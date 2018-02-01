@@ -2,14 +2,9 @@ import {NgModule} from "@angular/core";
 import {AuthGuard} from "../../core/providers/guards/auth.guard";
 import {CoursesComponent} from "./courses.component";
 import {RouterModule, Routes} from "@angular/router";
-import {RouteElement} from "../../models/core/route-element";
 import {ViewCourseComponent} from "./view-course/view-course.component";
 import {CreateCourseComponent} from "./create-course/create-course.component";
 import {RoleGuard} from "../../core/providers/guards/role.guard";
-
-export const contentCoursesRoutePaths: {[key:string]: RouteElement} = {
-  create: {path: "create", icon: null}
-};
 
 export const coursesRoutes: Routes = [
   {path: "", component: CoursesComponent, canActivate: [AuthGuard]},

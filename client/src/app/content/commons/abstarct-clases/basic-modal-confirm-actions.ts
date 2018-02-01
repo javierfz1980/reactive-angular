@@ -5,7 +5,6 @@ import {
 import {Router} from "@angular/router";
 import {ContentService} from "../../../core/providers/services/content/content.service";
 import {Observable} from "rxjs/Observable";
-import {appRoutePaths} from "../../../app-routing.module";
 import {BasicSubscriptor} from "../../../commons/abstract-classes/basic-subscriptor";
 import {ViewChild} from "@angular/core";
 

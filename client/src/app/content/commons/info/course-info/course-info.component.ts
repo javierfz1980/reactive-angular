@@ -5,12 +5,12 @@ import {Observable} from "rxjs/Observable";
 import {Teacher} from "../../../../models/content/teacher";
 import {AuthService} from "../../../../core/providers/services/auth.service";
 import {Router} from "@angular/router";
-import {appRoutePaths} from "../../../../app-routing.module";
 import {ContentService} from "../../../../core/providers/services/content/content.service";
 import {BasicInfo} from "../../abstarct-clases/basic-info";
 import {StoreData} from "../../../../models/core/store-data";
 import {Student} from "../../../../models/content/student";
 import {StudentsListComponent} from "../../lists/students-list/students-list.component";
+import {appRoutePaths} from "../../../../app-routes";
 
 @Component({
   selector: "gl-course-info",
