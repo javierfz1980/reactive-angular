@@ -6,7 +6,7 @@
 
       <!-- basic info block -->
       <clr-stack-block [clrSbExpanded]="true">
-        <clr-stack-label>Student Info</clr-stack-label>
+        <clr-stack-label>Profile Info</clr-stack-label>
         <clr-stack-block>
           <clr-stack-label class="clr-stack-hide-label"></clr-stack-label>
           <clr-stack-content>
@@ -241,7 +241,7 @@
   <!--  -->
 
   <section class="form-block" *ngIf="!_isReadOnly">
-    <div class="form-group">
+    <div class="form-group _form-buttons">
       <button class="btn" (click)="form.reset()">Clear</button>
       <button class="btn btn-primary"
               [disabled]="!form.valid"

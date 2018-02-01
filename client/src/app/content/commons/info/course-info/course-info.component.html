@@ -6,7 +6,7 @@
 
       <!-- basic info block -->
       <clr-stack-block [clrSbExpanded]="true">
-        <clr-stack-label>Info</clr-stack-label>
+        <clr-stack-label>Course Info</clr-stack-label>
         <clr-stack-block>
           <clr-stack-label class="clr-stack-hide-label"></clr-stack-label>
           <clr-stack-content>
@@ -107,7 +107,7 @@
 
       <!-- students block -->
       <clr-stack-block *ngIf="_info.active || type === 'create'">
-        <clr-stack-label>Students</clr-stack-label>
+        <clr-stack-label>Registered Students</clr-stack-label>
         <clr-stack-block>
           <clr-stack-label class="clr-stack-hide-label"></clr-stack-label>
           <clr-stack-content>
@@ -127,7 +127,7 @@
 
   <!-- Buttons  -->
   <section class="form-block" *ngIf="!_isReadOnly">
-    <div class="form-group">
+    <div class="form-group _form-buttons">
       <button class="btn" (click)="form.reset()">Clear</button>
       <button class="btn btn-primary"
               [disabled]="!form.valid"

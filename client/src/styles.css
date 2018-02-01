@@ -69,4 +69,8 @@ clr-stack-content .spinner {
   z-index: 1;
 }
 
+._form-buttons {
+  padding-left: 0px!important;
+}
+
 
