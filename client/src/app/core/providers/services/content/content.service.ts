@@ -10,6 +10,7 @@ import {Teacher} from "../../../../models/content/teacher";
 import {Course} from "../../../../models/content/course";
 import {AlertService} from "../alert.service";
 import {StoreData} from "../../../../models/core/store-data";
+import 'rxjs/add/operator/filter';
 
 @Injectable()
 export class ContentService {
