@@ -5,6 +5,7 @@ import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {BasicModalConfirmActions} from "./basic-modal-confirm-actions";
 import {ContentService} from "../../../core/providers/services/content/content.service";
 import {StoreData} from "../../../models/core/store-data";
+import 'rxjs/add/operator/withLatestFrom';
 
 export abstract class BasicContentEditor<T> extends BasicModalConfirmActions<T> {
 
