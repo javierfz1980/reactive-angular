@@ -4,6 +4,7 @@ import {Router} from "@angular/router";
 import {AuthService} from "../../providers/services/auth.service";
 import {BasicSubscriptor} from "../../../commons/abstract-classes/basic-subscriptor";
 import {appRoutePaths} from "../../../app-routes";
+import 'rxjs/add/operator/takeWhile';
 
 @Component({
   selector: "gl-login",

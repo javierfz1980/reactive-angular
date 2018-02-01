@@ -7,6 +7,7 @@ import {ContentService} from "../../../core/providers/services/content/content.s
 import {Observable} from "rxjs/Observable";
 import {BasicSubscriptor} from "../../../commons/abstract-classes/basic-subscriptor";
 import {ViewChild} from "@angular/core";
+import 'rxjs/add/operator/filter';
 
 export abstract class BasicModalConfirmActions<T> extends BasicSubscriptor {
 
