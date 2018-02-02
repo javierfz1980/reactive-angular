@@ -111,8 +111,7 @@ export abstract class BasicModalConfirmActions<T> extends BasicSubscriptor {
       this.action = () => {
         this.modalData.title = "Updating";
         this.modalData.isBusy = true;
-        this.contentService
-          .updateCourseStatus(data["id"], !data["active"])
+        this.updateStatusProvider(data["id"], !data["active"])
           .takeWhile(() => this.isAlive)
           .subscribe(
             () => {
