@@ -25,8 +25,8 @@ export class CoursesComponent extends BasicContentDisplay<Course> {
 
   contentProvider = this.contentService.getCourses;
   fetchProvider = this.contentService.fetchCourses;
-  deleteProvider: (data: Course) => Observable<boolean> = this.contentService.deleteCourse;
-  updateStatusProvider: (id: string, data: boolean) => Observable<boolean> = this.contentService.updateCourseStatus;
+  deleteProvider = this.contentService.deleteCourse;
+  updateStatusProvider = this.contentService.updateCourseStatus;
   createPath: string = appRoutePaths.courses.childs.create.path;
   editPath:string = appRoutePaths.courses.path;
 

@@ -28,7 +28,7 @@ export class TeachersComponent extends BasicContentDisplay<Teacher> {
 
   contentProvider = this.contentService.getTeachers;
   fetchProvider = this.contentService.fetchTeachers;
-  deleteProvider: (data: Teacher) => Observable<boolean> = this.contentService.deleteTeacher;
+  deleteProvider = this.contentService.deleteTeacher;
   createPath: string = appRoutePaths.teachers.childs.create.path;
   editPath:string = appRoutePaths.teachers.path;
 
