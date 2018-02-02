@@ -1,32 +1,48 @@
-import { TestBed, async } from "@angular/core/testing";
+import {TestBed, async, ComponentFixture} from "@angular/core/testing";
 
 import { AppComponent } from "./app.component";
+import {Http} from "@angular/http";
+import {CommonsModule} from "./commons/commons.module";
+import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
+import {CoreModule} from "./core/core.module";
+import {BrowserModule} from "@angular/platform-browser";
+import {HttpLoaderFactory} from "./app.module";
+import {DashboardModule} from "./content/dashboard/dashboard.module";
+import {RouterTestingModule} from "@angular/router/testing";
 
 describe('AppComponent', () => {
+
+  let app: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
         AppComponent
       ],
+      imports: [
+        BrowserModule,
+        CommonsModule,
+        DashboardModule,
+        CoreModule.forRoot(),
+        TranslateModule.forRoot({
+          loader: {
+            provide: TranslateLoader,
+            useFactory: HttpLoaderFactory,
+            deps: [Http]
+          }
+        }),
+        RouterTestingModule,
+      ],
     }).compileComponents();
+
+    fixture = TestBed.createComponent(AppComponent);
+    app = fixture.debugElement.componentInstance;
+
   }));
 
   it('should create the app', async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
   }));
 
-  it(`should have as title 'gl'`, async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('gl');
-  }));
-
-  it('should render title in a h1 tag', async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to gl!!');
-  }));
 });

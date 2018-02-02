@@ -2,7 +2,7 @@
 
   <h1>
     {{ title }}
-    <button *ngIf="isAdministrator" class="btn btn-sm btn-primary" (click)="create()">New Course</button>
+    <button *ngIf="isAdministrator" class="btn btn-sm btn-primary create-course" (click)="create()">New Course</button>
     <div *ngIf="storeData.loading" class="spinner spinner-sm"></div>
   </h1>
   <hr>
