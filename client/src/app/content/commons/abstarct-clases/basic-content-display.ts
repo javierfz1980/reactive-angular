@@ -27,7 +27,7 @@ export abstract class BasicContentDisplay<T> extends BasicModalConfirmActions<T>
 
   ngOnInit() {
     if (this.contentProvider && this.fetchProvider) {
-      this.dataSource = this.contentProvider.bind(this.contentService)()
+      this.dataSource = this.contentProvider.bind(this.contentService)();
       this.fetchProvider.bind(this.contentService)();
     }
   }
