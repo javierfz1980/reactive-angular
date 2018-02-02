@@ -1,4 +1,4 @@
-<div class="_db-card" *ngIf="data | async as totalData; else loading">
+<div *ngIf="data | async as totalData; else loading">
   <div class="total-body">
     {{totalData.length || 0}}
   </div>

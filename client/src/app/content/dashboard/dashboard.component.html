@@ -15,14 +15,14 @@
 <div class="row db-row">
   <div class="col-sm-12 col-md-6 db-col">
     <div class="db-col-content-wrapper">
-      <div class="db-col-content-container">
+      <div class="db-col-content-container _db-card">
         <div class="content"><gl-most-popular-course></gl-most-popular-course></div>
       </div>
     </div>
   </div>
   <div class="col-sm-12 col-md-6 db-col">
     <div class="db-col-content-wrapper">
-      <div class="db-col-content-container" (click)="navigateTo(routes.courses.path)">
+      <div class="db-col-content-container _db-card" (click)="navigateTo(routes.courses.path)">
         <div class="content">
           <gl-generic-amount [title]="'dashboard.courses'"
                              [data]="totalCourses"
@@ -35,7 +35,7 @@
 <div class="row db-row">
   <div class="col-sm-12 col-md-6 db-col">
     <div class="db-col-content-wrapper">
-      <div class="db-col-content-container" (click)="navigateTo(routes.teachers.path)">
+      <div class="db-col-content-container _db-card" (click)="navigateTo(routes.teachers.path)">
         <div class="content">
           <gl-generic-amount [title]="'dashboard.teachers'"
                              [data]="totalTeachers"></gl-generic-amount>
@@ -45,7 +45,7 @@
   </div>
   <div class="col-sm-12 col-md-6 db-col">
     <div class="db-col-content-wrapper">
-      <div class="db-col-content-container" (click)="navigateTo(routes.students.path)">
+      <div class="db-col-content-container _db-card" (click)="navigateTo(routes.students.path)">
         <div class="content">
           <gl-generic-amount [title]="'dashboard.students'"
                              [data]="totalStudents"></gl-generic-amount>

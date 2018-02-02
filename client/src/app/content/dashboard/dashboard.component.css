@@ -1,14 +1,8 @@
 .db-row {
   min-height: 50%;
-  /*background-color: #c92100;*/
-}
-
-.db-col {
-
 }
 
 .db-col-content-wrapper {
-  /*border: 1px solid #ff00ff; 007ccb 369*/
   height: 100%;
   padding-top: 2.5%;
 }
@@ -28,7 +22,6 @@
 }
 
 .db-col-content-container .content {
-  /*border: 1px solid #ff0000;*/
   width: fit-content;
   margin: 0 auto;
 }
