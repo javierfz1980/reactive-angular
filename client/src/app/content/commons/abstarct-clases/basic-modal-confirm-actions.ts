@@ -35,7 +35,7 @@ export abstract class BasicModalConfirmActions<T> extends BasicSubscriptor {
         this.modalData.title = "Updating";
         this.modalData.isBusy = true;
         this.updateProvider(data, elementsTobeRemoved, elementsTobeAdded)
-          .takeWhile(() => true)
+          .takeWhile(() => this.isAlive)
           .subscribe(
             () => {
               this.modalData = {
@@ -66,7 +66,7 @@ export abstract class BasicModalConfirmActions<T> extends BasicSubscriptor {
         this.modalData.isBusy = true;
         this.contentService
           .updateCourseStatus(data["id"], !data["active"])
-          .takeWhile(() => true)
+          .takeWhile(() => this.isAlive)
           .subscribe(
             () => {
               this.modalData = {
@@ -96,7 +96,7 @@ export abstract class BasicModalConfirmActions<T> extends BasicSubscriptor {
         this.modalData.title = "Deleting";
         this.modalData.isBusy = true;
         this.deleteProvider(data)
-          .takeWhile(() => true)
+          .takeWhile(() => this.isAlive)
           .subscribe(
             () => {
               this.modalData = {
@@ -126,7 +126,7 @@ export abstract class BasicModalConfirmActions<T> extends BasicSubscriptor {
         this.modalData.title = "Creating";
         this.modalData.isBusy = true;
         this.createProvider(data, selectedItems)
-          .takeWhile(() => true)
+          .takeWhile(() => this.isAlive)
           .subscribe(
             () => {
               this.modalData = {
